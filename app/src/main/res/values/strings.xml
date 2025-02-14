@@ -7,4 +7,13 @@
     <string name="check_password_text">Подтверждение пароля</string>
     <string name="show_password_text">Показать пароль</string>
     <string name="hide_password_text">Спрятать пароль</string>
+    <string name="registration_button_text">Зарегестрироваться</string>
+    <string name="invalid_password">Некорректный пароль</string>
+    <string name="passwords_donе_match_text">Пароли не совпадают</string>
+    <string name="error_password_text">Должно быть минимум 6 символов</string>
+    <string name="error_check_password_text">Пароли не совпадают</string>
+    <string name="invalid_email_text">Некорректная почта</string>
+    <string name="entry_button_text">Войти</string>
+    <string name="back_text">Назад</string>
+    <string name="entry_text">Вход</string>
 </resources>

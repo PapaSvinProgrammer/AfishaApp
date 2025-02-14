@@ -1,14 +1,10 @@
-package com.example.afishaapp.ui.screen
+package com.example.afishaapp.ui.screen.registration
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -19,15 +15,27 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.unit.dp
 import com.example.afishaapp.R
+
+private var email by mutableStateOf("")
+private var password by mutableStateOf("")
+private var checkPassword by mutableStateOf("")
+
+private var visibilityPassword by mutableStateOf(false)
+private var visibilityCheckPassword by mutableStateOf(false)
+
+private var isErrorPassword by mutableStateOf(false)
+private var isErrorCheckPassword by mutableStateOf(false)
+private var isErrorEmail by mutableStateOf(false)
 
 @Composable
 fun RegistrationScreen() {
@@ -42,18 +50,25 @@ fun RegistrationScreen() {
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            var email by remember { mutableStateOf("") }
-            var password by remember { mutableStateOf("") }
-            var checkPassword by remember { mutableStateOf("") }
-            var visibilityPassword by remember { mutableStateOf(false) }
-            var visibilityCheckPassword by remember { mutableStateOf(false) }
-
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
                 label = { Text(stringResource(R.string.input_email_text)) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                singleLine = true
+                singleLine = true,
+                modifier = Modifier.padding(0.dp, 50.dp, 0.dp, 0.dp),
+                supportingText = {
+                    if (isErrorEmail) Text(text = stringResource(R.string.invalid_email_text))
+                },
+                trailingIcon = {
+                    if (isErrorEmail) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_error),
+                            contentDescription = stringResource(R.string.invalid_email_text)
+                        )
+                    }
+                },
+                isError = isErrorEmail
             )
 
             OutlinedTextField(
@@ -64,22 +79,30 @@ fun RegistrationScreen() {
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 singleLine = true,
                 trailingIcon = {
-                    val icon = if (visibilityPassword)
-                        Icons.Filled.Visibility
+                    val icon = if (isErrorPassword)
+                        painterResource(R.drawable.ic_error)
+                    else if (visibilityPassword)
+                        painterResource(R.drawable.ic_visibility)
                     else
-                        Icons.Filled.VisibilityOff
+                        painterResource(R.drawable.ic_visibility_off)
 
-                    val contentDescription = if (visibilityCheckPassword)
+                    val contentDescription = if (isErrorPassword)
+                        stringResource(R.string.invalid_password)
+                    else if (visibilityPassword)
                         stringResource(R.string.show_password_text)
                     else
                         stringResource(R.string.hide_password_text)
 
                     IconButton(onClick = { visibilityPassword = !visibilityPassword }) {
                         Icon(
-                            icon,
+                            painter = icon,
                             contentDescription = contentDescription
                         )
                     }
+                },
+                isError = isErrorPassword,
+                supportingText = {
+                    if (isErrorPassword) Text(text = stringResource(R.string.error_password_text))
                 }
             )
 
@@ -91,23 +114,39 @@ fun RegistrationScreen() {
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 singleLine = true,
                 trailingIcon = {
-                    val icon = if (visibilityCheckPassword)
-                        Icons.Filled.Visibility
+                    val icon = if (isErrorCheckPassword)
+                        painterResource(R.drawable.ic_error)
+                    else if (visibilityCheckPassword)
+                        painterResource(R.drawable.ic_visibility)
                     else
-                        Icons.Filled.VisibilityOff
-                    val contentDescription = if (visibilityCheckPassword)
+                        painterResource(R.drawable.ic_visibility_off)
+
+                    val contentDescription = if (isErrorCheckPassword)
+                        stringResource(R.string.passwords_donе_match_text)
+                    else if (visibilityCheckPassword)
                         stringResource(R.string.show_password_text)
                     else
                         stringResource(R.string.hide_password_text)
 
-                    IconButton(onClick = {visibilityCheckPassword = !visibilityCheckPassword}) {
+                    IconButton(onClick = { visibilityCheckPassword = !visibilityCheckPassword }) {
                         Icon(
-                            icon,
+                            painter = icon,
                             contentDescription = contentDescription
                         )
                     }
+                },
+                isError = isErrorCheckPassword,
+                supportingText = {
+                    if (isErrorCheckPassword) Text(text = stringResource(R.string.error_check_password_text))
                 }
             )
+
+            Button(
+                onClick = {},
+                modifier = Modifier.padding(0.dp, 10.dp, 0.dp, 0.dp)
+            ) {
+                Text(stringResource(R.string.registration_button_text))
+            }
         }
     }
 }
@@ -122,7 +161,7 @@ fun DefaultTopAppBar(text: String, navigationIconListener: () -> Unit) {
                 onClick = navigationIconListener
             ) {
                 Icon(
-                    Icons.Rounded.ArrowBack,
+                    painter = painterResource(R.drawable.ic_arrow_back),
                     contentDescription = "Back"
                 )
             }

@@ -5,7 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.MaterialTheme
-import com.example.afishaapp.ui.screen.RegistrationScreen
+import com.example.afishaapp.ui.screen.entry.EntryScreen
+import com.example.afishaapp.ui.screen.registration.RegistrationScreen
 
 class MainActivity: ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,7 +15,7 @@ class MainActivity: ComponentActivity() {
 
         setContent {
             MaterialTheme {
-                RegistrationScreen()
+                EntryScreen()
             }
         }
     }
