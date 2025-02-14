@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">AfishaApp</string>
+    <string name="title_activity_main2">MainActivity2</string>
+    <string name="registration_text">Регистрация</string>
+    <string name="input_email_text">Почта</string>
+    <string name="input_password_text">Пароль</string>
+    <string name="check_password_text">Подтверждение пароля</string>
+    <string name="show_password_text">Показать пароль</string>
+    <string name="hide_password_text">Спрятать пароль</string>
+</resources>
