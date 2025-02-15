@@ -16,4 +16,15 @@
     <string name="entry_button_text">Войти</string>
     <string name="back_text">Назад</string>
     <string name="entry_text">Вход</string>
+    <string name="home_title_text">Главная</string>
+    <string name="ticket_title_text">Билеты</string>
+    <string name="favorite_title_text">Избранное</string>
+    <string name="search_title_text">Поиск</string>
+    <string name="my_ticket_text">Мои билеты</string>
+    <string name="favorite_text">Избранное</string>
+
+    <string-array name="ticket_segmented_button">
+        <item>"События"</item>
+        <item>"Площадки"</item>
+    </string-array>
 </resources>

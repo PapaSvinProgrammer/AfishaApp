@@ -25,6 +25,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.afishaapp.R
 
 var email by mutableStateOf("")
@@ -35,11 +36,16 @@ var passwordIsError by mutableStateOf(false)
 
 var visibilityPassword by mutableStateOf(false)
 
-@Preview(showSystemUi = true)
 @Composable
-fun EntryScreen() {
+fun EntryScreen(
+    navController: NavController
+) {
     Scaffold(
-        topBar = { EntryTopAppBar {  } }
+        topBar = {
+            EntryTopAppBar {
+                navController.popBackStack()
+            }
+        }
     ) { intentPadding ->
         Column(
             modifier = Modifier

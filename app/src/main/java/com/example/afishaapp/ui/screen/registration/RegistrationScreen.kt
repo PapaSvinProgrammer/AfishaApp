@@ -24,6 +24,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.afishaapp.R
 
 private var email by mutableStateOf("")
@@ -38,10 +39,14 @@ private var isErrorCheckPassword by mutableStateOf(false)
 private var isErrorEmail by mutableStateOf(false)
 
 @Composable
-fun RegistrationScreen() {
+fun RegistrationScreen(
+    navController: NavController
+) {
     Scaffold(
         topBar = {
-            DefaultTopAppBar(text = stringResource(R.string.registration_text))  { }
+            DefaultTopAppBar(text = stringResource(R.string.registration_text))  {
+                navController.popBackStack()
+            }
         }
     ) { intentPadding ->
         Column(
@@ -142,7 +147,7 @@ fun RegistrationScreen() {
             )
 
             Button(
-                onClick = {},
+                onClick = {  },
                 modifier = Modifier.padding(0.dp, 10.dp, 0.dp, 0.dp)
             ) {
                 Text(stringResource(R.string.registration_button_text))
