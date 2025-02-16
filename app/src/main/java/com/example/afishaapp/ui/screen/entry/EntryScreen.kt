@@ -23,10 +23,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.afishaapp.R
+import com.example.afishaapp.app.navigation.NavRoutes
 
 var email by mutableStateOf("")
 var password by mutableStateOf("")
@@ -108,7 +108,9 @@ fun EntryScreen(
             )
 
             Button(
-                onClick = {  },
+                onClick = {
+                    navController.navigate(NavRoutes.HOME.name)
+                },
                 modifier = Modifier.padding(0.dp, 10.dp, 0.dp, 0.dp)
             ) {
                 Text(text = stringResource(R.string.entry_button_text))

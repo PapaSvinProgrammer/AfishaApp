@@ -22,6 +22,9 @@
     <string name="search_title_text">Поиск</string>
     <string name="my_ticket_text">Мои билеты</string>
     <string name="favorite_text">Избранное</string>
+    <string name="music_text">Музыка</string>
+    <string name="cinema_text">Кино</string>
+    <string name="theater_text">Театр</string>
 
     <string-array name="ticket_segmented_button">
         <item>"События"</item>
