@@ -38,12 +38,10 @@ fun MainScreen() {
 
 private fun bottomBarIsVisibility(route: String?) {
     when (route) {
-        NavRoutes.START.name -> visibilityState.value = false
-        NavRoutes.ENTRY.name -> visibilityState.value = false
-        NavRoutes.REGISTRATION.name -> visibilityState.value = false
         NavRoutes.HOME.name -> visibilityState.value = true
         NavRoutes.TICKETS.name -> visibilityState.value = true
         NavRoutes.FAVORITE.name -> visibilityState.value = true
         NavRoutes.SEARCH.name -> visibilityState.value = true
+        else -> visibilityState.value = false
     }
 }

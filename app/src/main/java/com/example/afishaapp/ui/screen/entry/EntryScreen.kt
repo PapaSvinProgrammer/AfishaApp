@@ -109,7 +109,9 @@ fun EntryScreen(
 
             Button(
                 onClick = {
-                    navController.navigate(NavRoutes.HOME.name)
+                    navController.navigate(NavRoutes.HOME.name) {
+                        popUpTo(navController.graph.id)
+                    }
                 },
                 modifier = Modifier.padding(0.dp, 10.dp, 0.dp, 0.dp)
             ) {
@@ -128,7 +130,7 @@ fun EntryTopAppBar(onClick: () -> Unit) {
             IconButton(onClick = onClick) {
                 Icon(
                     painter = painterResource(R.drawable.ic_arrow_back),
-                    contentDescription = stringResource(R.string.back_text)
+                    contentDescription = stringResource(R.string.ic_arrow_back_content_description)
                 )
             }
         },

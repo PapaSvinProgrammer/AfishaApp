@@ -7,5 +7,6 @@ enum class NavRoutes {
     HOME,
     TICKETS,
     FAVORITE,
-    SEARCH
+    SEARCH,
+    ACCOUNT
 }

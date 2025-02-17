@@ -14,7 +14,7 @@
     <string name="error_check_password_text">Пароли не совпадают</string>
     <string name="invalid_email_text">Некорректная почта</string>
     <string name="entry_button_text">Войти</string>
-    <string name="back_text">Назад</string>
+
     <string name="entry_text">Вход</string>
     <string name="home_title_text">Главная</string>
     <string name="ticket_title_text">Билеты</string>
@@ -25,6 +25,16 @@
     <string name="music_text">Музыка</string>
     <string name="cinema_text">Кино</string>
     <string name="theater_text">Театр</string>
+    <string name="ic_arrow_back_content_description">Назад</string>
+    <string name="profile_title">Профиль</string>
+    <string name="ic_account_circle_content_description">Фото аккаунта</string>
+    <string name="ic_account_content_description">Аккаунт</string>
+    <string name="exit">Выход</string>
+    <string name="settings">Настройки</string>
+    <string name="statistics">Статистика</string>
+    <string name="support">Поддержка</string>
+    <string name="about_app">О приложении</string>
+    <string name="clarify_preferences">Уточнить предпочтения</string>
 
     <string-array name="ticket_segmented_button">
         <item>"События"</item>

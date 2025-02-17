@@ -147,7 +147,9 @@ fun RegistrationScreen(
             )
 
             Button(
-                onClick = {  },
+                onClick = {
+
+                },
                 modifier = Modifier.padding(0.dp, 10.dp, 0.dp, 0.dp)
             ) {
                 Text(stringResource(R.string.registration_button_text))
