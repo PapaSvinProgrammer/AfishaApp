@@ -25,7 +25,7 @@ fun NavigationGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = NavRoutes.START.name
+        startDestination = NavRoutes.HOME.name
     ) {
         composable(NavRoutes.HOME.name) { HomeScreen(navController) }
 
