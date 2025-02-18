@@ -4,18 +4,19 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.afishaapp.app.navigation.BottomNavigationBar
 import com.example.afishaapp.app.navigation.NavRoutes
 import com.example.afishaapp.app.navigation.NavigationGraph
+import com.example.afishaapp.di.viewModel.ViewModelFactory
 
 private val visibilityState = mutableStateOf(false)
 
-@Preview(showSystemUi = true)
 @Composable
-fun MainScreen() {
+fun MainScreen(
+    viewModelFactory: ViewModelFactory
+) {
     val navController = rememberNavController()
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = backStackEntry?.destination?.route
@@ -31,7 +32,8 @@ fun MainScreen() {
     ) { innerPadding ->
         NavigationGraph(
             navController = navController,
-            padding = innerPadding
+            padding = innerPadding,
+            viewModelFactory = viewModelFactory
         )
     }
 }

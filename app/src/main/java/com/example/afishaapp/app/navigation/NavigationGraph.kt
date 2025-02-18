@@ -6,14 +6,18 @@ import androidx.compose.animation.core.EaseOut
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.afishaapp.di.viewModel.ViewModelFactory
 import com.example.afishaapp.ui.screen.entry.EntryScreen
+import com.example.afishaapp.ui.screen.entry.EntryViewModel
 import com.example.afishaapp.ui.screen.favorite.FavoriteScreen
 import com.example.afishaapp.ui.screen.home.HomeScreen
 import com.example.afishaapp.ui.screen.profile.ProfileScreen
 import com.example.afishaapp.ui.screen.registration.RegistrationScreen
+import com.example.afishaapp.ui.screen.registration.RegistrationViewModel
 import com.example.afishaapp.ui.screen.search.SearchScreen
 import com.example.afishaapp.ui.screen.start.StartScreen
 import com.example.afishaapp.ui.screen.ticket.TicketScreen
@@ -21,11 +25,12 @@ import com.example.afishaapp.ui.screen.ticket.TicketScreen
 @Composable
 fun NavigationGraph(
     navController: NavHostController,
-    padding: PaddingValues
+    padding: PaddingValues,
+    viewModelFactory: ViewModelFactory
 ) {
     NavHost(
         navController = navController,
-        startDestination = NavRoutes.HOME.name
+        startDestination = NavRoutes.START.name
     ) {
         composable(NavRoutes.HOME.name) { HomeScreen(navController) }
 
@@ -56,7 +61,13 @@ fun NavigationGraph(
                     towards = AnimatedContentTransitionScope.SlideDirection.End
                 )
             }
-        ) { EntryScreen(navController) }
+        ) {
+            val viewModel: EntryViewModel = viewModel(factory = viewModelFactory)
+            EntryScreen(
+                navController = navController,
+                viewModel = viewModel
+            )
+        }
 
         composable(
             route = NavRoutes.REGISTRATION.name,
@@ -73,7 +84,11 @@ fun NavigationGraph(
                 )
             }
         ) {
-            RegistrationScreen(navController)
+            val viewModel: RegistrationViewModel = viewModel(factory = viewModelFactory)
+            RegistrationScreen(
+               navController =  navController,
+                viewModel = viewModel
+            )
         }
 
         composable(
