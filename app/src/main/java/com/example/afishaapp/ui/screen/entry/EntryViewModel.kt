@@ -5,15 +5,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.afishaapp.data.module.UserInfo
+import com.example.afishaapp.domain.auth.LoginFirebase
+import com.example.afishaapp.domain.module.AuthData
+import com.example.afishaapp.domain.preferences.SetPreferences
 import com.example.afishaapp.domain.valid.ValidEmail
 import com.example.afishaapp.domain.valid.ValidPassword
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class EntryViewModel @Inject constructor(
     private val validEmail: ValidEmail,
-    private val validPassword: ValidPassword
+    private val validPassword: ValidPassword,
+    private val setPreferences: SetPreferences,
+    private val loginFirebase: LoginFirebase
 ): ViewModel() {
     var emailValue by mutableStateOf("")
         private set
@@ -29,6 +34,8 @@ class EntryViewModel @Inject constructor(
         private set
 
     var isEntry by mutableStateOf(false)
+        private set
+    var entryError by mutableStateOf(false)
         private set
 
     fun updateEmail(text: String) {
@@ -52,5 +59,33 @@ class EntryViewModel @Inject constructor(
         }
 
         visibilityProgressBar = true
+
+        viewModelScope.launch {
+            val result = loginFirebase.execute(
+                AuthData(
+                    email = emailValue,
+                    password = passwordValue
+                )
+            )
+
+            entryIsSuccess(result)
+        }
+    }
+
+    private fun entryIsSuccess(userInfo: UserInfo?) {
+        if (userInfo == null) {
+            visibilityProgressBar = false
+            entryError = true
+            passwordValue = ""
+
+            return
+        }
+
+        viewModelScope.launch {
+            setPreferences.setEmail(userInfo.email)
+            setPreferences.setUserName(userInfo.name)
+            setPreferences.setEntryState(true)
+            isEntry = true
+        }
     }
 }

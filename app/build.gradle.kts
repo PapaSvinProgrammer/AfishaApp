@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("kotlin-kapt")
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -42,6 +43,7 @@ android {
 
 dependencies {
     implementation(libs.dagger)
+    implementation(libs.firebase.auth)
     kapt(libs.dagger.compiler)
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.core.ktx)

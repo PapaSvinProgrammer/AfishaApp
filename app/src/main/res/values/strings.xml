@@ -36,6 +36,8 @@
     <string name="about_app">О приложении</string>
     <string name="clarify_preferences">Уточнить предпочтения</string>
     <string name="search_city_hint">Введите город</string>
+    <string name="entry_error">Неверный логин или пароль</string>
+    <string name="error_registration">Такой пользователь уже существует</string>
 
     <string-array name="ticket_segmented_button">
         <item>"События"</item>

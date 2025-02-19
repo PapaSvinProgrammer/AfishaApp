@@ -52,10 +52,12 @@ fun EntryScreen(
                 onValueChange = { viewModel.updateEmail(it) },
                 label = { Text(text = stringResource(R.string.input_email_text)) },
                 modifier = Modifier.padding(0.dp, 50.dp, 0.dp, 0.dp),
-                isError = viewModel.errorEmail,
+                isError = viewModel.errorEmail || viewModel.entryError,
                 supportingText = {
                     if (viewModel.errorEmail)
                         Text(text = stringResource(R.string.invalid_email_text))
+                    else if (viewModel.entryError)
+                        Text(text = stringResource(R.string.entry_error))
                 },
                 trailingIcon = {
                     if (viewModel.errorEmail) {
@@ -78,7 +80,7 @@ fun EntryScreen(
                     VisualTransformation.None
                 else
                     PasswordVisualTransformation(),
-                isError = viewModel.errorPassword,
+                isError = viewModel.errorPassword || viewModel.entryError,
                 trailingIcon = {
                     val icon = if (viewModel.errorPassword)
                         painterResource(R.drawable.ic_error)
