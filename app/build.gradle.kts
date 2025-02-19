@@ -42,6 +42,8 @@ android {
 }
 
 dependencies {
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
     implementation(libs.dagger)
     implementation(libs.firebase.auth)
     kapt(libs.dagger.compiler)

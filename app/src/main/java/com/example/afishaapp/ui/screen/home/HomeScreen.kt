@@ -10,7 +10,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -24,11 +23,14 @@ import com.example.afishaapp.app.navigation.NavRoutes
 import com.example.afishaapp.ui.screen.cityBottomSheet.CityBottomSheet
 import com.example.afishaapp.ui.theme.acidFontFamily
 
-private val cityBottomSheetState = mutableStateOf(false)
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(
+    navController: NavController,
+    viewModel: HomeViewModel
+) {
+    viewModel.getCategoriesEvent()
+
     CenterAlignedTopAppBar(
         navigationIcon = {
             Row(
@@ -37,7 +39,7 @@ fun HomeScreen(navController: NavController) {
                     .padding(10.dp, 0.dp, 0.dp, 0.dp)
                     .clip(CircleShape)
                     .clickable {
-                        cityBottomSheetState.value = true
+                        viewModel.cityBottomSheetState.value = true
                     }
             ) {
                 Text(
@@ -65,5 +67,5 @@ fun HomeScreen(navController: NavController) {
     )
 
 
-    CityBottomSheet(cityBottomSheetState)
+    CityBottomSheet(viewModel.cityBottomSheetState)
 }

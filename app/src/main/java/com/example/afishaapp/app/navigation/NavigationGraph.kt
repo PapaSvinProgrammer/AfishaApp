@@ -15,6 +15,7 @@ import com.example.afishaapp.ui.screen.entry.EntryScreen
 import com.example.afishaapp.ui.screen.entry.EntryViewModel
 import com.example.afishaapp.ui.screen.favorite.FavoriteScreen
 import com.example.afishaapp.ui.screen.home.HomeScreen
+import com.example.afishaapp.ui.screen.home.HomeViewModel
 import com.example.afishaapp.ui.screen.profile.ProfileScreen
 import com.example.afishaapp.ui.screen.registration.RegistrationScreen
 import com.example.afishaapp.ui.screen.registration.RegistrationViewModel
@@ -30,9 +31,16 @@ fun NavigationGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = NavRoutes.START.name
+        startDestination = NavRoutes.HOME.name
     ) {
-        composable(NavRoutes.HOME.name) { HomeScreen(navController) }
+        composable(NavRoutes.HOME.name) {
+            val viewModel: HomeViewModel = viewModel(factory = viewModelFactory)
+
+            HomeScreen(
+                navController = navController,
+                viewModel = viewModel
+            )
+        }
 
         composable(NavRoutes.TICKETS.name) { TicketScreen() }
 
