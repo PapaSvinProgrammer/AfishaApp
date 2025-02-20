@@ -1,15 +1,18 @@
 package com.example.afishaapp.ui.screen.home
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.afishaapp.domain.category.GetCategories
+import com.example.afishaapp.domain.http.GetAgent
+import com.example.afishaapp.domain.http.GetCategory
+import com.example.afishaapp.domain.http.GetEventsDay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(
-    private val getCategories: GetCategories
+    private val getCategory: GetCategory,
+    private val getEventsDay: GetEventsDay,
+    private val getAgent: GetAgent
 ): ViewModel() {
     val cityBottomSheetState = mutableStateOf(false)
 
@@ -17,5 +20,15 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
 
         }
+    }
+
+    fun getEventDay() {
+        viewModelScope.launch {
+            getEventsDay.execute()
+        }
+    }
+
+    fun getAgent() {
+
     }
 }

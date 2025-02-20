@@ -1,7 +1,7 @@
 package com.example.afishaapp.data.repository
 
 import com.example.afishaapp.data.http.CategoryService
-import com.example.afishaapp.domain.module.Category
+import com.example.afishaapp.data.module.Category
 import com.example.afishaapp.domain.repository.CategoryRepository
 import retrofit2.Retrofit
 import retrofit2.create

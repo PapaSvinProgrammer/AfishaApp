@@ -29,7 +29,7 @@ fun HomeScreen(
     navController: NavController,
     viewModel: HomeViewModel
 ) {
-    viewModel.getCategoriesEvent()
+    viewModel.getAgent()
 
     CenterAlignedTopAppBar(
         navigationIcon = {

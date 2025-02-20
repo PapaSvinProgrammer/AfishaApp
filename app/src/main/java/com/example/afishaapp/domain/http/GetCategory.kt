@@ -1,10 +1,10 @@
-package com.example.afishaapp.domain.category
+package com.example.afishaapp.domain.http
 
-import com.example.afishaapp.domain.module.Category
+import com.example.afishaapp.data.module.Category
 import com.example.afishaapp.domain.repository.CategoryRepository
 import javax.inject.Inject
 
-class GetCategories @Inject constructor(
+class GetCategory @Inject constructor(
     private val categoryRepository: CategoryRepository
 ) {
     suspend fun getEvent(): List<Category> {

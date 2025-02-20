@@ -1,6 +1,6 @@
 package com.example.afishaapp.data.http
 
-import com.example.afishaapp.domain.module.Category
+import com.example.afishaapp.data.module.Category
 import retrofit2.http.GET
 
 interface CategoryService {

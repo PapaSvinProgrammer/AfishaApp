@@ -1,4 +1,4 @@
-package com.example.afishaapp.domain.module
+package com.example.afishaapp.data.module
 
 data class Category(
     val id: Int,
