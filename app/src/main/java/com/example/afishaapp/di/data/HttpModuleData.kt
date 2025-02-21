@@ -4,7 +4,7 @@ import com.example.afishaapp.data.repository.http.AgentRepositoryImpl
 import com.example.afishaapp.data.repository.http.CategoryRepositoryImpl
 import com.example.afishaapp.data.repository.http.CityRepositoryImpl
 import com.example.afishaapp.data.repository.http.CommentRepositoryImpl
-import com.example.afishaapp.data.repository.http.EventDayRepositoryImpl
+import com.example.afishaapp.data.repository.http.EventRepositoryImpl
 import com.example.afishaapp.data.repository.http.MovieRepositoryImpl
 import com.example.afishaapp.data.repository.http.MovieShowingRepositoryImpl
 import com.example.afishaapp.data.repository.http.SearchRepositoryImpl
@@ -12,7 +12,7 @@ import com.example.afishaapp.domain.repository.http.AgentRepository
 import com.example.afishaapp.domain.repository.http.CategoryRepository
 import com.example.afishaapp.domain.repository.http.CityRepository
 import com.example.afishaapp.domain.repository.http.CommentRepository
-import com.example.afishaapp.domain.repository.http.EventDayRepository
+import com.example.afishaapp.domain.repository.http.EventRepository
 import com.example.afishaapp.domain.repository.http.MovieRepository
 import com.example.afishaapp.domain.repository.http.MovieShowingRepository
 import com.example.afishaapp.domain.repository.http.SearchRepository
@@ -29,10 +29,6 @@ interface HttpModuleData {
     @Singleton
     @Binds
     fun bindCityRepositoryImpl(repository: CityRepositoryImpl): CityRepository
-
-    @Singleton
-    @Binds
-    fun bindEventDayRepositoryImpl(repository: EventDayRepositoryImpl): EventDayRepository
 
     @Singleton
     @Binds
@@ -53,4 +49,8 @@ interface HttpModuleData {
     @Singleton
     @Binds
     fun bindCommentRepositoryImpl(repository: CommentRepositoryImpl): CommentRepository
+
+    @Singleton
+    @Binds
+    fun bindEventRepositoryImpl(repository: EventRepositoryImpl): EventRepository
 }

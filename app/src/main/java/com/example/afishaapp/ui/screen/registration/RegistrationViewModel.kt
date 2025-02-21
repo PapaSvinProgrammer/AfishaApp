@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.afishaapp.data.module.UserInfo
+import com.example.afishaapp.data.module.User
 import com.example.afishaapp.domain.auth.RegistrationFirebase
 import com.example.afishaapp.domain.module.AuthData
 import com.example.afishaapp.domain.preferences.SetPreferences
@@ -89,7 +89,7 @@ class RegistrationViewModel @Inject constructor(
         }
     }
 
-    private fun registrationIsSuccess(userInfo: UserInfo?) {
+    private fun registrationIsSuccess(userInfo: User?) {
         if (userInfo == null) {
             password = ""
             checkPassword = ""

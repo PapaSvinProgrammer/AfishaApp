@@ -1,11 +1,12 @@
 package com.example.afishaapp.di.domain
 
 import com.example.afishaapp.domain.http.GetAgent
+import com.example.afishaapp.domain.http.GetEvent
 import com.example.afishaapp.domain.http.Search
 import com.example.afishaapp.domain.repository.http.AgentRepository
 import com.example.afishaapp.domain.repository.http.CategoryRepository
 import com.example.afishaapp.domain.repository.http.CityRepository
-import com.example.afishaapp.domain.repository.http.EventDayRepository
+import com.example.afishaapp.domain.repository.http.EventRepository
 import com.example.afishaapp.domain.repository.http.SearchRepository
 import dagger.Module
 import dagger.Provides
@@ -21,6 +22,11 @@ interface HttpModuleDomain {
         @Provides
         fun provideSearch(repository: SearchRepository): Search {
             return Search(repository)
+        }
+
+        @Provides
+        fun provideGetEvent(repository: EventRepository): GetEvent {
+            return GetEvent(repository)
         }
     }
 }

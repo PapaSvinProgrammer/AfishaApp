@@ -6,11 +6,12 @@ import com.example.afishaapp.data.module.movieShow.MovieShowResponse
 import com.example.afishaapp.domain.repository.http.MovieShowingRepository
 import retrofit2.Retrofit
 import retrofit2.create
+import javax.inject.Inject
 
-class MovieShowingRepositoryImpl(
+class MovieShowingRepositoryImpl @Inject constructor(
     private val retrofit: Retrofit
 ): MovieShowingRepository {
-    override suspend fun getMovieShows(currentTime: Int): MovieShowResponse {
+    override suspend fun getMoviesShow(currentTime: Long): MovieShowResponse {
         return retrofit.create<MovieShowingService>().getMovieShows(currentTime)
     }
 

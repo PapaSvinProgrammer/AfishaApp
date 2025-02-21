@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.afishaapp.data.module.UserInfo
+import com.example.afishaapp.data.module.User
 import com.example.afishaapp.domain.auth.LoginFirebase
 import com.example.afishaapp.domain.module.AuthData
 import com.example.afishaapp.domain.preferences.SetPreferences
@@ -72,7 +72,7 @@ class EntryViewModel @Inject constructor(
         }
     }
 
-    private fun entryIsSuccess(userInfo: UserInfo?) {
+    private fun entryIsSuccess(userInfo: User?) {
         if (userInfo == null) {
             visibilityProgressBar = false
             entryError = true

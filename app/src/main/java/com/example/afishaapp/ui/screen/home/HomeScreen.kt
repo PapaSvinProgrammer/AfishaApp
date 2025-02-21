@@ -29,6 +29,7 @@ fun HomeScreen(
     navController: NavController,
     viewModel: HomeViewModel
 ) {
+    viewModel.search("asdas")
 
     CenterAlignedTopAppBar(
         navigationIcon = {
