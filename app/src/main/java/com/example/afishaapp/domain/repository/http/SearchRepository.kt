@@ -1,6 +1,6 @@
-package com.example.afishaapp.domain.repository
+package com.example.afishaapp.domain.repository.http
 
-import com.example.afishaapp.data.module.SearchResponse
+import com.example.afishaapp.data.module.search.SearchResponse
 
 interface SearchRepository {
     suspend fun search(text: String, place: String): SearchResponse

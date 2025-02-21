@@ -1,37 +1,37 @@
 package com.example.afishaapp.data.http
 
-import com.example.afishaapp.data.module.SearchResponse
+import com.example.afishaapp.data.module.search.SearchResponse
 import retrofit2.http.GET
-import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface SearchService {
-    @GET("public-api/v1.4/search/?q={text}&location={place}")
+    @GET("public-api/v1.4/search/")
     suspend fun search(
-        @Path("text") text: String,
-        @Path("place") place: String
+        @Query("q") text: String,
+        @Query("location") place: String
     ): SearchResponse
 
-    @GET("public-api/v1.4/search/?q={text}&location={place}&ctype=news")
+    @GET("public-api/v1.4/search/?ctype=news")
     suspend fun searchNews(
-        @Path("text") text: String,
-        @Path("place") place: String
+        @Query("q") text: String,
+        @Query("location") place: String
     ): SearchResponse
 
-    @GET("public-api/v1.4/search/?q={text}&location={place}&ctype=place")
+    @GET("public-api/v1.4/search/?ctype=place")
     suspend fun searchPlace(
-        @Path("text") text: String,
-        @Path("place") place: String
+        @Query("q") text: String,
+        @Query("location") place: String
     ): SearchResponse
 
-    @GET("public-api/v1.4/search/?q={text}&location={place}&ctype=list")
+    @GET("public-api/v1.4/search/?ctype=list")
     suspend fun searchList(
-        @Path("text") text: String,
-        @Path("place") place: String
+        @Query("q") text: String,
+        @Query("location") place: String
     ): SearchResponse
 
-    @GET("public-api/v1.4/search/?q={text}&location={place}&ctype=event")
+    @GET("public-api/v1.4/search/?ctype=event")
     suspend fun searchEvent(
-        @Path("text") text: String,
-        @Path("place") place: String
+        @Query("q") text: String,
+        @Query("location") place: String
     ): SearchResponse
 }

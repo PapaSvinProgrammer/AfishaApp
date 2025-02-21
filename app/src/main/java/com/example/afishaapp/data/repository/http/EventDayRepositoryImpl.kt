@@ -1,8 +1,8 @@
-package com.example.afishaapp.data.repository
+package com.example.afishaapp.data.repository.http
 
 import com.example.afishaapp.data.http.EventDayService
 import com.example.afishaapp.data.module.eventDay.EventDayResponse
-import com.example.afishaapp.domain.repository.EventDayRepository
+import com.example.afishaapp.domain.repository.http.EventDayRepository
 import retrofit2.Retrofit
 import retrofit2.create
 import javax.inject.Inject

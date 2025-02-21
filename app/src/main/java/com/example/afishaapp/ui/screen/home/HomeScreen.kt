@@ -29,7 +29,6 @@ fun HomeScreen(
     navController: NavController,
     viewModel: HomeViewModel
 ) {
-    viewModel.getAgent()
 
     CenterAlignedTopAppBar(
         navigationIcon = {
@@ -65,7 +64,6 @@ fun HomeScreen(
         },
         title = { Text(text = "") }
     )
-
 
     CityBottomSheet(viewModel.cityBottomSheetState)
 }

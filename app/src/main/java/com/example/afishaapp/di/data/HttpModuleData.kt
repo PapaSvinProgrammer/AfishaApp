@@ -1,15 +1,21 @@
 package com.example.afishaapp.di.data
 
-import com.example.afishaapp.data.repository.AgentRepositoryImpl
-import com.example.afishaapp.data.repository.CategoryRepositoryImpl
-import com.example.afishaapp.data.repository.CityRepositoryImpl
-import com.example.afishaapp.data.repository.EventDayRepositoryImpl
-import com.example.afishaapp.data.repository.SearchRepositoryImpl
-import com.example.afishaapp.domain.repository.AgentRepository
-import com.example.afishaapp.domain.repository.CategoryRepository
-import com.example.afishaapp.domain.repository.CityRepository
-import com.example.afishaapp.domain.repository.EventDayRepository
-import com.example.afishaapp.domain.repository.SearchRepository
+import com.example.afishaapp.data.repository.http.AgentRepositoryImpl
+import com.example.afishaapp.data.repository.http.CategoryRepositoryImpl
+import com.example.afishaapp.data.repository.http.CityRepositoryImpl
+import com.example.afishaapp.data.repository.http.CommentRepositoryImpl
+import com.example.afishaapp.data.repository.http.EventDayRepositoryImpl
+import com.example.afishaapp.data.repository.http.MovieRepositoryImpl
+import com.example.afishaapp.data.repository.http.MovieShowingRepositoryImpl
+import com.example.afishaapp.data.repository.http.SearchRepositoryImpl
+import com.example.afishaapp.domain.repository.http.AgentRepository
+import com.example.afishaapp.domain.repository.http.CategoryRepository
+import com.example.afishaapp.domain.repository.http.CityRepository
+import com.example.afishaapp.domain.repository.http.CommentRepository
+import com.example.afishaapp.domain.repository.http.EventDayRepository
+import com.example.afishaapp.domain.repository.http.MovieRepository
+import com.example.afishaapp.domain.repository.http.MovieShowingRepository
+import com.example.afishaapp.domain.repository.http.SearchRepository
 import dagger.Binds
 import dagger.Module
 import javax.inject.Singleton
@@ -35,4 +41,16 @@ interface HttpModuleData {
     @Singleton
     @Binds
     fun bindSearchRepositoryImpl(repository: SearchRepositoryImpl): SearchRepository
+
+    @Singleton
+    @Binds
+    fun bindMovieRepositoryImpl(repository: MovieRepositoryImpl): MovieRepository
+
+    @Singleton
+    @Binds
+    fun bindMovieShowingRepositoryImpl(repository: MovieShowingRepositoryImpl): MovieShowingRepository
+
+    @Singleton
+    @Binds
+    fun bindCommentRepositoryImpl(repository: CommentRepositoryImpl): CommentRepository
 }

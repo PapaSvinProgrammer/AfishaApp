@@ -1,4 +1,4 @@
-package com.example.afishaapp.domain.repository
+package com.example.afishaapp.domain.repository.http
 
 import com.example.afishaapp.data.module.Category
 

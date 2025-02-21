@@ -1,8 +1,8 @@
-package com.example.afishaapp.data.repository
+package com.example.afishaapp.data.repository.http
 
 import com.example.afishaapp.data.http.SearchService
-import com.example.afishaapp.data.module.SearchResponse
-import com.example.afishaapp.domain.repository.SearchRepository
+import com.example.afishaapp.data.module.search.SearchResponse
+import com.example.afishaapp.domain.repository.http.SearchRepository
 import retrofit2.Retrofit
 import retrofit2.create
 import javax.inject.Inject
