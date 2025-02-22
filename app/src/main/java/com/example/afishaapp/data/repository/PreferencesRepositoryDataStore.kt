@@ -18,6 +18,8 @@ private const val DEFAULT_RESPONSE = "None"
 private val NAME_FIELD = stringPreferencesKey("UserName")
 private val EMAIL_FIELD = stringPreferencesKey("Email")
 private val ENTRY_STATE_FIELD = booleanPreferencesKey("EntryState")
+private val CITY_FIELD = stringPreferencesKey("DefaultCity")
+private val AVATAR_FIELD = stringPreferencesKey("AvatarUrl")
 
 class PreferencesRepositoryDataStore @Inject constructor(
     private val context: Context
@@ -42,6 +44,18 @@ class PreferencesRepositoryDataStore @Inject constructor(
         }
     }
 
+    override suspend fun setAvatarUrl(text: String) {
+        context.datastore.edit { settings ->
+            settings[AVATAR_FIELD] = text
+        }
+    }
+
+    override suspend fun setDefaultCity(text: String) {
+        context.datastore.edit { settings ->
+            settings[CITY_FIELD] = text
+        }
+    }
+
     override fun getName(): Flow<String> {
         return context.datastore.data.map {
             it[NAME_FIELD] ?: DEFAULT_RESPONSE
@@ -57,6 +71,18 @@ class PreferencesRepositoryDataStore @Inject constructor(
     override fun getEmail(): Flow<String> {
         return context.datastore.data.map {
             it[EMAIL_FIELD] ?: DEFAULT_RESPONSE
+        }
+    }
+
+    override fun getAvatar(): Flow<String> {
+        return context.datastore.data.map {
+            it[AVATAR_FIELD] ?: DEFAULT_RESPONSE
+        }
+    }
+
+    override fun getDefaultCity(): Flow<String> {
+        return context.datastore.data.map {
+            it[CITY_FIELD] ?: DEFAULT_RESPONSE
         }
     }
 }

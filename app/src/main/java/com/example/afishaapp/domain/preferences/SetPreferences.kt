@@ -25,4 +25,20 @@ class SetPreferences @Inject constructor(
     suspend fun setEntryState(state: Boolean) {
         preferencesRepository.setEntryState(state)
     }
+
+    suspend fun setDefaultCity(city: String) {
+        if (city.isEmpty()) {
+            return
+        }
+
+        preferencesRepository.setDefaultCity(city)
+    }
+
+    suspend fun setAvatarUrl(url: String) {
+        if (url.isEmpty()) {
+            return
+        }
+
+        preferencesRepository.setAvatarUrl(url)
+    }
 }

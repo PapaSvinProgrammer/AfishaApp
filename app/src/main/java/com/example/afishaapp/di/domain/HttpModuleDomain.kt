@@ -4,8 +4,6 @@ import com.example.afishaapp.domain.http.GetAgent
 import com.example.afishaapp.domain.http.GetEvent
 import com.example.afishaapp.domain.http.Search
 import com.example.afishaapp.domain.repository.http.AgentRepository
-import com.example.afishaapp.domain.repository.http.CategoryRepository
-import com.example.afishaapp.domain.repository.http.CityRepository
 import com.example.afishaapp.domain.repository.http.EventRepository
 import com.example.afishaapp.domain.repository.http.SearchRepository
 import dagger.Module
