@@ -10,7 +10,6 @@ class GetEvent @Inject constructor(
 ) {
     suspend fun getEvents(): EventResponse {
         val currentTime = System.currentTimeMillis() / 1000
-
         return eventRepository.getEvents(currentTime.toInt())
     }
 
