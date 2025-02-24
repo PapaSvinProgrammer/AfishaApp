@@ -7,17 +7,17 @@ import javax.inject.Inject
 class GetCommentMovie @Inject constructor(
     private val commentRepository: CommentRepository
 ) {
-    suspend fun getAsc(movieId: Int): CommentResponse {
+    suspend fun getAsc(movieId: Int): CommentResponse? {
         if (movieId <= 0) {
-            return DefaultResponse.DEFAULT_COMMENT_RESPONSE
+            return null
         }
 
         return commentRepository.getMovieCommentAsc(movieId)
     }
 
-    suspend fun getDesc(movieId: Int): CommentResponse {
+    suspend fun getDesc(movieId: Int): CommentResponse? {
         if (movieId <= 0) {
-            return DefaultResponse.DEFAULT_COMMENT_RESPONSE
+            return null
         }
 
         return commentRepository.getMovieCommentDesc(movieId)

@@ -7,9 +7,9 @@ import javax.inject.Inject
 class Search @Inject constructor(
     private val searchRepository: SearchRepository
 ) {
-    suspend fun search(text: String, place: String = ""): SearchResponse {
+    suspend fun search(text: String, place: String = ""): SearchResponse? {
         if (text.length <= 2) {
-            return DefaultResponse.DEFAULT_SEARCH_RESPONSE
+            return null
         }
 
         return searchRepository.search(
@@ -18,9 +18,9 @@ class Search @Inject constructor(
         )
     }
 
-    suspend fun searchEvent(text: String, place: String = ""): SearchResponse {
+    suspend fun searchEvent(text: String, place: String = ""): SearchResponse? {
         if (text.length <= 2) {
-            return DefaultResponse.DEFAULT_SEARCH_RESPONSE
+            return null
         }
 
         return searchRepository.searchEvent(
@@ -29,9 +29,9 @@ class Search @Inject constructor(
         )
     }
 
-    suspend fun searchNews(text: String, place: String = ""): SearchResponse {
+    suspend fun searchNews(text: String, place: String = ""): SearchResponse? {
         if (text.length <= 2) {
-            return DefaultResponse.DEFAULT_SEARCH_RESPONSE
+            return null
         }
 
         return searchRepository.searchNews(
@@ -40,9 +40,9 @@ class Search @Inject constructor(
         )
     }
 
-    suspend fun searchPlace(text: String, place: String = ""): SearchResponse {
+    suspend fun searchPlace(text: String, place: String = ""): SearchResponse? {
         if (text.length <= 2) {
-            return DefaultResponse.DEFAULT_SEARCH_RESPONSE
+            return null
         }
 
         return searchRepository.searchPlace(

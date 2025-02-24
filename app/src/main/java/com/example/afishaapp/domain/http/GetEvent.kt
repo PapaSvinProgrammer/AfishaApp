@@ -8,7 +8,7 @@ import javax.inject.Inject
 class GetEvent @Inject constructor(
     private val eventRepository: EventRepository
 ) {
-    suspend fun getEvents(): EventResponse {
+    suspend fun getEvents(): EventResponse? {
         val currentTime = System.currentTimeMillis() / 1000
         return eventRepository.getEvents(currentTime.toInt())
     }

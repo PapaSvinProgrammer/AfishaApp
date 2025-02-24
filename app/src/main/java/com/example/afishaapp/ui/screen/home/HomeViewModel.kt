@@ -7,9 +7,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.afishaapp.data.module.City
 import com.example.afishaapp.data.module.event.EventResponse
-import com.example.afishaapp.domain.http.DefaultResponse
-import com.example.afishaapp.domain.http.DefaultResponse.DEFAULT_EVENT_RESPONSE
+import com.example.afishaapp.data.module.movieShow.MovieShowResponse
 import com.example.afishaapp.domain.http.GetEvent
+import com.example.afishaapp.domain.http.GetMovieShow
 import com.example.afishaapp.domain.preferences.SetPreferences
 import com.example.afishaapp.domain.repository.PreferencesRepository
 import com.example.afishaapp.domain.repository.http.CityRepository
@@ -21,7 +21,8 @@ class HomeViewModel @Inject constructor(
     private val cityRepository: CityRepository,
     private val preferencesRepository: PreferencesRepository,
     private val setPreferences: SetPreferences,
-    private val getEvent: GetEvent
+    private val getEvent: GetEvent,
+    private val getMovieShow: GetMovieShow
 ): ViewModel() {
     var cityBottomSheetState by mutableStateOf(false)
         private set
@@ -29,7 +30,9 @@ class HomeViewModel @Inject constructor(
         private set
     var defaultCity by mutableStateOf("")
         private set
-    var eventResponse by mutableStateOf(DEFAULT_EVENT_RESPONSE)
+    var eventResponse by mutableStateOf<EventResponse?>(null)
+        private set
+    var movieShowResponse by mutableStateOf<MovieShowResponse?>(null)
         private set
 
     fun getCity() {
@@ -61,12 +64,22 @@ class HomeViewModel @Inject constructor(
     }
 
     fun getEvents() {
-        if (eventResponse != DEFAULT_EVENT_RESPONSE) {
+        if (eventResponse != null) {
             return
         }
 
         viewModelScope.launch(Dispatchers.IO) {
             eventResponse = getEvent.getEvents()
+        }
+    }
+
+    fun getMovieShows() {
+        if (movieShowResponse != null) {
+            return
+        }
+
+        viewModelScope.launch(Dispatchers.IO) {
+            movieShowResponse = getMovieShow.getMoviesShow()
         }
     }
 }

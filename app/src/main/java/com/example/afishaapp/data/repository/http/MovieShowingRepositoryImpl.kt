@@ -11,11 +11,19 @@ import javax.inject.Inject
 class MovieShowingRepositoryImpl @Inject constructor(
     private val retrofit: Retrofit
 ): MovieShowingRepository {
-    override suspend fun getMoviesShow(currentTime: Long): MovieShowResponse {
-        return retrofit.create<MovieShowingService>().getMovieShows(currentTime)
+    override suspend fun getMoviesShow(currentTime: Long): MovieShowResponse? {
+        return try {
+            retrofit.create<MovieShowingService>().getMovieShows(currentTime)
+        } catch (e: Exception) {
+            null
+        }
     }
 
-    override suspend fun getMovieShowInfo(showingId: Int): MovieShow {
-        return retrofit.create<MovieShowingService>().getMovieShowInfo(showingId)
+    override suspend fun getMovieShowInfo(showingId: Int): MovieShow? {
+        return try {
+            retrofit.create<MovieShowingService>().getMovieShowInfo(showingId)
+        } catch (e: Exception) {
+            null
+        }
     }
 }

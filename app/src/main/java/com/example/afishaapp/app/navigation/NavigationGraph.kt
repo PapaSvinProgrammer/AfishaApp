@@ -38,7 +38,8 @@ fun NavigationGraph(
 
             HomeScreen(
                 navController = navController,
-                viewModel = viewModel
+                viewModel = viewModel,
+                innerPadding = padding
             )
         }
 

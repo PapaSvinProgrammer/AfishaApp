@@ -11,10 +11,18 @@ class CategoryRepositoryImpl @Inject constructor(
     private val retrofit: Retrofit
 ) : CategoryRepository {
     override suspend fun getCategoriesPlace(): List<Category> {
-        return retrofit.create<CategoryService>().getCategoriesPlace()
+        return try {
+            retrofit.create<CategoryService>().getCategoriesPlace()
+        } catch (e: Exception) {
+            listOf()
+        }
     }
 
     override suspend fun getCategoriesEvent(): List<Category> {
-        return retrofit.create<CategoryService>().getCategoriesEvent()
+        return try {
+            retrofit.create<CategoryService>().getCategoriesEvent()
+        } catch (e: Exception) {
+            listOf()
+        }
     }
 }

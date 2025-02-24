@@ -11,11 +11,19 @@ import javax.inject.Inject
 class AgentRepositoryImpl @Inject constructor(
     private val retrofit: Retrofit
 ): AgentRepository {
-    override suspend fun getAgents(): AgentResponse {
-        return retrofit.create<AgentService>().getAgents()
+    override suspend fun getAgents(): AgentResponse? {
+        return try {
+            retrofit.create<AgentService>().getAgents()
+        } catch (e: Exception) {
+            null
+        }
     }
 
-    override suspend fun getAgentInfo(agentId: Int): Agent {
-        return retrofit.create<AgentService>().getAgentInfo(agentId)
+    override suspend fun getAgentInfo(agentId: Int): Agent? {
+        return try {
+            retrofit.create<AgentService>().getAgentInfo(agentId)
+        } catch (e: Exception) {
+            null
+        }
     }
 }

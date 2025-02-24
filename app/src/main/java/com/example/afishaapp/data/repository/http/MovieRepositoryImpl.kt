@@ -10,19 +10,35 @@ import retrofit2.create
 class MovieRepositoryImpl(
     private val retrofit: Retrofit
 ): MovieRepository {
-    override suspend fun getMoviesOrderByTitle(): MovieResponse {
-        return retrofit.create<MovieService>().getMoviesOrderByTitle()
+    override suspend fun getMoviesOrderByTitle(): MovieResponse? {
+        return try {
+            retrofit.create<MovieService>().getMoviesOrderByTitle()
+        } catch (e: Exception) {
+            null
+        }
     }
 
-    override suspend fun getMoviesOrderByRating(): MovieResponse {
-        return retrofit.create<MovieService>().getMoviesOrderByRating()
+    override suspend fun getMoviesOrderByRating(): MovieResponse? {
+        return try {
+            retrofit.create<MovieService>().getMoviesOrderByRating()
+        } catch (e: Exception) {
+            null
+        }
     }
 
-    override suspend fun getMoviesOrderByYear(): MovieResponse {
-        return retrofit.create<MovieService>().getMoviesOrderByYear()
+    override suspend fun getMoviesOrderByYear(): MovieResponse? {
+        return try {
+            retrofit.create<MovieService>().getMoviesOrderByYear()
+        } catch (e: Exception) {
+            null
+        }
     }
 
-    override suspend fun getMovieInfo(movieId: Int): Movie {
-        return retrofit.create<MovieService>().getMovieInfo(movieId)
+    override suspend fun getMovieInfo(movieId: Int): Movie? {
+        return try {
+            retrofit.create<MovieService>().getMovieInfo(movieId)
+        } catch (e: Exception) {
+            null
+        }
     }
 }

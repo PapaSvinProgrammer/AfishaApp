@@ -40,6 +40,7 @@
     <string name="error_registration">Такой пользователь уже существует</string>
     <string name="ic_check_content_description">Выбранный элемент</string>
     <string name="date">Дата</string>
+    <string name="future_event">Будущие события</string>
 
     <string-array name="ticket_segmented_button">
         <item>"События"</item>

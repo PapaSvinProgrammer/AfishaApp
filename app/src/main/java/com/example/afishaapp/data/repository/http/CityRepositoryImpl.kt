@@ -11,6 +11,10 @@ class CityRepositoryImpl @Inject constructor(
     private val retrofit: Retrofit
 ): CityRepository {
     override suspend fun getCities(): List<City> {
-        return retrofit.create<CityService>().getCities()
+        return try {
+            retrofit.create<CityService>().getCities()
+        } catch (e: Exception) {
+            listOf()
+        }
     }
 }

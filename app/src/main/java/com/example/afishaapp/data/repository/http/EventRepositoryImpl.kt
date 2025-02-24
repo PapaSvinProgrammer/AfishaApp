@@ -11,11 +11,19 @@ import javax.inject.Inject
 class EventRepositoryImpl @Inject constructor(
     private val retrofit: Retrofit
 ): EventRepository {
-    override suspend fun getEvents(currentTime: Int): EventResponse {
-        return retrofit.create<EventService>().getEvents(currentTime)
+    override suspend fun getEvents(currentTime: Int): EventResponse? {
+        return try {
+            retrofit.create<EventService>().getEvents(currentTime)
+        } catch (e: Exception) {
+            null
+        }
     }
 
-    override suspend fun getEventInfo(eventId: Int): Event {
-        return retrofit.create<EventService>().getEventInfo(eventId)
+    override suspend fun getEventInfo(eventId: Int): Event? {
+        return try {
+            retrofit.create<EventService>().getEventInfo(eventId)
+        } catch (e: Exception) {
+            null
+        }
     }
 }

@@ -9,11 +9,19 @@ import retrofit2.create
 class CommentRepositoryImpl(
     private val retrofit: Retrofit
 ): CommentRepository {
-    override suspend fun getMovieCommentAsc(movieId: Int): CommentResponse {
-        return retrofit.create<CommentService>().getMovieCommentAsc(movieId)
+    override suspend fun getMovieCommentAsc(movieId: Int): CommentResponse? {
+        return try {
+            retrofit.create<CommentService>().getMovieCommentAsc(movieId)
+        } catch (e: Exception) {
+            null
+        }
     }
 
-    override suspend fun getMovieCommentDesc(movieId: Int): CommentResponse {
-        return retrofit.create<CommentService>().getMovieCommentDesc(movieId)
+    override suspend fun getMovieCommentDesc(movieId: Int): CommentResponse? {
+        return try {
+            retrofit.create<CommentService>().getMovieCommentDesc(movieId)
+        } catch (e: Exception) {
+            null
+        }
     }
 }

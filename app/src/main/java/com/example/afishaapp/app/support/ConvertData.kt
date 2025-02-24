@@ -1,18 +1,35 @@
 package com.example.afishaapp.app.support
 
 import com.example.afishaapp.data.module.search.DateRange
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 object ConvertData {
     fun convertDatesRange(dates: List<DateRange>): String {
-        return "ASD"
-    }
+        val systemTime = System.currentTimeMillis() / 1000
 
-    fun convertDate(times: Int): String? {
-        if (times < 0) {
-            return null
+        for (date in dates) {
+            if (date.start >= systemTime) {
+                return convertDate(date.start.toInt())
+            }
         }
 
-        return "ASD"
+        return "Уточняйте на сайте"
+    }
+
+    fun convertMovieDate(time: Int): String {
+        val systemTime = System.currentTimeMillis() / 1000
+
+        if (time < systemTime) {
+            return "Уже в кино"
+        }
+
+        return convertDate(time)
+    }
+
+    private fun convertDate(time: Int): String {
+        val formatter = SimpleDateFormat("dd MMMM", Locale.getDefault())
+        return formatter.format(time)
     }
 
     fun convertTitle(title: String): String {
