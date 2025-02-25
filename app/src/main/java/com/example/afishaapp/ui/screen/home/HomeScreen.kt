@@ -35,6 +35,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.afishaapp.R
 import com.example.afishaapp.app.navigation.AccountRoute
+import com.example.afishaapp.app.navigation.EventListRoute
+import com.example.afishaapp.app.navigation.MovieListRoute
 import com.example.afishaapp.ui.screen.bottomSheet.CategoryEventBottomSheet
 import com.example.afishaapp.ui.screen.bottomSheet.CityBottomSheet
 import com.example.afishaapp.ui.widget.EventCardRow
@@ -130,7 +132,7 @@ fun HomeScreen(
 
                     Icon(
                         painter = painterResource(R.drawable.ic_keyboard_arrow_down),
-                        contentDescription = ""
+                        contentDescription = null
                     )
                 }
             }
@@ -140,7 +142,12 @@ fun HomeScreen(
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold
             ) {
-
+                navController.navigate(
+                    EventListRoute(
+                        title = "События",
+                        categorySlug = viewModel.currentCategory.slug
+                    )
+                )
             }
 
             LazyRow {
@@ -159,7 +166,11 @@ fun HomeScreen(
                 fontWeight = FontWeight.Bold,
                 paddingValues = PaddingValues(0.dp, 5.dp)
             ) {
-
+                navController.navigate(
+                    MovieListRoute(
+                        title = "В кино"
+                    )
+                )
             }
 
             LazyRow {

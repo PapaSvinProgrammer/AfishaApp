@@ -10,12 +10,15 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import com.example.afishaapp.di.viewModel.ViewModelFactory
 import com.example.afishaapp.ui.screen.entry.EntryScreen
 import com.example.afishaapp.ui.screen.entry.EntryViewModel
+import com.example.afishaapp.ui.screen.eventList.EventListScreen
 import com.example.afishaapp.ui.screen.favorite.FavoriteScreen
 import com.example.afishaapp.ui.screen.home.HomeScreen
 import com.example.afishaapp.ui.screen.home.HomeViewModel
+import com.example.afishaapp.ui.screen.movieList.MovieListScreen
 import com.example.afishaapp.ui.screen.profile.ProfileScreen
 import com.example.afishaapp.ui.screen.registration.RegistrationScreen
 import com.example.afishaapp.ui.screen.registration.RegistrationViewModel
@@ -113,6 +116,51 @@ fun NavigationGraph(
             }
         ) {
             ProfileScreen(navController)
+        }
+
+        composable<MovieListRoute> (
+            enterTransition = {
+                slideIntoContainer(
+                    animationSpec = tween(300, easing = EaseIn),
+                    towards = AnimatedContentTransitionScope.SlideDirection.Start
+                )
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    animationSpec = tween(300, easing = EaseOut),
+                    towards = AnimatedContentTransitionScope.SlideDirection.End
+                )
+            }
+        ) {
+            val movieListRoute = it.toRoute<MovieListRoute>()
+
+            MovieListScreen(
+                navController = navController,
+                topTitle = movieListRoute.title
+            )
+        }
+
+        composable<EventListRoute> (
+            enterTransition = {
+                slideIntoContainer(
+                    animationSpec = tween(300, easing = EaseIn),
+                    towards = AnimatedContentTransitionScope.SlideDirection.Start
+                )
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    animationSpec = tween(300, easing = EaseOut),
+                    towards = AnimatedContentTransitionScope.SlideDirection.End
+                )
+            }
+        ) {
+            val eventListRoute = it.toRoute<EventListRoute>()
+
+            EventListScreen(
+                navController = navController,
+                topTitle = eventListRoute.title,
+                categorySlug = eventListRoute.categorySlug
+            )
         }
     }
 }
