@@ -33,7 +33,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.afishaapp.R
-import com.example.afishaapp.app.navigation.NavRoutes
+import com.example.afishaapp.app.navigation.EntryRoute
+import com.example.afishaapp.app.navigation.RegistrationRoute
 import com.example.afishaapp.ui.theme.acidFontFamily
 
 @Composable
@@ -89,7 +90,7 @@ fun StartScreen(
                 .background(Color.Black)
         ) {
             Button(
-                onClick = { navController.navigate(NavRoutes.ENTRY.name) },
+                onClick = { navController.navigate(EntryRoute) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(50.dp, 30.dp, 50.dp, 10.dp),
@@ -102,7 +103,7 @@ fun StartScreen(
             }
 
             Button(
-                onClick = { navController.navigate(NavRoutes.REGISTRATION.name) },
+                onClick = { navController.navigate(RegistrationRoute) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(50.dp, 0.dp, 50.dp, 10.dp),

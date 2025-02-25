@@ -31,9 +31,9 @@ fun NavigationGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = NavRoutes.HOME.name
+        startDestination = HomeRoute
     ) {
-        composable(NavRoutes.HOME.name) {
+        composable<HomeRoute> {
             val viewModel: HomeViewModel = viewModel(factory = viewModelFactory)
 
             HomeScreen(
@@ -43,21 +43,20 @@ fun NavigationGraph(
             )
         }
 
-        composable(NavRoutes.TICKETS.name) { TicketScreen() }
+        composable<TicketsRoute> { TicketScreen() }
 
-        composable(NavRoutes.FAVORITE.name) { FavoriteScreen() }
+        composable<FavoriteRoute> { FavoriteScreen() }
 
-        composable(NavRoutes.SEARCH.name) { SearchScreen() }
+        composable<SearchRoute> { SearchScreen() }
 
-        composable(NavRoutes.START.name) {
+        composable<StartRoute> {
             StartScreen(
                 navController = navController,
                 padding = padding
             )
         }
 
-        composable(
-            route = NavRoutes.ENTRY.name,
+        composable<EntryRoute> (
             enterTransition = {
                 slideIntoContainer(
                     animationSpec = tween(300, easing = EaseIn),
@@ -78,8 +77,7 @@ fun NavigationGraph(
             )
         }
 
-        composable(
-            route = NavRoutes.REGISTRATION.name,
+        composable<RegistrationRoute> (
             enterTransition = {
                 slideIntoContainer(
                     animationSpec = tween(300, easing = EaseIn),
@@ -95,13 +93,12 @@ fun NavigationGraph(
         ) {
             val viewModel: RegistrationViewModel = viewModel(factory = viewModelFactory)
             RegistrationScreen(
-               navController =  navController,
+                navController =  navController,
                 viewModel = viewModel
             )
         }
 
-        composable(
-            route = NavRoutes.ACCOUNT.name,
+        composable<AccountRoute> (
             enterTransition = {
                 slideIntoContainer(
                     animationSpec = tween(300, easing = EaseIn),

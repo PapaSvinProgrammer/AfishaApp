@@ -7,8 +7,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.afishaapp.app.navigation.BottomNavigationBar
-import com.example.afishaapp.app.navigation.NavRoutes
+import com.example.afishaapp.app.navigation.FavoriteRoute
+import com.example.afishaapp.app.navigation.HomeRoute
 import com.example.afishaapp.app.navigation.NavigationGraph
+import com.example.afishaapp.app.navigation.SearchRoute
+import com.example.afishaapp.app.navigation.TicketsRoute
 import com.example.afishaapp.di.viewModel.ViewModelFactory
 
 private val visibilityState = mutableStateOf(false)
@@ -40,10 +43,10 @@ fun MainScreen(
 
 private fun bottomBarIsVisibility(route: String?) {
     when (route) {
-        NavRoutes.HOME.name -> visibilityState.value = true
-        NavRoutes.TICKETS.name -> visibilityState.value = true
-        NavRoutes.FAVORITE.name -> visibilityState.value = true
-        NavRoutes.SEARCH.name -> visibilityState.value = true
+        HomeRoute::class.java.canonicalName -> visibilityState.value = true
+        TicketsRoute::class.java.canonicalName -> visibilityState.value = true
+        FavoriteRoute::class.java.canonicalName -> visibilityState.value = true
+        SearchRoute::class.java.canonicalName -> visibilityState.value = true
         else -> visibilityState.value = false
     }
 }

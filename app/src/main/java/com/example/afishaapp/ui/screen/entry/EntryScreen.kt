@@ -24,7 +24,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.afishaapp.R
-import com.example.afishaapp.app.navigation.NavRoutes
+import com.example.afishaapp.app.navigation.HomeRoute
 
 @Composable
 fun EntryScreen(
@@ -32,7 +32,7 @@ fun EntryScreen(
     viewModel: EntryViewModel
 ) {
     if (viewModel.isEntry) {
-        navController.navigate(NavRoutes.HOME.name) {
+        navController.navigate(HomeRoute) {
             popUpTo(navController.graph.id)
         }
     }

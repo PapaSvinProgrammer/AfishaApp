@@ -24,7 +24,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.afishaapp.R
-import com.example.afishaapp.app.navigation.NavRoutes
+import com.example.afishaapp.app.navigation.HomeRoute
 
 @Composable
 fun RegistrationScreen(
@@ -32,7 +32,7 @@ fun RegistrationScreen(
     viewModel: RegistrationViewModel
 ) {
     if (viewModel.isRegistration) {
-        navController.navigate(NavRoutes.HOME.name) {
+        navController.navigate(HomeRoute) {
             popUpTo(navController.graph.id)
         }
     }

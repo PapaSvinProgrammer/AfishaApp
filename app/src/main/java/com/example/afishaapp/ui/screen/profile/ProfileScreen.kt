@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.afishaapp.R
-import com.example.afishaapp.app.navigation.NavRoutes
+import com.example.afishaapp.app.navigation.StartRoute
 import com.example.afishaapp.ui.theme.acidFontFamily
 import com.example.afishaapp.ui.widget.SelectRow
 
@@ -45,7 +45,7 @@ fun ProfileScreen(navController: NavController) {
             actions = {
                 IconButton(
                     onClick = {
-                        navController.navigate(NavRoutes.START.name) {
+                        navController.navigate(StartRoute) {
                             popUpTo(navController.graph.id)
                         }
                     }

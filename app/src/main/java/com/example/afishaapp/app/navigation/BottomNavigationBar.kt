@@ -32,7 +32,7 @@ fun BottomNavigationBar(
             NavigationBar {
                 NavBarItems.barItems.forEach { barItem ->
                     NavigationBarItem(
-                        selected = currentRoute == barItem.route,
+                        selected = currentRoute == barItem.route::class.java.canonicalName,
                         onClick = {
                             navController.navigate(barItem.route) {
                                 popUpTo(navController.graph.findStartDestination().id) { saveState = true }
@@ -41,7 +41,7 @@ fun BottomNavigationBar(
                             }
                         },
                         icon = {
-                            val iconId = if (currentRoute == barItem.route)
+                            val iconId = if (currentRoute == barItem.route::class.java.canonicalName)
                                 barItem.imageFill
                             else
                                 barItem.image

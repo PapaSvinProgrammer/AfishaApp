@@ -1,12 +1,27 @@
 package com.example.afishaapp.app.navigation
 
-enum class NavRoutes {
-    START,
-    ENTRY,
-    REGISTRATION,
-    HOME,
-    TICKETS,
-    FAVORITE,
-    SEARCH,
-    ACCOUNT
-}
+import kotlinx.serialization.Serializable
+
+@Serializable
+object StartRoute
+
+@Serializable
+object EntryRoute
+
+@Serializable
+object RegistrationRoute
+
+@Serializable
+object HomeRoute
+
+@Serializable
+object TicketsRoute
+
+@Serializable
+object FavoriteRoute
+
+@Serializable
+object SearchRoute
+
+@Serializable
+object AccountRoute

@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.afishaapp.R
-import com.example.afishaapp.app.navigation.NavRoutes
+import com.example.afishaapp.app.navigation.AccountRoute
 import com.example.afishaapp.ui.screen.bottomSheet.CategoryEventBottomSheet
 import com.example.afishaapp.ui.screen.bottomSheet.CityBottomSheet
 import com.example.afishaapp.ui.widget.EventCardRow
@@ -85,7 +85,7 @@ fun HomeScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = { navController.navigate(NavRoutes.ACCOUNT.name) }) {
+                    IconButton(onClick = { navController.navigate(AccountRoute) }) {
                         Icon(
                             painter = painterResource(R.drawable.ic_account),
                             contentDescription = stringResource(R.string.ic_account_content_description)
@@ -98,7 +98,12 @@ fun HomeScreen(
     ) { padding ->
         Column(
             modifier = Modifier
-                .padding(0.dp, padding.calculateTopPadding(), 0.dp, innerPadding.calculateBottomPadding())
+                .padding(
+                    0.dp,
+                    padding.calculateTopPadding(),
+                    0.dp,
+                    innerPadding.calculateBottomPadding()
+                )
                 .verticalScroll(rememberScrollState())
         ) {
             Row(
@@ -149,7 +154,7 @@ fun HomeScreen(
             }
 
             SelectRow(
-                text = "Ожидается в кино",
+                text = stringResource(R.string.expected_in_cinema),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 paddingValues = PaddingValues(0.dp, 5.dp)
@@ -163,6 +168,42 @@ fun HomeScreen(
                         MovieCardRow(movieShow) {
 
                         }
+                    }
+                }
+            }
+
+            SelectRow(
+                text = stringResource(R.string.concerts),
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                paddingValues = PaddingValues(0.dp, 15.dp, 0.dp, 0.dp)
+            ) {
+
+            }
+
+            LazyRow {
+                viewModel.eventConcert?.let {
+                    items(it.results) { event ->
+                        EventCardRow(event) { }
+                    }
+                }
+            }
+
+            SelectRow(
+                text = stringResource(R.string.exhibitions),
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                paddingValues = PaddingValues(0.dp, 15.dp, 0.dp, 0.dp)
+            ) {
+
+            }
+
+            LazyRow(
+                modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 20.dp)
+            ) {
+                viewModel.eventExhibition?.let {
+                    items(it.results) { event ->
+                        EventCardRow(event) { }
                     }
                 }
             }

@@ -41,6 +41,9 @@
     <string name="ic_check_content_description">Выбранный элемент</string>
     <string name="date">Дата</string>
     <string name="future_event">Будущие события</string>
+    <string name="expected_in_cinema">Ожидается в кино</string>
+    <string name="exhibitions">Выставки</string>
+    <string name="concerts">Концерты</string>
 
     <string-array name="ticket_segmented_button">
         <item>"События"</item>

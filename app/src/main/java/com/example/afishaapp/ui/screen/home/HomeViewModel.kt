@@ -42,7 +42,10 @@ class HomeViewModel @Inject constructor(
         private set
     var movieShowResponse by mutableStateOf<MovieShowResponse?>(null)
         private set
-
+    var eventConcert by mutableStateOf<EventResponse?>(null)
+        private set
+    var eventExhibition by mutableStateOf<EventResponse?>(null)
+        private set
     var categoryEvent by mutableStateOf<List<Category>>(listOf())
         private set
     var currentCategory by mutableStateOf(DefaultObject.DEFAULT_CATEGORY)
@@ -99,7 +102,27 @@ class HomeViewModel @Inject constructor(
                 )
             }
         }
+
+        viewModelScope.launch(Dispatchers.IO) {
+            map[defaultCity]?.let {
+                eventConcert = getEvent.getEvents(
+                    location = it,
+                    category = Category(0,"concert","")
+                )
+            }
+        }
+
+        viewModelScope.launch(Dispatchers.IO) {
+            map[defaultCity]?.let {
+                eventExhibition = getEvent.getEvents(
+                    location = it,
+                    category = Category(0,"exhibition","")
+                )
+            }
+        }
     }
+
+
 
     fun getMovieShows() {
         if (movieShowResponse != null) {
