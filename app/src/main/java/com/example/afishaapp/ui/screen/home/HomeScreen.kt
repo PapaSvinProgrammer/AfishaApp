@@ -1,7 +1,7 @@
 package com.example.afishaapp.ui.screen.home
 
-import android.util.Log
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -35,7 +35,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.afishaapp.R
 import com.example.afishaapp.app.navigation.NavRoutes
-import com.example.afishaapp.ui.screen.cityBottomSheet.CityBottomSheet
+import com.example.afishaapp.ui.screen.bottomSheet.CategoryEventBottomSheet
+import com.example.afishaapp.ui.screen.bottomSheet.CityBottomSheet
 import com.example.afishaapp.ui.widget.EventCardRow
 import com.example.afishaapp.ui.widget.MovieCardRow
 import com.example.afishaapp.ui.widget.SelectRow
@@ -47,10 +48,11 @@ fun HomeScreen(
     viewModel: HomeViewModel,
     innerPadding: PaddingValues
 ) {
+    viewModel.getEvents(viewModel.defaultCity, viewModel.currentCategory)
     viewModel.getCity()
     viewModel.getDefaultCity()
-    viewModel.getEvents()
     viewModel.getMovieShows()
+    viewModel.getCategoryRepository()
 
     Scaffold(
         topBar = {
@@ -96,11 +98,13 @@ fun HomeScreen(
     ) { padding ->
         Column(
             modifier = Modifier
-                .padding(innerPadding)
+                .padding(0.dp, padding.calculateTopPadding(), 0.dp, innerPadding.calculateBottomPadding())
                 .verticalScroll(rememberScrollState())
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .horizontalScroll(rememberScrollState())
             ) {
                 FilledTonalButton(
                     modifier = Modifier.padding(10.dp, 0.dp),
@@ -111,10 +115,14 @@ fun HomeScreen(
                 }
 
                 FilledTonalButton(
-                    onClick = { },
+                    onClick = { viewModel.updateCategoryState(true) },
                     shape = RoundedCornerShape(10.dp),
                 ) {
-                    Text(text = "Все события")
+                    Text(
+                        text = viewModel.currentCategory.name,
+                        maxLines = 1
+                    )
+
                     Icon(
                         painter = painterResource(R.drawable.ic_keyboard_arrow_down),
                         contentDescription = ""
@@ -164,8 +172,23 @@ fun HomeScreen(
             CityBottomSheet(
                 data = viewModel.city,
                 currentCity = viewModel.defaultCity,
-                onClick = { viewModel.updateDefaultCity(it) },
-                dismissRequest = { viewModel.updateCityState(it) }
+                dismissRequest = { viewModel.updateCityState(false) },
+                onClick = {
+                    viewModel.updateDefaultCity(it)
+                    viewModel.updateCityState(false)
+                }
+            )
+        }
+
+        if (viewModel.categoryBottomSheetState) {
+            CategoryEventBottomSheet(
+                data = viewModel.categoryEvent,
+                currentCategory = viewModel.currentCategory,
+                onDismiss = { viewModel.updateCategoryState(false) },
+                onClick = {
+                    viewModel.updateCurrentCategory(it)
+                    viewModel.updateCategoryState(false)
+                }
             )
         }
     }

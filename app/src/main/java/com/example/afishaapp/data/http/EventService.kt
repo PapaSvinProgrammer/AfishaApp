@@ -10,6 +10,8 @@ interface EventService {
     @GET("public-api/v1.4/events/")
     suspend fun getEvents(
         @Query("actual_since") currentTime: Int,
+        @Query("location") location: String,
+        @Query("categories") categories: String,
         @Query("fields") fields: String = "id,title,place,price,dates,images,short_title",
         @Query("expand") expand: String = "place"
     ): EventResponse

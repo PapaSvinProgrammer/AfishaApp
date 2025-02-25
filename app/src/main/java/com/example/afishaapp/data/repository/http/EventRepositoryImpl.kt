@@ -11,9 +11,13 @@ import javax.inject.Inject
 class EventRepositoryImpl @Inject constructor(
     private val retrofit: Retrofit
 ): EventRepository {
-    override suspend fun getEvents(currentTime: Int): EventResponse? {
+    override suspend fun getEvents(
+        currentTime: Int,
+        location: String,
+        category: String
+    ): EventResponse? {
         return try {
-            retrofit.create<EventService>().getEvents(currentTime)
+            retrofit.create<EventService>().getEvents(currentTime, location, category)
         } catch (e: Exception) {
             null
         }
