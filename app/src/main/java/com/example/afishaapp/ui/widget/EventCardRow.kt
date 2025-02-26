@@ -3,9 +3,9 @@ package com.example.afishaapp.ui.widget
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -48,7 +48,8 @@ fun EventCardRow(
             contentDescription = "",
             contentScale = ContentScale.Crop,
             modifier = Modifier
-                .size(300.dp, 160.dp)
+                .fillMaxWidth()
+                .height(160.dp)
                 .clip(RoundedCornerShape(15.dp))
         )
 
@@ -73,8 +74,7 @@ fun EventCardRow(
             text = ConvertData.convertPrice(event.price),
             fontSize = 15.sp,
             fontWeight = FontWeight.Medium,
-            color = Color.Black,
-            modifier = Modifier.padding(0.dp, 5.dp, 0.dp, 0.dp)
+            color = Color.Black
         )
     }
 }

@@ -1,7 +1,8 @@
 package com.example.afishaapp.ui.screen.eventList
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -14,14 +15,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.example.afishaapp.R
+import com.example.afishaapp.ui.widget.EventCardFill
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EventListScreen(
     navController: NavController,
+    viewModel: EventListViewModel,
     topTitle: String,
-    categorySlug: String
+    categorySlug: String,
+    location: String
 ) {
+    viewModel.getEvents(location, categorySlug)
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -58,10 +64,12 @@ fun EventListScreen(
             )
         }
     ) { innerPadding ->
-        Box(
-            modifier = Modifier.padding(innerPadding)
-        ) {
-
+        LazyColumn(modifier = Modifier.padding(innerPadding)) {
+            viewModel.events?.let {
+                items(it.results) { event ->
+                    EventCardFill(event) { }
+                }
+            }
         }
     }
 }

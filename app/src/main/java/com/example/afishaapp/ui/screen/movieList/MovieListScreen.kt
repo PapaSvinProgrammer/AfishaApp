@@ -14,7 +14,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.example.afishaapp.R
-import com.example.afishaapp.data.module.Category
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

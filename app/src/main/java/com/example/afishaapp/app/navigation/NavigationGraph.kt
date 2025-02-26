@@ -15,6 +15,7 @@ import com.example.afishaapp.di.viewModel.ViewModelFactory
 import com.example.afishaapp.ui.screen.entry.EntryScreen
 import com.example.afishaapp.ui.screen.entry.EntryViewModel
 import com.example.afishaapp.ui.screen.eventList.EventListScreen
+import com.example.afishaapp.ui.screen.eventList.EventListViewModel
 import com.example.afishaapp.ui.screen.favorite.FavoriteScreen
 import com.example.afishaapp.ui.screen.home.HomeScreen
 import com.example.afishaapp.ui.screen.home.HomeViewModel
@@ -155,11 +156,14 @@ fun NavigationGraph(
             }
         ) {
             val eventListRoute = it.toRoute<EventListRoute>()
+            val viewModel: EventListViewModel = viewModel(factory = viewModelFactory)
 
             EventListScreen(
+                viewModel = viewModel,
                 navController = navController,
                 topTitle = eventListRoute.title,
-                categorySlug = eventListRoute.categorySlug
+                categorySlug = eventListRoute.categorySlug,
+                location = eventListRoute.location
             )
         }
     }

@@ -2,6 +2,7 @@ package com.example.afishaapp.di.viewModel
 
 import androidx.lifecycle.ViewModel
 import com.example.afishaapp.ui.screen.entry.EntryViewModel
+import com.example.afishaapp.ui.screen.eventList.EventListViewModel
 import com.example.afishaapp.ui.screen.home.HomeViewModel
 import com.example.afishaapp.ui.screen.registration.RegistrationViewModel
 import dagger.Binds
@@ -35,4 +36,9 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(HomeViewModel::class)
     fun bindHomeViewModel(viewModel: HomeViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(EventListViewModel::class)
+    fun bindEventListViewModel(viewModel: EventListViewModel): ViewModel
 }

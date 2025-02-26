@@ -20,6 +20,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+private const val CONCERT_CATEGORY = "concert"
+private const val EXHIBITION_CATEGORY = "exhibition"
+
 class HomeViewModel @Inject constructor(
     private val cityRepository: CityRepository,
     private val preferencesRepository: PreferencesRepository,
@@ -87,42 +90,32 @@ class HomeViewModel @Inject constructor(
         currentCategory = category
     }
 
-    fun getEvents(defaultCity: String, category: Category) {
-        val map = HashMap<String, City>()
+    fun getEvents(cityName: String, category: Category) {
+        val city = city.filter { it.name == cityName }
 
-        city.forEach {
-            map[it.name] = it
+        if (city.isEmpty()) return
+
+        viewModelScope.launch(Dispatchers.IO) {
+            eventResponse = getEvent.getEvents(
+                location = city.first().slug,
+                category = category.slug
+            )
         }
 
         viewModelScope.launch(Dispatchers.IO) {
-            map[defaultCity]?.let { city ->
-                eventResponse = getEvent.getEvents(
-                    location = city,
-                    category = category
-                )
-            }
+            eventConcert = getEvent.getEvents(
+                location = city.first().slug,
+                category = CONCERT_CATEGORY
+            )
         }
 
         viewModelScope.launch(Dispatchers.IO) {
-            map[defaultCity]?.let {
-                eventConcert = getEvent.getEvents(
-                    location = it,
-                    category = Category(0,"concert","")
-                )
-            }
-        }
-
-        viewModelScope.launch(Dispatchers.IO) {
-            map[defaultCity]?.let {
-                eventExhibition = getEvent.getEvents(
-                    location = it,
-                    category = Category(0,"exhibition","")
-                )
-            }
+            eventExhibition = getEvent.getEvents(
+                location = city.first().slug,
+                category = EXHIBITION_CATEGORY
+            )
         }
     }
-
-
 
     fun getMovieShows() {
         if (movieShowResponse != null) {

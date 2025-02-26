@@ -145,7 +145,8 @@ fun HomeScreen(
                 navController.navigate(
                     EventListRoute(
                         title = "События",
-                        categorySlug = viewModel.currentCategory.slug
+                        categorySlug = viewModel.currentCategory.slug,
+                        location = viewModel.city.first { it.name == viewModel.defaultCity }.slug
                     )
                 )
             }
@@ -195,7 +196,9 @@ fun HomeScreen(
             LazyRow {
                 viewModel.eventConcert?.let {
                     items(it.results) { event ->
-                        EventCardRow(event) { }
+                        EventCardRow(event) {
+
+                        }
                     }
                 }
             }
@@ -214,7 +217,9 @@ fun HomeScreen(
             ) {
                 viewModel.eventExhibition?.let {
                     items(it.results) { event ->
-                        EventCardRow(event) { }
+                        EventCardRow(event) {
+
+                        }
                     }
                 }
             }
