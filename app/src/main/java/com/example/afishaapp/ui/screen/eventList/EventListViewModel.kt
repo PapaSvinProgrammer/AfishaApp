@@ -6,7 +6,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.afishaapp.data.module.Category
-import com.example.afishaapp.data.module.City
 import com.example.afishaapp.data.module.event.EventResponse
 import com.example.afishaapp.domain.http.GetEvent
 import com.example.afishaapp.domain.repository.http.CategoryRepository

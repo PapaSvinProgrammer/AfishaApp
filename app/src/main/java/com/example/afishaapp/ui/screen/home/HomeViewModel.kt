@@ -8,9 +8,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.afishaapp.data.module.Category
 import com.example.afishaapp.data.module.City
 import com.example.afishaapp.data.module.event.EventResponse
-import com.example.afishaapp.data.module.movieShow.MovieShowResponse
+import com.example.afishaapp.data.module.movie.MovieResponse
 import com.example.afishaapp.domain.http.GetEvent
-import com.example.afishaapp.domain.http.GetMovieShow
+import com.example.afishaapp.domain.http.GetMovie
 import com.example.afishaapp.domain.preferences.SetPreferences
 import com.example.afishaapp.domain.repository.PreferencesRepository
 import com.example.afishaapp.domain.repository.http.CategoryRepository
@@ -29,7 +29,7 @@ class HomeViewModel @Inject constructor(
     private val categoryRepository: CategoryRepository,
     private val setPreferences: SetPreferences,
     private val getEvent: GetEvent,
-    private val getMovieShow: GetMovieShow,
+    private val getMovie: GetMovie
 ): ViewModel() {
     var cityBottomSheetState by mutableStateOf(false)
         private set
@@ -43,7 +43,7 @@ class HomeViewModel @Inject constructor(
 
     var eventResponse by mutableStateOf<EventResponse?>(null)
         private set
-    var movieShowResponse by mutableStateOf<MovieShowResponse?>(null)
+    var movieResponse by mutableStateOf<MovieResponse?>(null)
         private set
     var eventConcert by mutableStateOf<EventResponse?>(null)
         private set
@@ -117,13 +117,13 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun getMovieShows() {
-        if (movieShowResponse != null) {
-            return
-        }
+    fun getMovies(cityName: String) {
+        val city = city.filter { it.name == cityName }
+
+        if (city.isEmpty()) return
 
         viewModelScope.launch(Dispatchers.IO) {
-            movieShowResponse = getMovieShow.getMoviesShow()
+            movieResponse = getMovie.getMoviesByRating(city.first().slug)
         }
     }
 

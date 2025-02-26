@@ -27,7 +27,10 @@ object SearchRoute
 object AccountRoute
 
 @Serializable
-data class MovieListRoute(val title: String)
+data class MovieListRoute(
+    val title: String,
+    val location: String
+)
 
 @Serializable
 data class EventListRoute(

@@ -8,10 +8,13 @@ import javax.inject.Inject
 class GetMovieShow @Inject constructor(
     private val movieShowingRepository: MovieShowingRepository
 ) {
-    suspend fun getMoviesShow(): MovieShowResponse? {
+    suspend fun getMoviesShow(locationSlug: String): MovieShowResponse? {
         val currentTime = System.currentTimeMillis() / 1000
 
-        return movieShowingRepository.getMoviesShow(currentTime)
+        return movieShowingRepository.getMoviesShow(
+            currentTime = currentTime,
+            locationSlug = locationSlug
+        )
     }
 
     suspend fun fetMovieShowInfo(showingId: Int): MovieShow? {

@@ -4,8 +4,8 @@ import com.example.afishaapp.data.module.movie.Movie
 import com.example.afishaapp.data.module.movie.MovieResponse
 
 interface MovieRepository {
-   suspend fun getMoviesOrderByTitle(): MovieResponse?
-   suspend fun getMoviesOrderByRating(): MovieResponse?
-   suspend fun getMoviesOrderByYear(): MovieResponse?
+   suspend fun getMoviesOrderByTitle(locationSlug: String, actualTime: Int): MovieResponse?
+   suspend fun getMoviesOrderByRating(locationSlug: String, actualTime: Int): MovieResponse?
+   suspend fun getMoviesOrderByYear(locationSlug: String, actualTime: Int): MovieResponse?
    suspend fun getMovieInfo(movieId: Int): Movie?
 }

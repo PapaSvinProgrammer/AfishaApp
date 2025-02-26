@@ -10,6 +10,7 @@ interface MovieShowingService {
     @GET("public-api/v1.4/movie-showings/")
     suspend fun getMovieShows(
         @Query("actual_since") currentTime: Long,
+        @Query("location") location: String,
         @Query("expand") expand: String = "movie"
     ): MovieShowResponse
 

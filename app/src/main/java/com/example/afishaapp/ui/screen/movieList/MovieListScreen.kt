@@ -18,8 +18,10 @@ import com.example.afishaapp.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieListScreen(
+    viewModel: MovieListViewModel,
     navController: NavController,
-    topTitle: String
+    topTitle: String,
+    location: String
 ) {
     Scaffold(
         topBar = {

@@ -20,6 +20,7 @@ import com.example.afishaapp.ui.screen.favorite.FavoriteScreen
 import com.example.afishaapp.ui.screen.home.HomeScreen
 import com.example.afishaapp.ui.screen.home.HomeViewModel
 import com.example.afishaapp.ui.screen.movieList.MovieListScreen
+import com.example.afishaapp.ui.screen.movieList.MovieListViewModel
 import com.example.afishaapp.ui.screen.profile.ProfileScreen
 import com.example.afishaapp.ui.screen.registration.RegistrationScreen
 import com.example.afishaapp.ui.screen.registration.RegistrationViewModel
@@ -134,10 +135,13 @@ fun NavigationGraph(
             }
         ) {
             val movieListRoute = it.toRoute<MovieListRoute>()
+            val viewModel: MovieListViewModel = viewModel(factory = viewModelFactory)
 
             MovieListScreen(
+                viewModel = viewModel,
                 navController = navController,
-                topTitle = movieListRoute.title
+                topTitle = movieListRoute.title,
+                location = movieListRoute.location
             )
         }
 

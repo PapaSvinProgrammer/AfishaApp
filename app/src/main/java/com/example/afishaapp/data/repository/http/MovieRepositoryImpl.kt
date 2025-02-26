@@ -6,29 +6,39 @@ import com.example.afishaapp.data.module.movie.MovieResponse
 import com.example.afishaapp.domain.repository.http.MovieRepository
 import retrofit2.Retrofit
 import retrofit2.create
+import javax.inject.Inject
 
-class MovieRepositoryImpl(
+class MovieRepositoryImpl @Inject constructor(
     private val retrofit: Retrofit
 ): MovieRepository {
-    override suspend fun getMoviesOrderByTitle(): MovieResponse? {
+    override suspend fun getMoviesOrderByTitle(
+        locationSlug: String,
+        actualTime: Int
+    ): MovieResponse? {
         return try {
-            retrofit.create<MovieService>().getMoviesOrderByTitle()
+            retrofit.create<MovieService>().getMoviesOrderByTitle(locationSlug, actualTime)
         } catch (e: Exception) {
             null
         }
     }
 
-    override suspend fun getMoviesOrderByRating(): MovieResponse? {
+    override suspend fun getMoviesOrderByRating(
+        locationSlug: String,
+        actualTime: Int
+    ): MovieResponse? {
         return try {
-            retrofit.create<MovieService>().getMoviesOrderByRating()
+            retrofit.create<MovieService>().getMoviesOrderByRating(locationSlug, actualTime)
         } catch (e: Exception) {
             null
         }
     }
 
-    override suspend fun getMoviesOrderByYear(): MovieResponse? {
+    override suspend fun getMoviesOrderByYear(
+        locationSlug: String,
+        actualTime: Int
+    ): MovieResponse? {
         return try {
-            retrofit.create<MovieService>().getMoviesOrderByYear()
+            retrofit.create<MovieService>().getMoviesOrderByYear(locationSlug, actualTime)
         } catch (e: Exception) {
             null
         }

@@ -11,9 +11,9 @@ import javax.inject.Inject
 class MovieShowingRepositoryImpl @Inject constructor(
     private val retrofit: Retrofit
 ): MovieShowingRepository {
-    override suspend fun getMoviesShow(currentTime: Long): MovieShowResponse? {
+    override suspend fun getMoviesShow(currentTime: Long, locationSlug: String): MovieShowResponse? {
         return try {
-            retrofit.create<MovieShowingService>().getMovieShows(currentTime)
+            retrofit.create<MovieShowingService>().getMovieShows(currentTime, locationSlug)
         } catch (e: Exception) {
             null
         }

@@ -3,6 +3,7 @@ package com.example.afishaapp.ui.screen.home
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -53,7 +54,7 @@ fun HomeScreen(
     viewModel.getEvents(viewModel.defaultCity, viewModel.currentCategory)
     viewModel.getCity()
     viewModel.getDefaultCity()
-    viewModel.getMovieShows()
+    viewModel.getMovies(viewModel.defaultCity)
     viewModel.getCategoryRepository()
 
     Scaffold(
@@ -151,7 +152,10 @@ fun HomeScreen(
                 )
             }
 
-            LazyRow {
+            LazyRow(
+                contentPadding = PaddingValues(10.dp, 0.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
                 viewModel.eventResponse?.let {
                     items(it.results) { event ->
                         EventCardRow(event) {
@@ -169,15 +173,19 @@ fun HomeScreen(
             ) {
                 navController.navigate(
                     MovieListRoute(
-                        title = "В кино"
+                        title = "В кино",
+                        location = viewModel.city.first { it.name == viewModel.defaultCity }.slug
                     )
                 )
             }
 
-            LazyRow {
-                viewModel.movieShowResponse?.let {
-                    items(it.results) { movieShow ->
-                        MovieCardRow(movieShow) {
+            LazyRow(
+                contentPadding = PaddingValues(10.dp, 0.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                viewModel.movieResponse?.let {
+                    items(it.results) { movie ->
+                        MovieCardRow(movie) {
 
                         }
                     }
@@ -193,7 +201,10 @@ fun HomeScreen(
 
             }
 
-            LazyRow {
+            LazyRow(
+                contentPadding = PaddingValues(10.dp, 0.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
                 viewModel.eventConcert?.let {
                     items(it.results) { event ->
                         EventCardRow(event) {
@@ -213,7 +224,9 @@ fun HomeScreen(
             }
 
             LazyRow(
-                modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 20.dp)
+                modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 20.dp),
+                contentPadding = PaddingValues(10.dp, 0.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 viewModel.eventExhibition?.let {
                     items(it.results) { event ->

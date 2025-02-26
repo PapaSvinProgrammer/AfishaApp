@@ -33,7 +33,6 @@ fun EventCardRow(
         modifier = Modifier
             .width(270.dp)
             .height(270.dp)
-            .padding(10.dp, 0.dp, 0.dp, 0.dp)
             .clip(RoundedCornerShape(10.dp))
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
