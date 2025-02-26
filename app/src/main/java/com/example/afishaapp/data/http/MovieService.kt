@@ -14,14 +14,14 @@ interface MovieService {
         @Query("fields") fields: String = "id,title,poster,imdb_rating,year"
     ): MovieResponse
 
-    @GET("/public-api/v1.4/movies/?order_by=year")
+    @GET("/public-api/v1.4/movies/?order_by=-year")
     suspend fun getMoviesOrderByYear(
         @Query("location") location: String,
         @Query("actual_since") actualTime: Int,
         @Query("fields") fields: String = "id,title,poster,imdb_rating,year"
     ): MovieResponse
 
-    @GET("/public-api/v1.4/movies/?order_by=imdb_rating")
+    @GET("/public-api/v1.4/movies/?order_by=-imdb_rating")
     suspend fun getMoviesOrderByRating(
         @Query("location") location: String,
         @Query("actual_since") actualTime: Int,

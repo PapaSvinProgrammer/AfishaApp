@@ -127,7 +127,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun getCategoryRepository() {
+    fun getCategories() {
         if (categoryEvent.isNotEmpty()) {
             return
         }

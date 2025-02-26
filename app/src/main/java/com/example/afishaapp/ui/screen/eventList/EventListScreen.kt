@@ -1,5 +1,6 @@
 package com.example.afishaapp.ui.screen.eventList
 
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -18,6 +19,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.afishaapp.R
+import com.example.afishaapp.data.module.Category
+import com.example.afishaapp.ui.screen.bottomSheet.CategoryEventBottomSheet
 import com.example.afishaapp.ui.widget.EventCardFill
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -29,7 +32,13 @@ fun EventListScreen(
     categorySlug: String,
     location: String
 ) {
-    viewModel.getEvents(location, categorySlug)
+    if (viewModel.isStartCategories) {
+        viewModel.updateCurrentCategory(Category(0, categorySlug, ""))
+        viewModel.startCategorySuccess()
+    }
+
+    viewModel.getCategories()
+    viewModel.getEvents(location, viewModel.currentCategory)
 
     Scaffold(
         topBar = {
@@ -56,7 +65,7 @@ fun EventListScreen(
                     }
 
                     IconButton(
-                        onClick = {  }
+                        onClick = { viewModel.updateCategoryStateBottomSheet(true) }
                     ) {
                         Icon(
                             painter = painterResource(R.drawable.ic_filter),
@@ -77,6 +86,18 @@ fun EventListScreen(
                     EventCardFill(event) { }
                 }
             }
+        }
+
+        if (viewModel.categoryStateBottomSheet) {
+            CategoryEventBottomSheet(
+                data = viewModel.categories,
+                currentCategory = viewModel.currentCategory,
+                onDismiss = { viewModel.updateCategoryStateBottomSheet(false) },
+                onClick = {
+                    viewModel.updateCurrentCategory(it)
+                    viewModel.updateCategoryStateBottomSheet(false)
+                }
+            )
         }
     }
 }

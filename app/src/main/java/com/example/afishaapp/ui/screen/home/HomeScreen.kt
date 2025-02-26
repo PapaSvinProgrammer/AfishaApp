@@ -55,7 +55,7 @@ fun HomeScreen(
     viewModel.getCity()
     viewModel.getDefaultCity()
     viewModel.getMovies(viewModel.defaultCity)
-    viewModel.getCategoryRepository()
+    viewModel.getCategories()
 
     Scaffold(
         topBar = {

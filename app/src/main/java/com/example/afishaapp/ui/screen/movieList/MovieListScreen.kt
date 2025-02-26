@@ -1,7 +1,11 @@
 package com.example.afishaapp.ui.screen.movieList
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -12,8 +16,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.afishaapp.R
+import com.example.afishaapp.ui.screen.bottomSheet.FilterBottomSheet
+import com.example.afishaapp.ui.widget.MovieCardFill
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -23,6 +30,8 @@ fun MovieListScreen(
     topTitle: String,
     location: String
 ) {
+    viewModel.getMovie(location, viewModel.currentFilter)
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -48,7 +57,7 @@ fun MovieListScreen(
                     }
 
                     IconButton(
-                        onClick = {  }
+                        onClick = { viewModel.updateFilterStateBottomSheet(true) }
                     ) {
                         Icon(
                             painter = painterResource(R.drawable.ic_filter),
@@ -59,10 +68,31 @@ fun MovieListScreen(
             )
         }
     ) { innerPadding ->
-        Box(
-            modifier = Modifier.padding(innerPadding)
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            modifier = Modifier.padding(innerPadding),
+            contentPadding = PaddingValues(10.dp, 0.dp),
+            verticalArrangement = Arrangement.spacedBy(30.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
+            viewModel.movieResponse?.let {
+                items(it.results) { movie ->
+                    MovieCardFill(movie) {
 
+                    }
+                }
+            }
+        }
+
+        if (viewModel.filterStateBottomSheet) {
+            FilterBottomSheet(
+                currentFilter = viewModel.currentFilter,
+                onDismissRequest = { viewModel.updateFilterStateBottomSheet(false) },
+                onClick = {
+                    viewModel.updateCurrentFilter(it)
+                    viewModel.updateFilterStateBottomSheet(false)
+                }
+            )
         }
     }
 }

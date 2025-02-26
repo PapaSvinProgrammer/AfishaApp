@@ -44,6 +44,9 @@
     <string name="expected_in_cinema">Ожидается в кино</string>
     <string name="exhibitions">Выставки</string>
     <string name="concerts">Концерты</string>
+    <string name="cities">Города</string>
+    <string name="categories">Категории</string>
+    <string name="filter">Сортировка</string>
 
     <string-array name="ticket_segmented_button">
         <item>"События"</item>
