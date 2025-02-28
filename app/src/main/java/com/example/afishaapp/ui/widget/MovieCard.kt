@@ -5,6 +5,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
@@ -26,8 +28,9 @@ import com.example.afishaapp.data.module.movie.Movie
 import com.example.afishaapp.ui.theme.Green
 
 @Composable
-fun MovieCardRow(
+fun MovieCard(
     movie: Movie,
+    fill: Boolean = false,
     onClick: (Movie) -> Unit
 ) {
     Column(
@@ -45,9 +48,16 @@ fun MovieCardRow(
             AsyncImage(
                 model = movie.poster.image,
                 contentDescription = null,
-                modifier = Modifier
-                    .size(180.dp, 250.dp)
-                    .clip(RoundedCornerShape(15.dp)),
+                modifier = if (fill) {
+                    Modifier
+                        .height(250.dp)
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(15.dp))
+                } else {
+                    Modifier
+                        .size(180.dp, 250.dp)
+                        .clip(RoundedCornerShape(15.dp))
+                },
                 contentScale = ContentScale.Crop
             )
 
@@ -74,7 +84,7 @@ fun MovieCardRow(
             fontWeight = FontWeight.Medium,
             color = Color.Black,
             modifier = Modifier.padding(0.dp, 10.dp, 0.dp, 0.dp),
-            maxLines = 2,
+            maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
 

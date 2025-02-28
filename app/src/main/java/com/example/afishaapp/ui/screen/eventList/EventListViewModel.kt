@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.afishaapp.data.module.Category
-import com.example.afishaapp.data.module.event.EventResponse
+import com.example.afishaapp.data.module.event.Event
 import com.example.afishaapp.domain.http.GetEvent
 import com.example.afishaapp.domain.repository.http.CategoryRepository
 import com.example.afishaapp.ui.screen.bottomSheet.DefaultObject
@@ -18,15 +18,18 @@ class EventListViewModel @Inject constructor(
     private val categoryRepository: CategoryRepository,
     private val getEvent: GetEvent
 ): ViewModel() {
+    private var nextLoadPage = 2
+
     var isStartCategories = true
         private set
     var categories by mutableStateOf<List<Category>>(listOf())
         private set
     var currentCategory by mutableStateOf(DefaultObject.DEFAULT_CATEGORY)
         private set
-    var events by mutableStateOf<EventResponse?>(null)
-        private set
     var categoryStateBottomSheet by mutableStateOf(false)
+        private set
+
+    var events by mutableStateOf<List<Event>>(listOf())
         private set
 
     fun updateCurrentCategory(category: Category) {
@@ -35,10 +38,14 @@ class EventListViewModel @Inject constructor(
 
     fun getEvents(location: String, category: Category) {
         viewModelScope.launch(Dispatchers.IO) {
-            events = getEvent.getEvents(
+            val eventResponse = getEvent.getEvents(
                 location = location,
                 category = category.slug
             )
+
+            eventResponse?.let {
+                events = it.results
+            }
         }
     }
 
@@ -61,5 +68,23 @@ class EventListViewModel @Inject constructor(
 
     fun startCategorySuccess() {
         isStartCategories = false
+    }
+
+    fun loadMore(location: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val eventResponse = getEvent.getEvents(
+                location = location,
+                category = currentCategory.slug,
+                page = nextLoadPage
+            )
+
+            eventResponse?.let {
+                val temp = events.toMutableList()
+                temp.addAll(it.results)
+
+                events = temp
+                nextLoadPage += 1
+            }
+        }
     }
 }

@@ -10,14 +10,16 @@ class GetEvent @Inject constructor(
 ) {
     suspend fun getEvents(
         location: String,
-        category: String
+        category: String,
+        page: Int = 1
     ): EventResponse? {
         val currentTime = System.currentTimeMillis() / 1000
 
         return eventRepository.getEvents(
             currentTime = currentTime.toInt(),
             location = location,
-            category = category
+            category = category,
+            page = page
         )
     }
 

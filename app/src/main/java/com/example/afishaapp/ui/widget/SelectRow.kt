@@ -29,7 +29,7 @@ fun SelectRow(
     fontWeight: FontWeight = FontWeight.Medium,
     fontFamily: FontFamily = FontFamily.Default,
     fontSize: TextUnit = 15.sp,
-    onClick: () -> Unit
+    onClick: (String) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -39,7 +39,7 @@ fun SelectRow(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = ripple(),
                 onClick = {
-                    onClick.invoke()
+                    onClick.invoke(text)
                 }
             ),
         horizontalArrangement = Arrangement.SpaceBetween

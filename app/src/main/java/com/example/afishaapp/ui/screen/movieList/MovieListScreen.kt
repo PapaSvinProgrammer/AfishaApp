@@ -4,8 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -20,7 +18,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.afishaapp.R
 import com.example.afishaapp.ui.screen.bottomSheet.FilterBottomSheet
-import com.example.afishaapp.ui.widget.MovieCardFill
+import com.example.afishaapp.ui.widget.EndlessLazyVerticalGrid
+import com.example.afishaapp.ui.widget.MovieCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,7 +29,8 @@ fun MovieListScreen(
     topTitle: String,
     location: String
 ) {
-    viewModel.getMovie(location, viewModel.currentFilter)
+    viewModel.updateLocationSlug(location)
+    viewModel.getMovies(viewModel.currentFilter)
 
     Scaffold(
         topBar = {
@@ -68,21 +68,26 @@ fun MovieListScreen(
             )
         }
     ) { innerPadding ->
-        LazyVerticalGrid(
+        EndlessLazyVerticalGrid(
             columns = GridCells.Fixed(2),
             modifier = Modifier.padding(innerPadding),
             contentPadding = PaddingValues(10.dp, 0.dp),
             verticalArrangement = Arrangement.spacedBy(30.dp),
-            horizontalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            viewModel.movieResponse?.let {
-                items(it.results) { movie ->
-                    MovieCardFill(movie) {
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            items = viewModel.movies,
+            loadMore = {
+                viewModel.loadMoreMovies()
+            },
+            itemContent = { movie ->
+                MovieCard(
+                    movie = movie,
+                    fill = true,
+                    onClick = {
 
                     }
-                }
+                )
             }
-        }
+        )
 
         if (viewModel.filterStateBottomSheet) {
             FilterBottomSheet(

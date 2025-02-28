@@ -47,6 +47,11 @@
     <string name="cities">Города</string>
     <string name="categories">Категории</string>
     <string name="filter">Сортировка</string>
+    <string name="by_rating">По рейтингу</string>
+    <string name="by_title">По алфавиту</string>
+    <string name="by_date">По дате</string>
+    <string name="events">События</string>
+    <string name="in_cinema">В кино</string>
 
     <string-array name="ticket_segmented_button">
         <item>"События"</item>

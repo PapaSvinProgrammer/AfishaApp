@@ -40,8 +40,8 @@ import com.example.afishaapp.app.navigation.EventListRoute
 import com.example.afishaapp.app.navigation.MovieListRoute
 import com.example.afishaapp.ui.screen.bottomSheet.CategoryEventBottomSheet
 import com.example.afishaapp.ui.screen.bottomSheet.CityBottomSheet
-import com.example.afishaapp.ui.widget.EventCardRow
-import com.example.afishaapp.ui.widget.MovieCardRow
+import com.example.afishaapp.ui.widget.EventCard
+import com.example.afishaapp.ui.widget.MovieCard
 import com.example.afishaapp.ui.widget.SelectRow
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -142,10 +142,10 @@ fun HomeScreen(
                 text = stringResource(R.string.future_event),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold
-            ) {
+            ) { title ->
                 navController.navigate(
                     EventListRoute(
-                        title = "События",
+                        title = title,
                         categorySlug = viewModel.currentCategory.slug,
                         location = viewModel.city.first { it.name == viewModel.defaultCity }.slug
                     )
@@ -158,9 +158,12 @@ fun HomeScreen(
             ) {
                 viewModel.eventResponse?.let {
                     items(it.results) { event ->
-                        EventCardRow(event) {
+                        EventCard(
+                            event = event,
+                            onClick = {
 
-                        }
+                            }
+                        )
                     }
                 }
             }
@@ -170,10 +173,10 @@ fun HomeScreen(
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 paddingValues = PaddingValues(0.dp, 5.dp)
-            ) {
+            ) { title ->
                 navController.navigate(
                     MovieListRoute(
-                        title = "В кино",
+                        title = title,
                         location = viewModel.city.first { it.name == viewModel.defaultCity }.slug
                     )
                 )
@@ -185,9 +188,12 @@ fun HomeScreen(
             ) {
                 viewModel.movieResponse?.let {
                     items(it.results) { movie ->
-                        MovieCardRow(movie) {
+                        MovieCard(
+                            movie = movie,
+                            onClick = {
 
-                        }
+                            }
+                        )
                     }
                 }
             }
@@ -197,8 +203,14 @@ fun HomeScreen(
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 paddingValues = PaddingValues(0.dp, 15.dp, 0.dp, 0.dp)
-            ) {
-
+            ) { title ->
+                navController.navigate(
+                    EventListRoute(
+                        title = title,
+                        location = viewModel.city.first { it.name == viewModel.defaultCity }.slug,
+                        categorySlug = HomeViewModel.CONCERT_CATEGORY
+                    )
+                )
             }
 
             LazyRow(
@@ -207,9 +219,12 @@ fun HomeScreen(
             ) {
                 viewModel.eventConcert?.let {
                     items(it.results) { event ->
-                        EventCardRow(event) {
+                        EventCard(
+                            event = event,
+                            onClick = {
 
-                        }
+                            }
+                        )
                     }
                 }
             }
@@ -219,8 +234,14 @@ fun HomeScreen(
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 paddingValues = PaddingValues(0.dp, 15.dp, 0.dp, 0.dp)
-            ) {
-
+            ) { title ->
+                navController.navigate(
+                    EventListRoute(
+                        title = title,
+                        location = viewModel.city.first { it.name == viewModel.defaultCity }.slug,
+                        categorySlug = HomeViewModel.EXHIBITION_CATEGORY
+                    )
+                )
             }
 
             LazyRow(
@@ -230,9 +251,12 @@ fun HomeScreen(
             ) {
                 viewModel.eventExhibition?.let {
                     items(it.results) { event ->
-                        EventCardRow(event) {
+                        EventCard(
+                            event = event,
+                            onClick = {
 
-                        }
+                            }
+                        )
                     }
                 }
             }

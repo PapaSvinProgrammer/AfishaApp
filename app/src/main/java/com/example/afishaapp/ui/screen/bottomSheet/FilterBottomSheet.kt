@@ -44,7 +44,7 @@ fun FilterBottomSheet(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "По рейтингу",
+                    text = stringResource(R.string.by_rating),
                     modifier = Modifier.padding(15.dp),
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Medium
@@ -70,7 +70,7 @@ fun FilterBottomSheet(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "По алфавиту",
+                    text = stringResource(R.string.by_title),
                     modifier = Modifier.padding(15.dp),
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Medium
@@ -96,7 +96,7 @@ fun FilterBottomSheet(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "По дате",
+                    text = stringResource(R.string.by_date),
                     modifier = Modifier.padding(15.dp),
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Medium

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
@@ -25,22 +26,37 @@ import com.example.afishaapp.app.support.ConvertData
 import com.example.afishaapp.data.module.event.Event
 
 @Composable
-fun EventCardRow(
+fun EventCard(
     event: Event,
-    onClick: (Event) -> Unit
+    onClick: (Event) -> Unit,
+    fill: Boolean = false
 ) {
     Column(
-        modifier = Modifier
-            .width(270.dp)
-            .height(270.dp)
-            .clip(RoundedCornerShape(10.dp))
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = ripple(),
-                onClick = {
-                    onClick.invoke(event)
-                }
-            )
+        modifier = if (fill) {
+            Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .clip(RoundedCornerShape(10.dp))
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = ripple(),
+                    onClick = {
+                        onClick.invoke(event)
+                    }
+                )
+        } else {
+            Modifier
+                .width(270.dp)
+                .height(300.dp)
+                .clip(RoundedCornerShape(10.dp))
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = ripple(),
+                    onClick = {
+                        onClick.invoke(event)
+                    }
+                )
+        }
     ) {
         AsyncImage(
             model = event.images[0].image,
@@ -48,7 +64,7 @@ fun EventCardRow(
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(160.dp)
+                .height(180.dp)
                 .clip(RoundedCornerShape(15.dp))
         )
 

@@ -14,10 +14,16 @@ class EventRepositoryImpl @Inject constructor(
     override suspend fun getEvents(
         currentTime: Int,
         location: String,
-        category: String
+        category: String,
+        page: Int
     ): EventResponse? {
         return try {
-            retrofit.create<EventService>().getEvents(currentTime, location, category)
+            retrofit.create<EventService>().getEvents(
+                currentTime = currentTime,
+                location = location,
+                categories = category,
+                page = page
+            )
         } catch (e: Exception) {
             null
         }

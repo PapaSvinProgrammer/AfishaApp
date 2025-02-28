@@ -13,10 +13,15 @@ class MovieRepositoryImpl @Inject constructor(
 ): MovieRepository {
     override suspend fun getMoviesOrderByTitle(
         locationSlug: String,
-        actualTime: Int
+        actualTime: Int,
+        page: Int
     ): MovieResponse? {
         return try {
-            retrofit.create<MovieService>().getMoviesOrderByTitle(locationSlug, actualTime)
+            retrofit.create<MovieService>().getMoviesOrderByTitle(
+                location = locationSlug,
+                actualTime = actualTime,
+                page = page
+            )
         } catch (e: Exception) {
             null
         }
@@ -24,10 +29,15 @@ class MovieRepositoryImpl @Inject constructor(
 
     override suspend fun getMoviesOrderByRating(
         locationSlug: String,
-        actualTime: Int
+        actualTime: Int,
+        page: Int
     ): MovieResponse? {
         return try {
-            retrofit.create<MovieService>().getMoviesOrderByRating(locationSlug, actualTime)
+            retrofit.create<MovieService>().getMoviesOrderByRating(
+                location = locationSlug,
+                actualTime = actualTime,
+                page = page
+            )
         } catch (e: Exception) {
             null
         }
@@ -35,10 +45,15 @@ class MovieRepositoryImpl @Inject constructor(
 
     override suspend fun getMoviesOrderByYear(
         locationSlug: String,
-        actualTime: Int
+        actualTime: Int,
+        page: Int
     ): MovieResponse? {
         return try {
-            retrofit.create<MovieService>().getMoviesOrderByYear(locationSlug, actualTime)
+            retrofit.create<MovieService>().getMoviesOrderByYear(
+                location = locationSlug,
+                actualTime = actualTime,
+                page = page
+            )
         } catch (e: Exception) {
             null
         }

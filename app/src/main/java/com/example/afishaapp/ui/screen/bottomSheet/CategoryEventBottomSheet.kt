@@ -19,12 +19,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.afishaapp.R
 import com.example.afishaapp.data.module.Category
-import com.example.afishaapp.ui.theme.acidFontFamily
+import com.example.afishaapp.ui.widget.TitleBottomSheet
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,15 +38,7 @@ fun CategoryEventBottomSheet(
         sheetState = rememberModalBottomSheetState()
     ) {
         Column {
-            Text(
-                text = stringResource(R.string.categories),
-                fontFamily = acidFontFamily,
-                fontSize = 28.sp,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(0.dp, 0.dp, 0.dp, 10.dp),
-                textAlign = TextAlign.Center
-            )
+            TitleBottomSheet(stringResource(R.string.categories))
 
             LazyColumn {
                 items(data) { category ->

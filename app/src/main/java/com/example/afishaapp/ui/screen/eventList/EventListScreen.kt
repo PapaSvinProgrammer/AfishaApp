@@ -4,8 +4,6 @@ package com.example.afishaapp.ui.screen.eventList
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -21,7 +19,8 @@ import androidx.navigation.NavController
 import com.example.afishaapp.R
 import com.example.afishaapp.data.module.Category
 import com.example.afishaapp.ui.screen.bottomSheet.CategoryEventBottomSheet
-import com.example.afishaapp.ui.widget.EventCardFill
+import com.example.afishaapp.ui.widget.EndlessLazyColumn
+import com.example.afishaapp.ui.widget.EventCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -76,17 +75,24 @@ fun EventListScreen(
             )
         }
     ) { innerPadding ->
-        LazyColumn(
-            modifier = Modifier.padding(innerPadding),
+        EndlessLazyColumn(
             contentPadding = PaddingValues(10.dp, 0.dp),
-            verticalArrangement = Arrangement.spacedBy(40.dp)
-        ) {
-            viewModel.events?.let {
-                items(it.results) { event ->
-                    EventCardFill(event) { }
-                }
+            verticalArrangement = Arrangement.spacedBy(40.dp),
+            modifier = Modifier.padding(innerPadding),
+            items = viewModel.events,
+            loadMore = {
+                viewModel.loadMore(location)
+            },
+            itemContent = { event ->
+                EventCard(
+                    event = event,
+                    fill = true,
+                    onClick = {
+
+                    }
+                )
             }
-        }
+        )
 
         if (viewModel.categoryStateBottomSheet) {
             CategoryEventBottomSheet(

@@ -12,6 +12,7 @@ interface EventService {
         @Query("actual_since") currentTime: Int,
         @Query("location") location: String,
         @Query("categories") categories: String,
+        @Query("page") page: Int = 1,
         @Query("fields") fields: String = "id,title,place,price,dates,images,short_title",
         @Query("expand") expand: String = "place"
     ): EventResponse

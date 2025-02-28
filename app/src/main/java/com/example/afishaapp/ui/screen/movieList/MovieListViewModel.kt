@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.afishaapp.data.module.movie.Movie
 import com.example.afishaapp.data.module.movie.MovieResponse
 import com.example.afishaapp.domain.http.GetMovie
 import com.example.afishaapp.domain.module.FilterState
@@ -15,18 +16,22 @@ import javax.inject.Inject
 class MovieListViewModel @Inject constructor(
     private val getMovie: GetMovie
 ): ViewModel() {
-    var movieResponse by mutableStateOf<MovieResponse?>(null)
+    private var nextMoviesPage = 2
+    private var locationSlug = ""
+
+    var movies by mutableStateOf<List<Movie>>(listOf())
         private set
+
     var currentFilter by mutableStateOf(FilterState.RATING)
         private set
     var filterStateBottomSheet by mutableStateOf(false)
         private set
 
-    fun getMovie(locationSlug: String, filter: FilterState) {
+    fun getMovies(filter: FilterState) {
         when (filter) {
-            FilterState.RATING -> getMovieByRating(locationSlug)
-            FilterState.YEAR -> getMovieByYear(locationSlug)
-            FilterState.TITLE -> getMovieByTitle(locationSlug)
+            FilterState.RATING -> getMovieByRating()
+            FilterState.YEAR -> getMovieByYear()
+            FilterState.TITLE -> getMovieByTitle()
         }
     }
 
@@ -38,21 +43,88 @@ class MovieListViewModel @Inject constructor(
         filterStateBottomSheet = state
     }
 
-    private fun getMovieByRating(locationSlug: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            movieResponse = getMovie.getMoviesByRating(locationSlug)
+    fun loadMoreMovies() {
+        when (currentFilter) {
+            FilterState.RATING -> loadMoreByRating()
+            FilterState.YEAR -> loadMoreByYear()
+            FilterState.TITLE -> loadMoreByTitle()
         }
     }
 
-    private fun getMovieByTitle(locationSlug: String) {
+    fun updateLocationSlug(slug: String) {
+        locationSlug = slug
+    }
+
+    private fun loadMoreByRating() {
         viewModelScope.launch(Dispatchers.IO) {
-           movieResponse = getMovie.getMoviesByTitle(locationSlug)
+            val movieResponse = getMovie.getMoviesByRating(
+                locationSlug = locationSlug,
+                page = nextMoviesPage
+            )
+
+            addMoviesList(movieResponse)
         }
     }
 
-    private fun getMovieByYear(locationSlug: String) {
+    private fun loadMoreByTitle() {
         viewModelScope.launch(Dispatchers.IO) {
-            movieResponse = getMovie.getMoviesByYear(locationSlug)
+            val movieResponse = getMovie.getMoviesByTitle(
+                locationSlug = locationSlug,
+                page = nextMoviesPage
+            )
+
+            addMoviesList(movieResponse)
+        }
+    }
+
+    private fun loadMoreByYear() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val movieResponse = getMovie.getMoviesByYear(
+                locationSlug = locationSlug,
+                page = nextMoviesPage
+            )
+
+            addMoviesList(movieResponse)
+        }
+    }
+
+    private fun getMovieByRating() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val movieResponse = getMovie.getMoviesByRating(locationSlug)
+
+            setMoviesList(movieResponse)
+        }
+    }
+
+    private fun getMovieByTitle() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val movieResponse = getMovie.getMoviesByTitle(locationSlug)
+
+            setMoviesList(movieResponse)
+        }
+    }
+
+    private fun getMovieByYear() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val movieResponse = getMovie.getMoviesByYear(locationSlug)
+
+            setMoviesList(movieResponse)
+        }
+    }
+
+    private fun setMoviesList(movieResponse: MovieResponse?) {
+        movieResponse?.let {
+            movies = it.results
+        }
+    }
+
+    private fun addMoviesList(movieResponse: MovieResponse?) {
+        movieResponse?.let {
+            val temp = movies.toMutableList()
+            temp.addAll(movieResponse.results)
+
+            movies = temp
+            nextMoviesPage += 1
         }
     }
 }

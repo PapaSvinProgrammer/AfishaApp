@@ -8,30 +8,33 @@ import javax.inject.Inject
 class GetMovie @Inject constructor(
     private val movieRepository: MovieRepository
 ) {
-    suspend fun getMoviesByRating(locationSlug: String): MovieResponse? {
+    suspend fun getMoviesByRating(locationSlug: String, page: Int = 1): MovieResponse? {
         val currentTime = System.currentTimeMillis() / 1000
 
         return movieRepository.getMoviesOrderByRating(
             locationSlug = locationSlug,
-            actualTime = currentTime.toInt()
+            actualTime = currentTime.toInt(),
+            page = page
         )
     }
 
-    suspend fun getMoviesByTitle(locationSlug: String): MovieResponse? {
+    suspend fun getMoviesByTitle(locationSlug: String, page: Int = 1): MovieResponse? {
         val currentTime = System.currentTimeMillis() / 1000
 
         return movieRepository.getMoviesOrderByTitle(
             locationSlug = locationSlug,
-            actualTime = currentTime.toInt()
+            actualTime = currentTime.toInt(),
+            page = page
         )
     }
 
-    suspend fun getMoviesByYear(locationSlug: String): MovieResponse? {
+    suspend fun getMoviesByYear(locationSlug: String, page: Int = 1): MovieResponse? {
         val currentTime = System.currentTimeMillis() / 1000
 
         return movieRepository.getMoviesOrderByYear(
             locationSlug = locationSlug,
-            actualTime = currentTime.toInt()
+            actualTime = currentTime.toInt(),
+            page = page
         )
     }
 

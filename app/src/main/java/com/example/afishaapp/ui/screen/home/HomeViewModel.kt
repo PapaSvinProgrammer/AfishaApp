@@ -20,9 +20,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-private const val CONCERT_CATEGORY = "concert"
-private const val EXHIBITION_CATEGORY = "exhibition"
-
 class HomeViewModel @Inject constructor(
     private val cityRepository: CityRepository,
     private val preferencesRepository: PreferencesRepository,
@@ -31,6 +28,11 @@ class HomeViewModel @Inject constructor(
     private val getEvent: GetEvent,
     private val getMovie: GetMovie
 ): ViewModel() {
+    companion object {
+        const val CONCERT_CATEGORY = "concert"
+        const val EXHIBITION_CATEGORY = "exhibition"
+    }
+
     var cityBottomSheetState by mutableStateOf(false)
         private set
     var categoryBottomSheetState by mutableStateOf(false)

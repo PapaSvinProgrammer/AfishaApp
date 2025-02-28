@@ -11,6 +11,7 @@ interface MovieService {
     suspend fun getMoviesOrderByTitle(
         @Query("location") location: String,
         @Query("actual_since") actualTime: Int,
+        @Query("page") page: Int,
         @Query("fields") fields: String = "id,title,poster,imdb_rating,year"
     ): MovieResponse
 
@@ -18,6 +19,7 @@ interface MovieService {
     suspend fun getMoviesOrderByYear(
         @Query("location") location: String,
         @Query("actual_since") actualTime: Int,
+        @Query("page") page: Int,
         @Query("fields") fields: String = "id,title,poster,imdb_rating,year"
     ): MovieResponse
 
@@ -25,6 +27,7 @@ interface MovieService {
     suspend fun getMoviesOrderByRating(
         @Query("location") location: String,
         @Query("actual_since") actualTime: Int,
+        @Query("page") page: Int,
         @Query("fields") fields: String = "id,title,poster,imdb_rating,year"
     ): MovieResponse
 
