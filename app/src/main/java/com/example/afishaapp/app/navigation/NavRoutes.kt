@@ -38,3 +38,6 @@ data class EventListRoute(
     val categorySlug: String,
     val location: String
 )
+
+@Serializable
+data class EventRoute(val eventId: Int)

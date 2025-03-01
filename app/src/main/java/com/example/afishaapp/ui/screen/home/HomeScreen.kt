@@ -15,6 +15,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
@@ -37,6 +39,7 @@ import androidx.navigation.NavController
 import com.example.afishaapp.R
 import com.example.afishaapp.app.navigation.AccountRoute
 import com.example.afishaapp.app.navigation.EventListRoute
+import com.example.afishaapp.app.navigation.EventRoute
 import com.example.afishaapp.app.navigation.MovieListRoute
 import com.example.afishaapp.ui.screen.bottomSheet.CategoryEventBottomSheet
 import com.example.afishaapp.ui.screen.bottomSheet.CityBottomSheet
@@ -81,7 +84,7 @@ fun HomeScreen(
                             modifier = Modifier.padding(5.dp, 0.dp, 0.dp, 0.dp)
                         )
                         Icon(
-                            painter = painterResource(R.drawable.ic_keyboard_arrow_down),
+                            imageVector = Icons.Default.KeyboardArrowDown,
                             contentDescription = "City list",
                             modifier = Modifier.padding(5.dp, 0.dp)
                         )
@@ -112,10 +115,11 @@ fun HomeScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .horizontalScroll(rememberScrollState())
+                    .horizontalScroll(rememberScrollState()),
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 FilledTonalButton(
-                    modifier = Modifier.padding(10.dp, 0.dp),
+                    modifier = Modifier.padding(10.dp, 0.dp, 0.dp, 0.dp),
                     shape = RoundedCornerShape(10.dp),
                     onClick = { }
                 ) {
@@ -125,6 +129,7 @@ fun HomeScreen(
                 FilledTonalButton(
                     onClick = { viewModel.updateCategoryState(true) },
                     shape = RoundedCornerShape(10.dp),
+                    modifier = Modifier.padding(0.dp, 0.dp, 10.dp, 0.dp),
                 ) {
                     Text(
                         text = viewModel.currentCategory.name,
@@ -132,7 +137,7 @@ fun HomeScreen(
                     )
 
                     Icon(
-                        painter = painterResource(R.drawable.ic_keyboard_arrow_down),
+                        imageVector = Icons.Default.KeyboardArrowDown,
                         contentDescription = null
                     )
                 }
@@ -161,7 +166,9 @@ fun HomeScreen(
                         EventCard(
                             event = event,
                             onClick = {
-
+                                navController.navigate(
+                                    EventRoute(event.id)
+                                )
                             }
                         )
                     }

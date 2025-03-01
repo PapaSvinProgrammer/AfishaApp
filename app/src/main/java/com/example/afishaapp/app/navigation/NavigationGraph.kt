@@ -14,6 +14,8 @@ import androidx.navigation.toRoute
 import com.example.afishaapp.di.viewModel.ViewModelFactory
 import com.example.afishaapp.ui.screen.entry.EntryScreen
 import com.example.afishaapp.ui.screen.entry.EntryViewModel
+import com.example.afishaapp.ui.screen.event.EventScreen
+import com.example.afishaapp.ui.screen.event.EventViewModel
 import com.example.afishaapp.ui.screen.eventList.EventListScreen
 import com.example.afishaapp.ui.screen.eventList.EventListViewModel
 import com.example.afishaapp.ui.screen.favorite.FavoriteScreen
@@ -168,6 +170,30 @@ fun NavigationGraph(
                 topTitle = eventListRoute.title,
                 categorySlug = eventListRoute.categorySlug,
                 location = eventListRoute.location
+            )
+        }
+
+        composable<EventRoute> (
+            enterTransition = {
+                slideIntoContainer(
+                    animationSpec = tween(300, easing = EaseIn),
+                    towards = AnimatedContentTransitionScope.SlideDirection.Start
+                )
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    animationSpec = tween(300, easing = EaseOut),
+                    towards = AnimatedContentTransitionScope.SlideDirection.End
+                )
+            }
+        ) {
+            val eventRoute = it.toRoute<EventRoute>()
+            val viewModel: EventViewModel = viewModel(factory = viewModelFactory)
+
+            EventScreen(
+                navController = navController,
+                viewModel = viewModel,
+                eventId = eventRoute.eventId
             )
         }
     }

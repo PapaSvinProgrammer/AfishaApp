@@ -4,6 +4,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -41,7 +44,7 @@ fun MovieListScreen(
                         onClick = { navController.popBackStack() }
                     ) {
                         Icon(
-                            painter = painterResource(R.drawable.ic_arrow_back),
+                            imageVector = Icons.AutoMirrored.Default.ArrowBack,
                             contentDescription = stringResource(R.string.ic_arrow_back_content_description)
                         )
                     }
@@ -51,7 +54,7 @@ fun MovieListScreen(
                         onClick = {  }
                     ) {
                         Icon(
-                            painter = painterResource(R.drawable.ic_calendar),
+                            imageVector = Icons.Default.DateRange,
                             contentDescription = stringResource(R.string.ic_arrow_back_content_description)
                         )
                     }

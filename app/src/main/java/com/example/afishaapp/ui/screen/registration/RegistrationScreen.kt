@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
@@ -190,7 +192,7 @@ fun DefaultTopAppBar(text: String, navigationIconListener: () -> Unit) {
                 onClick = navigationIconListener
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.ic_arrow_back),
+                    imageVector = Icons.AutoMirrored.Default.ArrowBack,
                     contentDescription = "Back"
                 )
             }
