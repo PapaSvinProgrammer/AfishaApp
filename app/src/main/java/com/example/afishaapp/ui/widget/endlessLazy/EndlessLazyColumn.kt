@@ -1,4 +1,4 @@
-package com.example.afishaapp.ui.widget
+package com.example.afishaapp.ui.widget.endlessLazy
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues

@@ -1,13 +1,16 @@
 package com.example.afishaapp.ui.widget
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -21,33 +24,42 @@ import androidx.compose.ui.unit.sp
 fun ChipInfo(
     modifier: Modifier = Modifier,
     title: String = "Title",
-    subtitle: String = "Subtitle"
+    subtitle: String = "Subtitle",
+    icon: @Composable () -> Unit = {  }
 ) {
     Box(
         modifier = modifier
     ) {
-        Column(
+        Row(
             modifier = Modifier
                 .clip(RoundedCornerShape(10.dp))
                 .background(Color(0xffe9ecef))
                 .padding(10.dp, 5.dp)
-                .wrapContentSize()
+                .wrapContentSize(),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = title,
-                color = Color.Black,
-                fontWeight = FontWeight.Medium,
-                fontSize = 13.sp,
-                maxLines = 1
-            )
+            icon()
 
-            Text(
-                text = subtitle,
-                color = Color.Gray,
-                fontWeight = FontWeight.Medium,
-                fontSize = 12.sp,
-                maxLines = 1
-            )
+            Column(
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.wrapContentSize()
+            ) {
+                Text(
+                    text = title,
+                    color = Color.Black,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 13.sp,
+                    maxLines = 1
+                )
+
+                Text(
+                    text = subtitle,
+                    color = Color.Gray,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 12.sp,
+                    maxLines = 1
+                )
+            }
         }
     }
 }

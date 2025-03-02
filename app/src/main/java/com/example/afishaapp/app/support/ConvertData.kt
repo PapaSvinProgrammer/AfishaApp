@@ -1,37 +1,6 @@
 package com.example.afishaapp.app.support
 
-import com.example.afishaapp.data.module.search.DateRange
-import java.text.SimpleDateFormat
-import java.util.Locale
-
 object ConvertData {
-    fun convertDatesRange(dates: List<DateRange>): String {
-        val systemTime = System.currentTimeMillis() / 1000
-
-        for (date in dates) {
-            if (date.start >= systemTime) {
-                return convertDate(date.start.toInt())
-            }
-        }
-
-        return "Уточняйте на сайте"
-    }
-
-    fun convertMovieDate(time: Int): String {
-        val systemTime = System.currentTimeMillis() / 1000
-
-        if (time < systemTime) {
-            return "Уже в кино"
-        }
-
-        return convertDate(time)
-    }
-
-    private fun convertDate(time: Int): String {
-        val formatter = SimpleDateFormat("dd MMMM", Locale.getDefault())
-        return formatter.format(time)
-    }
-
     fun convertTitle(title: String): String {
         return title.replaceFirstChar(Char::uppercaseChar)
     }
@@ -65,6 +34,16 @@ object ConvertData {
         }
 
         return result
+    }
+
+    fun convertAgeRestriction(text: String): String {
+        try {
+            text.toInt()
+            return "$text+"
+        }
+        catch (e: NumberFormatException) {
+            return text
+        }
     }
 
     private fun isSinceWorld(text: String): Boolean {

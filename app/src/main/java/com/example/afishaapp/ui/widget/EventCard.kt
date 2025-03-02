@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.example.afishaapp.app.support.ConvertData
+import com.example.afishaapp.app.support.ConvertDate
 import com.example.afishaapp.data.module.event.Event
 
 @Composable
@@ -79,7 +80,7 @@ fun EventCard(
         )
 
         Text(
-            text = ConvertData.convertDatesRange(event.dates),
+            text = ConvertDate.convertStartDate(event.dates),
             fontSize = 14.sp,
             fontWeight = FontWeight.Normal,
             color = Color.Gray
