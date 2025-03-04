@@ -1,4 +1,4 @@
-package com.example.afishaapp.ui.widget
+package com.example.afishaapp.ui.widget.card
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -8,7 +8,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -29,12 +30,15 @@ import com.example.afishaapp.ui.theme.Green
 
 @Composable
 fun MovieCard(
+    modifier: Modifier = Modifier,
     movie: Movie,
     fill: Boolean = false,
     onClick: (Movie) -> Unit
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
+            .width(180.dp)
+            .wrapContentHeight()
             .clip(RoundedCornerShape(10.dp))
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
@@ -48,16 +52,10 @@ fun MovieCard(
             AsyncImage(
                 model = movie.poster.image,
                 contentDescription = null,
-                modifier = if (fill) {
-                    Modifier
-                        .height(250.dp)
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(15.dp))
-                } else {
-                    Modifier
-                        .size(180.dp, 250.dp)
-                        .clip(RoundedCornerShape(15.dp))
-                },
+                modifier = Modifier
+                    .height(250.dp)
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(15.dp)),
                 contentScale = ContentScale.Crop
             )
 

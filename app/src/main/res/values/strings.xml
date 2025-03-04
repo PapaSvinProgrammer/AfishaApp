@@ -55,6 +55,9 @@
     <string name="age">Возраст</string>
     <string name="duration">Длительность</string>
     <string name="share">Поделиться</string>
+    <string name="address">Адрес</string>
+    <string name="images">Фотографии</string>
+    <string name="participants">Участники</string>
 
     <string-array name="ticket_segmented_button">
         <item>"События"</item>

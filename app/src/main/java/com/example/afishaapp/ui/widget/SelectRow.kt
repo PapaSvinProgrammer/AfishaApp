@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
@@ -29,7 +30,8 @@ fun SelectRow(
     fontWeight: FontWeight = FontWeight.Medium,
     fontFamily: FontFamily = FontFamily.Default,
     fontSize: TextUnit = 15.sp,
-    onClick: (String) -> Unit
+    icon: ImageVector? = Icons.AutoMirrored.Default.KeyboardArrowRight,
+    onClick: (String) -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -52,12 +54,14 @@ fun SelectRow(
             fontFamily = fontFamily
         )
 
-        Icon(
-            imageVector = Icons.AutoMirrored.Default.KeyboardArrowRight,
-            contentDescription = null,
-            modifier = Modifier
-                .padding(0.dp, 0.dp, 15.dp, 0.dp)
-                .align(Alignment.CenterVertically),
-        )
+        icon?.let {
+            Icon(
+                imageVector = it,
+                contentDescription = null,
+                modifier = Modifier
+                    .padding(0.dp, 0.dp, 15.dp, 0.dp)
+                    .align(Alignment.CenterVertically),
+            )
+        }
     }
 }

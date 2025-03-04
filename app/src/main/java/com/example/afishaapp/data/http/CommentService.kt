@@ -10,4 +10,10 @@ interface CommentService {
 
     @GET("public-api/v1.4/movies/{movieId}/comments/?order_by=-date_posted")
     suspend fun getMovieCommentDesc(@Path("movieId") movieId: Int): CommentResponse
+
+    @GET("public-api/v1.4/events/{eventId}/comments/?order_by=date_posted")
+    suspend fun getEventCommentAsc(@Path("eventId") eventId: Int): CommentResponse
+
+    @GET("public-api/v1.4/events/{eventId}/comments/?order_by=-date_posted")
+    suspend fun getEventCommentDesc(@Path("eventId") eventId: Int): CommentResponse
 }

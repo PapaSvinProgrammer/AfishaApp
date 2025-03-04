@@ -43,8 +43,8 @@ import com.example.afishaapp.app.navigation.EventRoute
 import com.example.afishaapp.app.navigation.MovieListRoute
 import com.example.afishaapp.ui.screen.bottomSheet.CategoryEventBottomSheet
 import com.example.afishaapp.ui.screen.bottomSheet.CityBottomSheet
-import com.example.afishaapp.ui.widget.EventCard
-import com.example.afishaapp.ui.widget.MovieCard
+import com.example.afishaapp.ui.widget.card.EventCard
+import com.example.afishaapp.ui.widget.card.MovieCard
 import com.example.afishaapp.ui.widget.SelectRow
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -23,7 +23,7 @@ import com.example.afishaapp.R
 import com.example.afishaapp.data.module.Category
 import com.example.afishaapp.ui.screen.bottomSheet.CategoryEventBottomSheet
 import com.example.afishaapp.ui.widget.endlessLazy.EndlessLazyColumn
-import com.example.afishaapp.ui.widget.EventCard
+import com.example.afishaapp.ui.widget.card.EventCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

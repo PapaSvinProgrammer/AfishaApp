@@ -18,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.afishaapp.ui.theme.LightGray
 
 @Preview(showBackground = true)
 @Composable
@@ -33,7 +34,7 @@ fun ChipInfo(
         Row(
             modifier = Modifier
                 .clip(RoundedCornerShape(10.dp))
-                .background(Color(0xffe9ecef))
+                .background(LightGray)
                 .padding(10.dp, 5.dp)
                 .wrapContentSize(),
             verticalAlignment = Alignment.CenterVertically

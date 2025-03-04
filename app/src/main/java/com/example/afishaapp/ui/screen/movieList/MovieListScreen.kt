@@ -22,7 +22,7 @@ import androidx.navigation.NavController
 import com.example.afishaapp.R
 import com.example.afishaapp.ui.screen.bottomSheet.FilterBottomSheet
 import com.example.afishaapp.ui.widget.endlessLazy.EndlessLazyVerticalGrid
-import com.example.afishaapp.ui.widget.MovieCard
+import com.example.afishaapp.ui.widget.card.MovieCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

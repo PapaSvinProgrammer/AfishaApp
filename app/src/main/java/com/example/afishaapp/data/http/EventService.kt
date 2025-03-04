@@ -17,6 +17,6 @@ interface EventService {
         @Query("expand") expand: String = "place"
     ): EventResponse
 
-    @GET("public-api/v1.4/events/{eventId}/?expand=place")
+    @GET("public-api/v1.4/events/{eventId}/?expand=place,images")
     suspend fun getEventInfo(@Path("eventId") eventId: Int): Event
 }

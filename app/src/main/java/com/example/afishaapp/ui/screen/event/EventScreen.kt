@@ -1,6 +1,5 @@
 package com.example.afishaapp.ui.screen.event
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,7 +8,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -44,6 +42,9 @@ import com.example.afishaapp.app.support.ConvertCountTitle
 import com.example.afishaapp.app.support.ConvertData
 import com.example.afishaapp.app.support.ConvertDate
 import com.example.afishaapp.ui.widget.ChipInfo
+import com.example.afishaapp.ui.widget.SelectRow
+import com.example.afishaapp.ui.widget.card.CommentCard
+import com.example.afishaapp.ui.widget.card.ImageCard
 import com.example.afishaapp.ui.widget.collapsingTopBar.CollapsedTopBar
 import com.example.afishaapp.ui.widget.collapsingTopBar.ExpandedTopBar
 
@@ -54,6 +55,7 @@ fun EventScreen(
     eventId: Int
 ) {
     viewModel.getEventInfo(eventId)
+    viewModel.getComments(eventId)
 
     val listState = rememberLazyListState()
     val isCollapsed: Boolean by remember {
@@ -194,9 +196,7 @@ fun EventScreen(
                         subtitle = ConvertDate.convertDuration(viewModel.event?.dates ?: listOf())
                     )
                 }
-            }
 
-            item {
                 LazyRow(
                     contentPadding = PaddingValues(10.dp),
                     horizontalArrangement = Arrangement.spacedBy(5.dp)
@@ -210,14 +210,54 @@ fun EventScreen(
                         }
                     }
                 }
-            }
 
-            item {
-                Box(
-                    modifier = Modifier
-                        .background(Color.White)
-                        .size(100.dp, 1600.dp)
-                ) {  }
+                SelectRow(
+                    text = ConvertCountTitle.convertCommentsCount(
+                        count = viewModel.event?.commentsCount ?: 0
+                    )
+                ) {
+
+                }
+
+                LazyRow(
+                    contentPadding = PaddingValues(10.dp, 0.dp),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    items(viewModel.comments) { comment ->
+                        CommentCard(comment)
+                    }
+                }
+
+                SelectRow(
+                    text = stringResource(R.string.address),
+                    icon = null
+                ) {
+
+                }
+
+                SelectRow(
+                    text = stringResource(R.string.images),
+                    icon = null
+                ) {
+
+                }
+
+                LazyRow(
+                    contentPadding = PaddingValues(10.dp, 0.dp),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    viewModel.event?.let {
+                        items(it.images) { imageItem ->
+                            ImageCard(imageItem.thumbnails.highImage)
+                        }
+                    }
+                }
+
+                SelectRow(
+                    text = stringResource(R.string.participants)
+                ) {
+
+                }
             }
         }
     }
