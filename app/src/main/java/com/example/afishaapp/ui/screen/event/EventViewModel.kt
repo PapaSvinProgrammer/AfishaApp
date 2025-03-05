@@ -36,7 +36,7 @@ class EventViewModel @Inject constructor(
 
     fun getComments(eventId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            val temp = getCommentEvent.getAsc(eventId)
+            val temp = getCommentEvent.getDesc(eventId)
 
             temp?.let {
                 comments = it.results

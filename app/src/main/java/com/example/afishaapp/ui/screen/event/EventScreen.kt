@@ -1,5 +1,7 @@
 package com.example.afishaapp.ui.screen.event
 
+import androidx.compose.foundation.gestures.snapping.SnapPosition
+import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -7,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -38,6 +41,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import com.example.afishaapp.R
+import com.example.afishaapp.app.navigation.CommentListRoute
 import com.example.afishaapp.app.support.ConvertCountTitle
 import com.example.afishaapp.app.support.ConvertData
 import com.example.afishaapp.app.support.ConvertDate
@@ -63,6 +67,18 @@ fun EventScreen(
             listState.firstVisibleItemIndex > 0
         }
     }
+
+    val imageListState = rememberLazyListState()
+    val imageSnapBehavior = rememberSnapFlingBehavior(
+        lazyListState = imageListState,
+        snapPosition = SnapPosition.Start
+    )
+
+    val commentLazyState = rememberLazyListState()
+    val commentSnapBehavior = rememberSnapFlingBehavior(
+        lazyListState = commentLazyState,
+        snapPosition = SnapPosition.Start
+    )
 
     Box {
         val color = if (isCollapsed)
@@ -122,7 +138,8 @@ fun EventScreen(
         )
 
         LazyColumn(
-            state = listState
+            state = listState,
+            modifier = Modifier.navigationBarsPadding()
         ) {
             item {
                 ExpandedTopBar {
@@ -144,7 +161,7 @@ fun EventScreen(
                                 color = Color.White
                             )
 
-                            viewModel.event?.place?.let { place ->
+                            it.place?.let { place ->
                                 Text(
                                     text = place.title,
                                     fontSize = 15.sp,
@@ -152,13 +169,11 @@ fun EventScreen(
                                 )
                             }
 
-                            viewModel.event?.dates?.let { dates ->
-                                Text(
-                                    text = ConvertDate.convertStartDate(dates),
-                                    fontSize = 15.sp,
-                                    color = Color.White
-                                )
-                            }
+                            Text(
+                                text = ConvertDate.convertStartDate(it.dates),
+                                fontSize = 15.sp,
+                                color = Color.White
+                            )
                         }
                     }
                 }
@@ -214,14 +229,24 @@ fun EventScreen(
                 SelectRow(
                     text = ConvertCountTitle.convertCommentsCount(
                         count = viewModel.event?.commentsCount ?: 0
-                    )
+                    ),
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
                 ) {
-
+                    navController.navigate(
+                        CommentListRoute(
+                            name = viewModel.event?.shortTitle.toString(),
+                            type = "event",
+                            id = viewModel.event?.id ?: -1
+                        )
+                    )
                 }
 
                 LazyRow(
                     contentPadding = PaddingValues(10.dp, 0.dp),
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    state = commentLazyState,
+                    flingBehavior = commentSnapBehavior
                 ) {
                     items(viewModel.comments) { comment ->
                         CommentCard(comment)
@@ -230,6 +255,8 @@ fun EventScreen(
 
                 SelectRow(
                     text = stringResource(R.string.address),
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
                     icon = null
                 ) {
 
@@ -237,14 +264,18 @@ fun EventScreen(
 
                 SelectRow(
                     text = stringResource(R.string.images),
-                    icon = null
+                    icon = null,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
                 ) {
 
                 }
 
                 LazyRow(
                     contentPadding = PaddingValues(10.dp, 0.dp),
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    state = imageListState,
+                    flingBehavior = imageSnapBehavior
                 ) {
                     viewModel.event?.let {
                         items(it.images) { imageItem ->
@@ -253,10 +284,14 @@ fun EventScreen(
                     }
                 }
 
-                SelectRow(
-                    text = stringResource(R.string.participants)
-                ) {
+                if (!viewModel.event?.participants.isNullOrEmpty()) {
+                    SelectRow(
+                        text = stringResource(R.string.participants),
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    ) {
 
+                    }
                 }
             }
         }

@@ -61,6 +61,7 @@
 
     <string-array name="ticket_segmented_button">
         <item>"События"</item>
+        <item>"Фильмы"</item>
         <item>"Площадки"</item>
     </string-array>
 </resources>

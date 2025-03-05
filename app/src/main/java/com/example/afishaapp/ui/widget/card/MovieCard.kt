@@ -32,7 +32,6 @@ import com.example.afishaapp.ui.theme.Green
 fun MovieCard(
     modifier: Modifier = Modifier,
     movie: Movie,
-    fill: Boolean = false,
     onClick: (Movie) -> Unit
 ) {
     Column(

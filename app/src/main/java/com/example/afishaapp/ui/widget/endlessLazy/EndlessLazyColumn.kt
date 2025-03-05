@@ -2,16 +2,20 @@ package com.example.afishaapp.ui.widget.endlessLazy
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -20,9 +24,10 @@ fun <T: Any> EndlessLazyColumn(
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues = PaddingValues(0.dp),
     verticalArrangement: Arrangement.Vertical = Arrangement.Top,
+    horizontalDivider: Boolean = false,
     items: List<T>,
+    loadMore: () -> Unit,
     itemContent: @Composable (T) -> Unit,
-    loadMore: () -> Unit
 ) {
     val reachBottom: Boolean by remember {
         derivedStateOf {
@@ -42,8 +47,17 @@ fun <T: Any> EndlessLazyColumn(
         contentPadding = contentPadding,
         verticalArrangement = verticalArrangement
     ) {
-        items(items) { item ->
+        itemsIndexed(items) { index, item ->
             itemContent.invoke(item)
+
+            if (horizontalDivider && index != items.size) {
+                HorizontalDivider(
+                    thickness = 2.dp,
+                    modifier = Modifier
+                        .padding(10.dp, 0.dp)
+                        .clip(RoundedCornerShape(5.dp))
+                )
+            }
         }
     }
 }

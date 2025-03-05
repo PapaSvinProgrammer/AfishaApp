@@ -35,6 +35,12 @@ object ConvertDate {
         }
     }
 
+    fun convertDatePosted(time: Long): String {
+        val sdf = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+
+        return sdf.format(time * 1000)
+    }
+
     private fun convertDate(time: Long): String {
         val sdf = SimpleDateFormat("dd MMMM", Locale.getDefault())
 

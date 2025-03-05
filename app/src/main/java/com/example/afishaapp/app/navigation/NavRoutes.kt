@@ -41,3 +41,10 @@ data class EventListRoute(
 
 @Serializable
 data class EventRoute(val eventId: Int)
+
+@Serializable
+data class CommentListRoute(
+    val id: Int,
+    val name: String,
+    val type: String
+)

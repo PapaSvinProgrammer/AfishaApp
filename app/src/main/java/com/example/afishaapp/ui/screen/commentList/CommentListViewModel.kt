@@ -1,0 +1,88 @@
+package com.example.afishaapp.ui.screen.commentList
+
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.afishaapp.data.module.comment.Comment
+import com.example.afishaapp.data.module.comment.CommentResponse
+import com.example.afishaapp.domain.http.GetCommentEvent
+import com.example.afishaapp.domain.http.GetCommentMovie
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+class CommentListViewModel @Inject constructor(
+    private val getCommentMovie: GetCommentMovie,
+    private val getCommentEvent: GetCommentEvent
+): ViewModel() {
+    private var nextPage = 2
+    var comments by mutableStateOf<List<Comment>>(listOf())
+        private set
+
+    fun getComments(id: Int, type: String) {
+        when (type) {
+            "event" -> getEventComments(id)
+            "movie" -> getMovieComments(id)
+        }
+    }
+
+    fun loadMoreComments(id: Int, type: String) {
+        when (type) {
+            "event" -> loadMoreEventComments(id)
+            "movie" -> loadMoreMovieComments(id)
+        }
+    }
+
+    private fun getEventComments(id: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val temp = getCommentEvent.getAsc(id)
+            setNewComments(temp)
+        }
+    }
+
+    private fun getMovieComments(id: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val temp = getCommentMovie.getAsc(id)
+            setNewComments(temp)
+        }
+    }
+
+    private fun loadMoreEventComments(id: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val temp = getCommentEvent.getAsc(
+                eventId = id,
+                page = nextPage
+            )
+
+            addComments(temp)
+        }
+    }
+
+    private fun loadMoreMovieComments(id: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val temp = getCommentMovie.getAsc(
+                movieId = id,
+                page = nextPage
+            )
+
+            addComments(temp)
+        }
+    }
+
+    private fun setNewComments(commentResponse: CommentResponse?) {
+        commentResponse?.let {
+            comments = it.results
+        }
+    }
+
+    private fun addComments(commentResponse: CommentResponse?) {
+        commentResponse?.let {
+            val temp = comments.toMutableList()
+            temp.addAll(it.results)
+
+            comments = temp
+        }
+    }
+}

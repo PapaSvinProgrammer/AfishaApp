@@ -84,7 +84,6 @@ fun MovieListScreen(
             itemContent = { movie ->
                 MovieCard(
                     movie = movie,
-                    fill = true,
                     onClick = {
 
                     }

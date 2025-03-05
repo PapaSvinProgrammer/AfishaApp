@@ -1,6 +1,8 @@
 package com.example.afishaapp.ui.screen.home
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.snapping.SnapPosition
+import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -11,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -59,6 +62,18 @@ fun HomeScreen(
     viewModel.getDefaultCity()
     viewModel.getMovies(viewModel.defaultCity)
     viewModel.getCategories()
+
+    val eventListState = rememberLazyListState()
+    val eventFlingBehavior = rememberSnapFlingBehavior(eventListState, SnapPosition.Start)
+
+    val movieListState = rememberLazyListState()
+    val movieFlingBehavior = rememberSnapFlingBehavior(movieListState, SnapPosition.Start)
+
+    val concertListState = rememberLazyListState()
+    val concertFlingBehavior = rememberSnapFlingBehavior(concertListState, SnapPosition.Start)
+
+    val exhibitionListState = rememberLazyListState()
+    val exhibitionFlingBehavior = rememberSnapFlingBehavior(exhibitionListState, SnapPosition.Start)
 
     Scaffold(
         topBar = {
@@ -159,7 +174,9 @@ fun HomeScreen(
 
             LazyRow(
                 contentPadding = PaddingValues(10.dp, 0.dp),
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                state = eventListState,
+                flingBehavior = eventFlingBehavior
             ) {
                 viewModel.eventResponse?.let {
                     items(it.results) { event ->
@@ -191,7 +208,9 @@ fun HomeScreen(
 
             LazyRow(
                 contentPadding = PaddingValues(10.dp, 0.dp),
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                state = movieListState,
+                flingBehavior = movieFlingBehavior
             ) {
                 viewModel.movieResponse?.let {
                     items(it.results) { movie ->
@@ -222,7 +241,9 @@ fun HomeScreen(
 
             LazyRow(
                 contentPadding = PaddingValues(10.dp, 0.dp),
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                state = concertListState,
+                flingBehavior = concertFlingBehavior
             ) {
                 viewModel.eventConcert?.let {
                     items(it.results) { event ->
@@ -254,7 +275,9 @@ fun HomeScreen(
             LazyRow(
                 modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 20.dp),
                 contentPadding = PaddingValues(10.dp, 0.dp),
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                state = exhibitionListState,
+                flingBehavior = exhibitionFlingBehavior
             ) {
                 viewModel.eventExhibition?.let {
                     items(it.results) { event ->

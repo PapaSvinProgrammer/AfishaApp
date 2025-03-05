@@ -10,33 +10,33 @@ import javax.inject.Inject
 class CommentRepositoryImpl @Inject constructor(
     private val retrofit: Retrofit
 ): CommentRepository {
-    override suspend fun getMovieCommentAsc(movieId: Int): CommentResponse? {
+    override suspend fun getMovieCommentAsc(movieId: Int, page: Int): CommentResponse? {
         return try {
-            retrofit.create<CommentService>().getMovieCommentAsc(movieId)
+            retrofit.create<CommentService>().getMovieCommentAsc(movieId, page)
         } catch (e: Exception) {
             null
         }
     }
 
-    override suspend fun getMovieCommentDesc(movieId: Int): CommentResponse? {
+    override suspend fun getMovieCommentDesc(movieId: Int, page: Int): CommentResponse? {
         return try {
-            retrofit.create<CommentService>().getMovieCommentDesc(movieId)
+            retrofit.create<CommentService>().getMovieCommentDesc(movieId, page)
         } catch (e: Exception) {
             null
         }
     }
 
-    override suspend fun getEventCommentAsc(eventId: Int): CommentResponse? {
+    override suspend fun getEventCommentAsc(eventId: Int, page: Int): CommentResponse? {
         return try {
-            retrofit.create<CommentService>().getEventCommentAsc(eventId)
+            retrofit.create<CommentService>().getEventCommentAsc(eventId, page)
         } catch (e: Exception) {
             null
         }
     }
 
-    override suspend fun getEventCommentDesc(eventId: Int): CommentResponse? {
+    override suspend fun getEventCommentDesc(eventId: Int, page: Int): CommentResponse? {
         return try {
-            retrofit.create<CommentService>().getEventCommentDesc(eventId)
+            retrofit.create<CommentService>().getEventCommentDesc(eventId, page)
         } catch (e: Exception) {
             null
         }

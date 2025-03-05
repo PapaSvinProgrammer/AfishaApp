@@ -7,19 +7,25 @@ import javax.inject.Inject
 class GetCommentEvent @Inject constructor(
     private val commentRepository: CommentRepository
 ) {
-    suspend fun getAsc(eventId: Int): CommentResponse? {
+    suspend fun getAsc(eventId: Int, page: Int = 1): CommentResponse? {
         if (eventId <= 0) {
             return null
         }
 
-        return commentRepository.getEventCommentAsc(eventId)
+        return commentRepository.getEventCommentAsc(
+            eventId = eventId,
+            page = page
+        )
     }
 
-    suspend fun getDesc(eventId: Int): CommentResponse? {
+    suspend fun getDesc(eventId: Int, page: Int = 1): CommentResponse? {
         if (eventId <= 0) {
             return null
         }
 
-        return commentRepository.getEventCommentDesc(eventId)
+        return commentRepository.getEventCommentDesc(
+            eventId = eventId,
+            page = page
+        )
     }
 }

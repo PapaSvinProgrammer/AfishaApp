@@ -12,6 +12,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.example.afishaapp.di.viewModel.ViewModelFactory
+import com.example.afishaapp.ui.screen.commentList.CommentListScreen
+import com.example.afishaapp.ui.screen.commentList.CommentListViewModel
 import com.example.afishaapp.ui.screen.entry.EntryScreen
 import com.example.afishaapp.ui.screen.entry.EntryViewModel
 import com.example.afishaapp.ui.screen.event.EventScreen
@@ -194,6 +196,32 @@ fun NavigationGraph(
                 navController = navController,
                 viewModel = viewModel,
                 eventId = eventRoute.eventId
+            )
+        }
+
+        composable<CommentListRoute> (
+            enterTransition = {
+                slideIntoContainer(
+                    animationSpec = tween(300, easing = EaseIn),
+                    towards = AnimatedContentTransitionScope.SlideDirection.Start
+                )
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    animationSpec = tween(300, easing = EaseOut),
+                    towards = AnimatedContentTransitionScope.SlideDirection.End
+                )
+            }
+        ) {
+            val commentListRoute = it.toRoute<CommentListRoute>()
+            val viewModel: CommentListViewModel = viewModel(factory = viewModelFactory)
+
+            CommentListScreen(
+                navController = navController,
+                viewModel = viewModel,
+                objectId = commentListRoute.id,
+                objectName = commentListRoute.name,
+                type = commentListRoute.type
             )
         }
     }
