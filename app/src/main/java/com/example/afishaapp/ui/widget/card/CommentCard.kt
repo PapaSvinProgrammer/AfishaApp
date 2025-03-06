@@ -63,7 +63,6 @@ fun CommentCard(
 
                 Text(
                     text = ConvertDate.convertDatePosted(comment.datePosted.toLong()),
-                    fontWeight = FontWeight.Light,
                     fontSize = 14.sp
                 )
             }

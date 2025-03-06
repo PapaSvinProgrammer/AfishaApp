@@ -58,6 +58,7 @@
     <string name="address">Адрес</string>
     <string name="images">Фотографии</string>
     <string name="participants">Участники</string>
+    <string name="reviews_on">Отзывы на</string>
 
     <string-array name="ticket_segmented_button">
         <item>"События"</item>

@@ -9,6 +9,7 @@ import com.example.afishaapp.data.module.comment.Comment
 import com.example.afishaapp.data.module.comment.CommentResponse
 import com.example.afishaapp.domain.http.GetCommentEvent
 import com.example.afishaapp.domain.http.GetCommentMovie
+import com.example.afishaapp.domain.module.DirectedFilterType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,6 +20,11 @@ class CommentListViewModel @Inject constructor(
 ): ViewModel() {
     private var nextPage = 2
     var comments by mutableStateOf<List<Comment>>(listOf())
+        private set
+
+    var filter by mutableStateOf(DirectedFilterType.ASC)
+        private set
+    var directedFilterState by mutableStateOf(false)
         private set
 
     fun getComments(id: Int, type: String) {
@@ -33,6 +39,14 @@ class CommentListViewModel @Inject constructor(
             "event" -> loadMoreEventComments(id)
             "movie" -> loadMoreMovieComments(id)
         }
+    }
+
+    fun updateDirectedFilterState(state: Boolean) {
+        directedFilterState = state
+    }
+
+    fun updateFilter(filterType: DirectedFilterType) {
+        filter = filterType
     }
 
     private fun getEventComments(id: Int) {

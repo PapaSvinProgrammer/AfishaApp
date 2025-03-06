@@ -1,4 +1,4 @@
-package com.example.afishaapp.ui.widget
+package com.example.afishaapp.ui.widget.text
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding

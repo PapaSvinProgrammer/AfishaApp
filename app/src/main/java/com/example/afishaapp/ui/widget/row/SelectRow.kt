@@ -1,4 +1,4 @@
-package com.example.afishaapp.ui.widget
+package com.example.afishaapp.ui.widget.row
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource

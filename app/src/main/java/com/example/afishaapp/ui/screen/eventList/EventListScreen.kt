@@ -24,6 +24,7 @@ import com.example.afishaapp.data.module.Category
 import com.example.afishaapp.ui.screen.bottomSheet.CategoryEventBottomSheet
 import com.example.afishaapp.ui.widget.endlessLazy.EndlessLazyColumn
 import com.example.afishaapp.ui.widget.card.EventCard
+import com.example.afishaapp.ui.widget.text.TitleTopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -45,7 +46,9 @@ fun EventListScreen(
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text(text = topTitle) },
+                title = {
+                    TitleTopBar(topTitle)
+                },
                 navigationIcon = {
                     IconButton(
                         onClick = { navController.popBackStack() }

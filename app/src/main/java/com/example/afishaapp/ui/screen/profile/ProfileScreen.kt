@@ -23,7 +23,8 @@ import androidx.navigation.NavController
 import com.example.afishaapp.R
 import com.example.afishaapp.app.navigation.StartRoute
 import com.example.afishaapp.ui.theme.acidFontFamily
-import com.example.afishaapp.ui.widget.SelectRow
+import com.example.afishaapp.ui.widget.row.SelectRow
+import com.example.afishaapp.ui.widget.text.TitleTopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,7 +34,7 @@ fun ProfileScreen(navController: NavController) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         CenterAlignedTopAppBar(
-            title = { Text(text = stringResource(R.string.profile_title)) },
+            title = { TitleTopBar(stringResource(R.string.profile_title)) },
             navigationIcon = {
                 IconButton(
                     onClick = { navController.popBackStack() }

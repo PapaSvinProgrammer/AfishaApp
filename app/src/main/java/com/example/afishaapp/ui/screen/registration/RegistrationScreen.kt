@@ -27,7 +27,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.afishaapp.R
 import com.example.afishaapp.app.navigation.HomeRoute
+import com.example.afishaapp.ui.widget.text.TitleTopBar
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegistrationScreen(
     navController: NavController,
@@ -45,9 +47,19 @@ fun RegistrationScreen(
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            DefaultTopAppBar(text = stringResource(R.string.registration_text))  {
-                navController.popBackStack()
-            }
+            CenterAlignedTopAppBar(
+                title = { TitleTopBar(stringResource(R.string.registration_text)) },
+                navigationIcon = {
+                    IconButton(
+                        onClick = { navController.popBackStack() }
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                            contentDescription = stringResource(R.string.ic_arrow_back_content_description)
+                        )
+                    }
+                }
+            )
 
             OutlinedTextField(
                 value = viewModel.email,
@@ -180,22 +192,4 @@ fun RegistrationScreen(
             )
         }
     }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun DefaultTopAppBar(text: String, navigationIconListener: () -> Unit) {
-    CenterAlignedTopAppBar(
-        title = { Text(text) },
-        navigationIcon = {
-            IconButton(
-                onClick = navigationIconListener
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                    contentDescription = "Back"
-                )
-            }
-        }
-    )
 }

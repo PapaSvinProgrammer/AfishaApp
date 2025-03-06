@@ -1,5 +1,7 @@
 package com.example.afishaapp.ui.screen.commentList
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -8,15 +10,18 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.example.afishaapp.R
+import com.example.afishaapp.ui.screen.bottomSheet.DirectedFilterBottomSheet
 import com.example.afishaapp.ui.widget.card.CommentCardFill
 import com.example.afishaapp.ui.widget.endlessLazy.EndlessLazyColumn
+import com.example.afishaapp.ui.widget.text.SubtitleTopBar
+import com.example.afishaapp.ui.widget.text.TitleTopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,7 +40,15 @@ fun CommentListScreen(
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text(text = "Отзывы") },
+                title = {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        TitleTopBar(stringResource(R.string.reviews_on))
+                        SubtitleTopBar(objectName)
+                    }
+                },
                 navigationIcon = {
                     IconButton(
                         onClick = { navController.popBackStack() }
@@ -48,7 +61,9 @@ fun CommentListScreen(
                 },
                 actions = {
                     IconButton(
-                        onClick = {  }
+                        onClick = {
+                            viewModel.updateDirectedFilterState(true)
+                        }
                     ) {
                         Icon(
                             painter = painterResource(R.drawable.ic_filter),
@@ -62,7 +77,6 @@ fun CommentListScreen(
         EndlessLazyColumn(
             modifier = Modifier.padding(innerPadding),
             items = viewModel.comments,
-            horizontalDivider = true,
             loadMore = {
                 viewModel.loadMoreComments(
                     id = objectId,
@@ -71,6 +85,16 @@ fun CommentListScreen(
             }
         ) { comment ->
             CommentCardFill(comment)
+        }
+
+        if (viewModel.directedFilterState) {
+            DirectedFilterBottomSheet(
+                currentFilter = viewModel.filter,
+                onDismiss = { viewModel.updateDirectedFilterState(false) }
+            ) {
+                viewModel.updateFilter(it)
+                viewModel.updateDirectedFilterState(false)
+            }
         }
     }
 }

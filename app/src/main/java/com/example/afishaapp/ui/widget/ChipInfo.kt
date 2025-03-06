@@ -35,7 +35,7 @@ fun ChipInfo(
             modifier = Modifier
                 .clip(RoundedCornerShape(10.dp))
                 .background(LightGray)
-                .padding(10.dp, 5.dp)
+                .padding(10.dp, 10.dp)
                 .wrapContentSize(),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -50,7 +50,9 @@ fun ChipInfo(
                     color = Color.Black,
                     fontWeight = FontWeight.Medium,
                     fontSize = 13.sp,
-                    maxLines = 1
+                    maxLines = 1,
+                    lineHeight = 10.sp,
+                    modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 5.dp)
                 )
 
                 Text(
@@ -58,7 +60,8 @@ fun ChipInfo(
                     color = Color.Gray,
                     fontWeight = FontWeight.Medium,
                     fontSize = 12.sp,
-                    maxLines = 1
+                    maxLines = 1,
+                    lineHeight = 9.sp
                 )
             }
         }

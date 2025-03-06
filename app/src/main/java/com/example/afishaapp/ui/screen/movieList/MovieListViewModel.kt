@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.afishaapp.data.module.movie.Movie
 import com.example.afishaapp.data.module.movie.MovieResponse
 import com.example.afishaapp.domain.http.GetMovie
-import com.example.afishaapp.domain.module.FilterState
+import com.example.afishaapp.domain.module.BaseFilterType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -22,20 +22,20 @@ class MovieListViewModel @Inject constructor(
     var movies by mutableStateOf<List<Movie>>(listOf())
         private set
 
-    var currentFilter by mutableStateOf(FilterState.RATING)
+    var currentFilter by mutableStateOf(BaseFilterType.RATING)
         private set
     var filterStateBottomSheet by mutableStateOf(false)
         private set
 
-    fun getMovies(filter: FilterState) {
+    fun getMovies(filter: BaseFilterType) {
         when (filter) {
-            FilterState.RATING -> getMovieByRating()
-            FilterState.YEAR -> getMovieByYear()
-            FilterState.TITLE -> getMovieByTitle()
+            BaseFilterType.RATING -> getMovieByRating()
+            BaseFilterType.YEAR -> getMovieByYear()
+            BaseFilterType.TITLE -> getMovieByTitle()
         }
     }
 
-    fun updateCurrentFilter(filter: FilterState) {
+    fun updateCurrentFilter(filter: BaseFilterType) {
         currentFilter = filter
     }
 
@@ -45,9 +45,9 @@ class MovieListViewModel @Inject constructor(
 
     fun loadMoreMovies() {
         when (currentFilter) {
-            FilterState.RATING -> loadMoreByRating()
-            FilterState.YEAR -> loadMoreByYear()
-            FilterState.TITLE -> loadMoreByTitle()
+            BaseFilterType.RATING -> loadMoreByRating()
+            BaseFilterType.YEAR -> loadMoreByYear()
+            BaseFilterType.TITLE -> loadMoreByTitle()
         }
     }
 

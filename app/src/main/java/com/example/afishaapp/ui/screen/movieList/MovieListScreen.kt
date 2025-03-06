@@ -20,9 +20,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.afishaapp.R
-import com.example.afishaapp.ui.screen.bottomSheet.FilterBottomSheet
+import com.example.afishaapp.ui.screen.bottomSheet.BaseFilterBottomSheet
 import com.example.afishaapp.ui.widget.endlessLazy.EndlessLazyVerticalGrid
 import com.example.afishaapp.ui.widget.card.MovieCard
+import com.example.afishaapp.ui.widget.text.TitleTopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -38,7 +39,7 @@ fun MovieListScreen(
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text(text = topTitle) },
+                title = { TitleTopBar(topTitle) },
                 navigationIcon = {
                     IconButton(
                         onClick = { navController.popBackStack() }
@@ -92,7 +93,7 @@ fun MovieListScreen(
         )
 
         if (viewModel.filterStateBottomSheet) {
-            FilterBottomSheet(
+            BaseFilterBottomSheet(
                 currentFilter = viewModel.currentFilter,
                 onDismissRequest = { viewModel.updateFilterStateBottomSheet(false) },
                 onClick = {

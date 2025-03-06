@@ -14,6 +14,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,7 +28,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.afishaapp.R
 import com.example.afishaapp.app.navigation.HomeRoute
+import com.example.afishaapp.ui.widget.text.TitleTopBar
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EntryScreen(
     navController: NavController,
@@ -39,110 +42,109 @@ fun EntryScreen(
         }
     }
 
-    Box {
-        Column(
-            modifier = Modifier
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                title = { TitleTopBar(stringResource(R.string.entry_text)) },
+                navigationIcon = {
+                    IconButton(
+                        onClick = { navController.popBackStack() }
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                            contentDescription = stringResource(R.string.ic_arrow_back_content_description)
+                        )
+                    }
+                }
+            )
+        }
+    ) { innerPadding ->
+        Box(
+            modifier = Modifier.padding(innerPadding)
         ) {
-            EntryTopAppBar {
-                navController.popBackStack()
-            }
-
-            OutlinedTextField(
-                value = viewModel.emailValue,
-                onValueChange = { viewModel.updateEmail(it) },
-                label = { Text(text = stringResource(R.string.input_email_text)) },
-                modifier = Modifier.padding(0.dp, 50.dp, 0.dp, 0.dp),
-                isError = viewModel.errorEmail || viewModel.entryError,
-                supportingText = {
-                    if (viewModel.errorEmail)
-                        Text(text = stringResource(R.string.invalid_email_text))
-                    else if (viewModel.entryError)
-                        Text(text = stringResource(R.string.entry_error))
-                },
-                trailingIcon = {
-                    if (viewModel.errorEmail) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_error),
-                            contentDescription = stringResource(R.string.invalid_email_text)
-                        )
-                    }
-                },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                singleLine = true
-            )
-
-            OutlinedTextField(
-                value = viewModel.passwordValue,
-                onValueChange = { viewModel.updatePassword(it) },
-                label = { Text(text = stringResource(R.string.input_password_text)) },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                visualTransformation = if (viewModel.visibilityPassword)
-                    VisualTransformation.None
-                else
-                    PasswordVisualTransformation(),
-                isError = viewModel.errorPassword || viewModel.entryError,
-                trailingIcon = {
-                    val icon = if (viewModel.errorPassword)
-                        painterResource(R.drawable.ic_error)
-                    else if (viewModel.visibilityPassword)
-                        painterResource(R.drawable.ic_visibility)
-                    else
-                        painterResource(R.drawable.ic_visibility_off)
-
-                    val contentDescription = if (viewModel.errorPassword)
-                        stringResource(R.string.invalid_password)
-                    else if (viewModel.visibilityPassword)
-                        stringResource(R.string.show_password_text)
-                    else
-                        stringResource(R.string.hide_password_text)
-
-                    IconButton(onClick = { viewModel.updateVisibilityPassword(!viewModel.visibilityPassword) }) {
-                        Icon(
-                            painter = icon,
-                            contentDescription = contentDescription
-                        )
-                    }
-                },
-                supportingText = {
-                    if (viewModel.errorPassword)
-                        Text(text = stringResource(R.string.error_password_text))
-                },
-                singleLine = true
-            )
-
-            Button(
-                onClick = {
-                    viewModel.entry()
-                },
-                enabled = !viewModel.visibilityProgressBar,
-                modifier = Modifier.padding(0.dp, 10.dp, 0.dp, 0.dp)
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = stringResource(R.string.entry_button_text))
+                OutlinedTextField(
+                    value = viewModel.emailValue,
+                    onValueChange = { viewModel.updateEmail(it) },
+                    label = { Text(text = stringResource(R.string.input_email_text)) },
+                    modifier = Modifier.padding(0.dp, 50.dp, 0.dp, 0.dp),
+                    isError = viewModel.errorEmail || viewModel.entryError,
+                    supportingText = {
+                        if (viewModel.errorEmail)
+                            Text(text = stringResource(R.string.invalid_email_text))
+                        else if (viewModel.entryError)
+                            Text(text = stringResource(R.string.entry_error))
+                    },
+                    trailingIcon = {
+                        if (viewModel.errorEmail) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_error),
+                                contentDescription = stringResource(R.string.invalid_email_text)
+                            )
+                        }
+                    },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                    singleLine = true
+                )
+
+                OutlinedTextField(
+                    value = viewModel.passwordValue,
+                    onValueChange = { viewModel.updatePassword(it) },
+                    label = { Text(text = stringResource(R.string.input_password_text)) },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                    visualTransformation = if (viewModel.visibilityPassword)
+                        VisualTransformation.None
+                    else
+                        PasswordVisualTransformation(),
+                    isError = viewModel.errorPassword || viewModel.entryError,
+                    trailingIcon = {
+                        val icon = if (viewModel.errorPassword)
+                            painterResource(R.drawable.ic_error)
+                        else if (viewModel.visibilityPassword)
+                            painterResource(R.drawable.ic_visibility)
+                        else
+                            painterResource(R.drawable.ic_visibility_off)
+
+                        val contentDescription = if (viewModel.errorPassword)
+                            stringResource(R.string.invalid_password)
+                        else if (viewModel.visibilityPassword)
+                            stringResource(R.string.show_password_text)
+                        else
+                            stringResource(R.string.hide_password_text)
+
+                        IconButton(onClick = { viewModel.updateVisibilityPassword(!viewModel.visibilityPassword) }) {
+                            Icon(
+                                painter = icon,
+                                contentDescription = contentDescription
+                            )
+                        }
+                    },
+                    supportingText = {
+                        if (viewModel.errorPassword)
+                            Text(text = stringResource(R.string.error_password_text))
+                    },
+                    singleLine = true
+                )
+
+                Button(
+                    onClick = {
+                        viewModel.entry()
+                    },
+                    enabled = !viewModel.visibilityProgressBar,
+                    modifier = Modifier.padding(0.dp, 10.dp, 0.dp, 0.dp)
+                ) {
+                    Text(text = stringResource(R.string.entry_button_text))
+                }
             }
-        }
 
-        if (viewModel.visibilityProgressBar) {
-            CircularProgressIndicator(
-                modifier = Modifier.align(Alignment.Center)
-            )
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun EntryTopAppBar(onClick: () -> Unit) {
-    CenterAlignedTopAppBar(
-        title = { Text(text = stringResource(R.string.entry_text)) },
-        navigationIcon = {
-            IconButton(onClick = onClick) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                    contentDescription = stringResource(R.string.ic_arrow_back_content_description)
+            if (viewModel.visibilityProgressBar) {
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center)
                 )
             }
         }
-    )
+    }
 }

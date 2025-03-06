@@ -24,7 +24,6 @@ fun <T: Any> EndlessLazyColumn(
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues = PaddingValues(0.dp),
     verticalArrangement: Arrangement.Vertical = Arrangement.Top,
-    horizontalDivider: Boolean = false,
     items: List<T>,
     loadMore: () -> Unit,
     itemContent: @Composable (T) -> Unit,
@@ -49,15 +48,6 @@ fun <T: Any> EndlessLazyColumn(
     ) {
         itemsIndexed(items) { index, item ->
             itemContent.invoke(item)
-
-            if (horizontalDivider && index != items.size) {
-                HorizontalDivider(
-                    thickness = 2.dp,
-                    modifier = Modifier
-                        .padding(10.dp, 0.dp)
-                        .clip(RoundedCornerShape(5.dp))
-                )
-            }
         }
     }
 }

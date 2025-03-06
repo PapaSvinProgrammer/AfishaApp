@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -35,7 +36,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -45,12 +45,14 @@ import com.example.afishaapp.app.navigation.CommentListRoute
 import com.example.afishaapp.app.support.ConvertCountTitle
 import com.example.afishaapp.app.support.ConvertData
 import com.example.afishaapp.app.support.ConvertDate
+import com.example.afishaapp.ui.theme.Green
 import com.example.afishaapp.ui.widget.ChipInfo
-import com.example.afishaapp.ui.widget.SelectRow
+import com.example.afishaapp.ui.widget.row.SelectRow
 import com.example.afishaapp.ui.widget.card.CommentCard
 import com.example.afishaapp.ui.widget.card.ImageCard
 import com.example.afishaapp.ui.widget.collapsingTopBar.CollapsedTopBar
 import com.example.afishaapp.ui.widget.collapsingTopBar.ExpandedTopBar
+import com.example.afishaapp.ui.widget.text.TitleTopBar
 
 @Composable
 fun EventScreen(
@@ -89,12 +91,7 @@ fun EventScreen(
         CollapsedTopBar(
             isCollapsed = isCollapsed,
             title = {
-                Text(
-                    text = viewModel.event?.shortTitle.toString(),
-                    fontSize = 16.sp,
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1
-                )
+                TitleTopBar(viewModel.event?.shortTitle.toString())
             },
             navigationIcon = {
                 IconButton(
@@ -195,7 +192,9 @@ fun EventScreen(
                                 painter = painterResource(R.drawable.ic_comment),
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier.padding(0.dp, 0.dp, 10.dp, 0.dp)
+                                modifier = Modifier
+                                    .padding(0.dp, 0.dp, 10.dp, 0.dp)
+                                    .size(28.dp),
                             )
                         }
                     )
