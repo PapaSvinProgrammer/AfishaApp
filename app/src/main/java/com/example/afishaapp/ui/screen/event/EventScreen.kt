@@ -1,5 +1,6 @@
 package com.example.afishaapp.ui.screen.event
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.snapping.SnapPosition
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.horizontalScroll
@@ -17,6 +18,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
@@ -31,11 +33,13 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -45,8 +49,8 @@ import com.example.afishaapp.app.navigation.CommentListRoute
 import com.example.afishaapp.app.support.ConvertCountTitle
 import com.example.afishaapp.app.support.ConvertData
 import com.example.afishaapp.app.support.ConvertDate
-import com.example.afishaapp.ui.theme.Green
-import com.example.afishaapp.ui.widget.ChipInfo
+import com.example.afishaapp.ui.theme.DefaultPadding
+import com.example.afishaapp.ui.widget.chip.ChipInfo
 import com.example.afishaapp.ui.widget.row.SelectRow
 import com.example.afishaapp.ui.widget.card.CommentCard
 import com.example.afishaapp.ui.widget.card.ImageCard
@@ -177,42 +181,10 @@ fun EventScreen(
             }
 
             item {
-                Row(
-                    modifier = Modifier
-                        .horizontalScroll(rememberScrollState())
-                        .padding(0.dp, 20.dp, 0.dp, 0.dp),
-                    horizontalArrangement = Arrangement.spacedBy(5.dp)
-                ) {
-                    ChipInfo(
-                        modifier = Modifier.padding(10.dp, 0.dp, 0.dp,0.dp),
-                        title = ConvertCountTitle.convertCommentsCount(viewModel.event?.commentsCount ?: 0),
-                        subtitle = ConvertCountTitle.convertLikeCount(viewModel.event?.favoritesCount ?: 0),
-                        icon = {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_comment),
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier
-                                    .padding(0.dp, 0.dp, 10.dp, 0.dp)
-                                    .size(28.dp),
-                            )
-                        }
-                    )
-
-                    ChipInfo(
-                        title = stringResource(R.string.age),
-                        subtitle = ConvertData.convertAgeRestriction(viewModel.event?.ageRestriction.toString())
-                    )
-
-                    ChipInfo(
-                        modifier = Modifier.padding(0.dp, 0.dp, 10.dp,0.dp),
-                        title = stringResource(R.string.duration),
-                        subtitle = ConvertDate.convertDuration(viewModel.event?.dates ?: listOf())
-                    )
-                }
+                InfoRow(viewModel, navController)
 
                 LazyRow(
-                    contentPadding = PaddingValues(10.dp),
+                    contentPadding = PaddingValues(DefaultPadding, 10.dp),
                     horizontalArrangement = Arrangement.spacedBy(5.dp)
                 ) {
                     viewModel.event?.let {
@@ -224,6 +196,11 @@ fun EventScreen(
                         }
                     }
                 }
+
+                EventDescriptionText(
+                    title = viewModel.event?.title.toString(),
+                    bodyText = viewModel.event?.bodyText.toString()
+                )
 
                 SelectRow(
                     text = ConvertCountTitle.convertCommentsCount(
@@ -242,7 +219,7 @@ fun EventScreen(
                 }
 
                 LazyRow(
-                    contentPadding = PaddingValues(10.dp, 0.dp),
+                    contentPadding = PaddingValues(DefaultPadding, 0.dp),
                     horizontalArrangement = Arrangement.spacedBy(10.dp),
                     state = commentLazyState,
                     flingBehavior = commentSnapBehavior
@@ -271,7 +248,7 @@ fun EventScreen(
                 }
 
                 LazyRow(
-                    contentPadding = PaddingValues(10.dp, 0.dp),
+                    contentPadding = PaddingValues(DefaultPadding, 0.dp),
                     horizontalArrangement = Arrangement.spacedBy(10.dp),
                     state = imageListState,
                     flingBehavior = imageSnapBehavior
@@ -294,5 +271,74 @@ fun EventScreen(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun EventDescriptionText(
+    title: String,
+    bodyText: String
+) {
+    Text(
+        text = ConvertData.convertTitle(title),
+        fontWeight = FontWeight.Bold,
+        fontSize = 15.sp,
+        modifier = Modifier.padding(DefaultPadding, 0.dp, DefaultPadding, 5.dp)
+    )
+
+    Text(
+        text = bodyText,
+        fontSize = 14.sp,
+        maxLines = 4,
+        overflow = TextOverflow.Ellipsis,
+        modifier = Modifier.padding(DefaultPadding, 0.dp)
+    )
+}
+
+@Composable
+fun InfoRow(viewModel: EventViewModel, navController: NavController) {
+    Row(
+        modifier = Modifier
+            .horizontalScroll(rememberScrollState())
+            .padding(0.dp, 20.dp, 0.dp, 0.dp),
+        horizontalArrangement = Arrangement.spacedBy(5.dp)
+    ) {
+        ChipInfo(
+            modifier = Modifier
+                .padding(DefaultPadding, 0.dp, 0.dp,0.dp)
+                .clip(RoundedCornerShape(10.dp))
+                .clickable {
+                    navController.navigate(
+                        CommentListRoute(
+                            name = viewModel.event?.shortTitle.toString(),
+                            type = "event",
+                            id = viewModel.event?.id ?: -1
+                        )
+                    )
+                },
+            title = ConvertCountTitle.convertCommentsCount(viewModel.event?.commentsCount ?: 0),
+            subtitle = ConvertCountTitle.convertLikeCount(viewModel.event?.favoritesCount ?: 0),
+            icon = {
+                Icon(
+                    painter = painterResource(R.drawable.ic_comment),
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier
+                        .padding(0.dp, 0.dp, 10.dp, 0.dp)
+                        .size(28.dp),
+                )
+            }
+        )
+
+        ChipInfo(
+            title = stringResource(R.string.age),
+            subtitle = ConvertData.convertAgeRestriction(viewModel.event?.ageRestriction.toString())
+        )
+
+        ChipInfo(
+            modifier = Modifier.padding(0.dp, 0.dp, DefaultPadding,0.dp),
+            title = stringResource(R.string.duration),
+            subtitle = ConvertDate.convertListDateRange(viewModel.event?.dates ?: listOf())
+        )
     }
 }

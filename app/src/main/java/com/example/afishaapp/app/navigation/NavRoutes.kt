@@ -48,3 +48,8 @@ data class CommentListRoute(
     val name: String,
     val type: String
 )
+
+@Serializable
+data class MovieRoute(
+    val id: Int
+)

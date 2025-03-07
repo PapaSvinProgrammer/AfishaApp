@@ -12,7 +12,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -20,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.afishaapp.R
+import com.example.afishaapp.app.navigation.EventRoute
 import com.example.afishaapp.data.module.Category
 import com.example.afishaapp.ui.screen.bottomSheet.CategoryEventBottomSheet
 import com.example.afishaapp.ui.widget.endlessLazy.EndlessLazyColumn
@@ -94,7 +94,9 @@ fun EventListScreen(
                     event = event,
                     fill = true,
                     onClick = {
-
+                        navController.navigate(
+                            EventRoute(event.id)
+                        )
                     }
                 )
             }

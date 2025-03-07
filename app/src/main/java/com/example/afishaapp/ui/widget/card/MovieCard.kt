@@ -1,6 +1,5 @@
 package com.example.afishaapp.ui.widget.card
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
@@ -8,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.example.afishaapp.data.module.movie.Movie
-import com.example.afishaapp.ui.theme.Green
+import com.example.afishaapp.ui.widget.chip.ChipRating
 
 @Composable
 fun MovieCard(
@@ -58,21 +58,12 @@ fun MovieCard(
                 contentScale = ContentScale.Crop
             )
 
-            Box(
+            ChipRating(
+                rating = movie.imdbRating.toString(),
                 modifier = Modifier
                     .wrapContentSize()
                     .padding(5.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(Green)
-            ) {
-                Text(
-                    text = movie.imdbRating.toString(),
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White,
-                    modifier = Modifier.padding(5.dp, 0.dp),
-                    fontSize = 14.sp
-                )
-            }
+            )
         }
 
         Text(

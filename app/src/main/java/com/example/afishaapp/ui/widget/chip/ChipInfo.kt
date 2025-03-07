@@ -1,4 +1,4 @@
-package com.example.afishaapp.ui.widget
+package com.example.afishaapp.ui.widget.chip
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -29,7 +29,7 @@ fun ChipInfo(
     icon: @Composable () -> Unit = {  }
 ) {
     Box(
-        modifier = modifier
+        modifier = modifier.wrapContentSize()
     ) {
         Row(
             modifier = Modifier

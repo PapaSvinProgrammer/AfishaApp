@@ -6,6 +6,7 @@ import com.example.afishaapp.ui.screen.entry.EntryViewModel
 import com.example.afishaapp.ui.screen.event.EventViewModel
 import com.example.afishaapp.ui.screen.eventList.EventListViewModel
 import com.example.afishaapp.ui.screen.home.HomeViewModel
+import com.example.afishaapp.ui.screen.movie.MovieViewModel
 import com.example.afishaapp.ui.screen.movieList.MovieListViewModel
 import com.example.afishaapp.ui.screen.registration.RegistrationViewModel
 import dagger.Binds
@@ -59,4 +60,9 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(CommentListViewModel::class)
     fun bindCommentLIstViewModel(viewModel: CommentListViewModel): ViewModel
+    
+    @Binds
+    @IntoMap
+    @ViewModelKey(MovieViewModel::class)
+    fun bindMovieViewModel(viewModel: MovieViewModel): ViewModel
 }

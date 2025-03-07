@@ -44,8 +44,10 @@ import com.example.afishaapp.app.navigation.AccountRoute
 import com.example.afishaapp.app.navigation.EventListRoute
 import com.example.afishaapp.app.navigation.EventRoute
 import com.example.afishaapp.app.navigation.MovieListRoute
+import com.example.afishaapp.app.navigation.MovieRoute
 import com.example.afishaapp.ui.screen.bottomSheet.CategoryEventBottomSheet
 import com.example.afishaapp.ui.screen.bottomSheet.CityBottomSheet
+import com.example.afishaapp.ui.theme.DefaultPadding
 import com.example.afishaapp.ui.widget.card.EventCard
 import com.example.afishaapp.ui.widget.card.MovieCard
 import com.example.afishaapp.ui.widget.row.SelectRow
@@ -134,7 +136,7 @@ fun HomeScreen(
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 FilledTonalButton(
-                    modifier = Modifier.padding(10.dp, 0.dp, 0.dp, 0.dp),
+                    modifier = Modifier.padding(DefaultPadding, 0.dp, 0.dp, 0.dp),
                     shape = RoundedCornerShape(10.dp),
                     onClick = { }
                 ) {
@@ -173,7 +175,7 @@ fun HomeScreen(
             }
 
             LazyRow(
-                contentPadding = PaddingValues(10.dp, 0.dp),
+                contentPadding = PaddingValues(DefaultPadding, 0.dp),
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
                 state = eventListState,
                 flingBehavior = eventFlingBehavior
@@ -207,7 +209,7 @@ fun HomeScreen(
             }
 
             LazyRow(
-                contentPadding = PaddingValues(10.dp, 0.dp),
+                contentPadding = PaddingValues(DefaultPadding, 0.dp),
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
                 state = movieListState,
                 flingBehavior = movieFlingBehavior
@@ -217,7 +219,9 @@ fun HomeScreen(
                         MovieCard(
                             movie = movie,
                             onClick = {
-
+                                navController.navigate(
+                                    MovieRoute(movie.id)
+                                )
                             }
                         )
                     }
@@ -240,7 +244,7 @@ fun HomeScreen(
             }
 
             LazyRow(
-                contentPadding = PaddingValues(10.dp, 0.dp),
+                contentPadding = PaddingValues(DefaultPadding, 0.dp),
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
                 state = concertListState,
                 flingBehavior = concertFlingBehavior
@@ -250,7 +254,9 @@ fun HomeScreen(
                         EventCard(
                             event = event,
                             onClick = {
-
+                                navController.navigate(
+                                    EventRoute(event.id)
+                                )
                             }
                         )
                     }
@@ -274,7 +280,7 @@ fun HomeScreen(
 
             LazyRow(
                 modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 20.dp),
-                contentPadding = PaddingValues(10.dp, 0.dp),
+                contentPadding = PaddingValues(DefaultPadding, 0.dp),
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
                 state = exhibitionListState,
                 flingBehavior = exhibitionFlingBehavior
@@ -284,7 +290,9 @@ fun HomeScreen(
                         EventCard(
                             event = event,
                             onClick = {
-
+                                navController.navigate(
+                                    EventRoute(event.id)
+                                )
                             }
                         )
                     }

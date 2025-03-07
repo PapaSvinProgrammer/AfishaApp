@@ -21,7 +21,7 @@ object ConvertDate {
         }
     }
 
-    fun convertDuration(dates: List<DateRange>): String {
+    fun convertListDateRange(dates: List<DateRange>): String {
         try {
             val last = dates.last()
 
@@ -29,7 +29,9 @@ object ConvertDate {
                 return DEFAULT_RESPONSE
             }
 
-            return convertStartDate(last)
+            val time = (last.end - last.start) / 1000
+
+            return convertDurationMilliseconds(time.toInt())
         } catch (e: NoSuchElementException) {
             return DEFAULT_RESPONSE
         }
@@ -41,18 +43,27 @@ object ConvertDate {
         return sdf.format(time * 1000)
     }
 
+    fun convertDurationMinutes(time: Int): String {
+        val hours = time / 60
+        val minutes = time % 60
+
+        return generateText(hours, minutes)
+    }
+
     private fun convertDate(time: Long): String {
         val sdf = SimpleDateFormat("dd MMMM", Locale.getDefault())
 
         return sdf.format(time * 1000)
     }
 
-    private fun convertStartDate(dateRange: DateRange): String {
-        val time = (dateRange.end - dateRange.start) / 1000
+    private fun convertDurationMilliseconds(time: Int): String {
+        val hours = time / 3600
+        val minutes = time / 60
 
-        val hours = (time / 3600).toInt()
-        val minutes = (time / 60).toInt()
+        return generateText(hours, minutes)
+    }
 
+    private fun generateText(hours: Int, minutes: Int): String {
         val convertHour = ConvertCountTitle.convertHoursCount(hours)
         val convertMinute = ConvertCountTitle.convertMinutesCount(minutes)
 

@@ -23,6 +23,8 @@ import com.example.afishaapp.ui.screen.eventList.EventListViewModel
 import com.example.afishaapp.ui.screen.favorite.FavoriteScreen
 import com.example.afishaapp.ui.screen.home.HomeScreen
 import com.example.afishaapp.ui.screen.home.HomeViewModel
+import com.example.afishaapp.ui.screen.movie.MovieScreen
+import com.example.afishaapp.ui.screen.movie.MovieViewModel
 import com.example.afishaapp.ui.screen.movieList.MovieListScreen
 import com.example.afishaapp.ui.screen.movieList.MovieListViewModel
 import com.example.afishaapp.ui.screen.profile.ProfileScreen
@@ -222,6 +224,30 @@ fun NavigationGraph(
                 objectId = commentListRoute.id,
                 objectName = commentListRoute.name,
                 type = commentListRoute.type
+            )
+        }
+
+        composable<MovieRoute> (
+            enterTransition = {
+                slideIntoContainer(
+                    animationSpec = tween(300, easing = EaseIn),
+                    towards = AnimatedContentTransitionScope.SlideDirection.Start
+                )
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    animationSpec = tween(300, easing = EaseOut),
+                    towards = AnimatedContentTransitionScope.SlideDirection.End
+                )
+            }
+        ) {
+            val movieRoute = it.toRoute<MovieRoute>()
+            val viewModel: MovieViewModel = viewModel(factory = viewModelFactory)
+
+            MovieScreen(
+                navController = navController,
+                viewModel = viewModel,
+                movieId = movieRoute.id
             )
         }
     }
