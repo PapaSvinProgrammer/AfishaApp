@@ -26,11 +26,12 @@ class SetPreferences @Inject constructor(
         preferencesRepository.setEntryState(state)
     }
 
-    suspend fun setDefaultCity(city: String) {
+    suspend fun setDefaultCity(city: String, slug: String) {
         if (city.isEmpty()) {
             return
         }
 
+        setLocationSlug(slug)
         preferencesRepository.setDefaultCity(city)
     }
 
@@ -40,5 +41,13 @@ class SetPreferences @Inject constructor(
         }
 
         preferencesRepository.setAvatarUrl(url)
+    }
+
+    private suspend fun setLocationSlug(locationSlug: String) {
+        if (locationSlug.isEmpty()) {
+            return
+        }
+
+        preferencesRepository.setLocationSlug(locationSlug)
     }
 }

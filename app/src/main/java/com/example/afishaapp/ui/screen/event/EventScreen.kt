@@ -39,7 +39,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -47,7 +46,7 @@ import coil3.compose.AsyncImage
 import com.example.afishaapp.R
 import com.example.afishaapp.app.navigation.CommentListRoute
 import com.example.afishaapp.app.support.ConvertCountTitle
-import com.example.afishaapp.app.support.ConvertData
+import com.example.afishaapp.app.support.ConvertInfo
 import com.example.afishaapp.app.support.ConvertDate
 import com.example.afishaapp.ui.theme.DefaultPadding
 import com.example.afishaapp.ui.widget.chip.ChipInfo
@@ -56,6 +55,7 @@ import com.example.afishaapp.ui.widget.card.CommentCard
 import com.example.afishaapp.ui.widget.card.ImageCard
 import com.example.afishaapp.ui.widget.collapsingTopBar.CollapsedTopBar
 import com.example.afishaapp.ui.widget.collapsingTopBar.ExpandedTopBar
+import com.example.afishaapp.ui.widget.text.EventDescriptionText
 import com.example.afishaapp.ui.widget.text.TitleTopBar
 
 @Composable
@@ -183,19 +183,7 @@ fun EventScreen(
             item {
                 InfoRow(viewModel, navController)
 
-                LazyRow(
-                    contentPadding = PaddingValues(DefaultPadding, 10.dp),
-                    horizontalArrangement = Arrangement.spacedBy(5.dp)
-                ) {
-                    viewModel.event?.let {
-                        items(it.tags) { tag ->
-                            SuggestionChip(
-                                label = { Text(text = tag) },
-                                onClick = {  }
-                            )
-                        }
-                    }
-                }
+                TagsRow(viewModel)
 
                 EventDescriptionText(
                     title = viewModel.event?.title.toString(),
@@ -275,28 +263,7 @@ fun EventScreen(
 }
 
 @Composable
-private fun EventDescriptionText(
-    title: String,
-    bodyText: String
-) {
-    Text(
-        text = ConvertData.convertTitle(title),
-        fontWeight = FontWeight.Bold,
-        fontSize = 15.sp,
-        modifier = Modifier.padding(DefaultPadding, 0.dp, DefaultPadding, 5.dp)
-    )
-
-    Text(
-        text = bodyText,
-        fontSize = 14.sp,
-        maxLines = 4,
-        overflow = TextOverflow.Ellipsis,
-        modifier = Modifier.padding(DefaultPadding, 0.dp)
-    )
-}
-
-@Composable
-fun InfoRow(viewModel: EventViewModel, navController: NavController) {
+private fun InfoRow(viewModel: EventViewModel, navController: NavController) {
     Row(
         modifier = Modifier
             .horizontalScroll(rememberScrollState())
@@ -332,7 +299,7 @@ fun InfoRow(viewModel: EventViewModel, navController: NavController) {
 
         ChipInfo(
             title = stringResource(R.string.age),
-            subtitle = ConvertData.convertAgeRestriction(viewModel.event?.ageRestriction.toString())
+            subtitle = ConvertInfo.convertAgeRestriction(viewModel.event?.ageRestriction.toString())
         )
 
         ChipInfo(
@@ -340,5 +307,22 @@ fun InfoRow(viewModel: EventViewModel, navController: NavController) {
             title = stringResource(R.string.duration),
             subtitle = ConvertDate.convertListDateRange(viewModel.event?.dates ?: listOf())
         )
+    }
+}
+
+@Composable
+private fun TagsRow(viewModel: EventViewModel) {
+    LazyRow(
+        contentPadding = PaddingValues(DefaultPadding, 8.dp, DefaultPadding, 15.dp),
+        horizontalArrangement = Arrangement.spacedBy(5.dp)
+    ) {
+        viewModel.event?.let {
+            items(it.tags) { tag ->
+                SuggestionChip(
+                    label = { Text(text = tag) },
+                    onClick = {  }
+                )
+            }
+        }
     }
 }

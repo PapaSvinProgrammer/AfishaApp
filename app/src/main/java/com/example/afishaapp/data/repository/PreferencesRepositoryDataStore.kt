@@ -20,6 +20,7 @@ private val EMAIL_FIELD = stringPreferencesKey("Email")
 private val ENTRY_STATE_FIELD = booleanPreferencesKey("EntryState")
 private val CITY_FIELD = stringPreferencesKey("DefaultCity")
 private val AVATAR_FIELD = stringPreferencesKey("AvatarUrl")
+private val LOCATION_SLUG_FIELD = stringPreferencesKey("LocationSlug")
 
 class PreferencesRepositoryDataStore @Inject constructor(
     private val context: Context
@@ -56,6 +57,12 @@ class PreferencesRepositoryDataStore @Inject constructor(
         }
     }
 
+    override suspend fun setLocationSlug(text: String) {
+        context.datastore.edit { settings ->
+            settings[LOCATION_SLUG_FIELD] = text
+        }
+    }
+
     override fun getName(): Flow<String> {
         return context.datastore.data.map {
             it[NAME_FIELD] ?: DEFAULT_RESPONSE
@@ -83,6 +90,12 @@ class PreferencesRepositoryDataStore @Inject constructor(
     override fun getDefaultCity(): Flow<String> {
         return context.datastore.data.map {
             it[CITY_FIELD] ?: DEFAULT_RESPONSE
+        }
+    }
+
+    override fun getLocationSlug(): Flow<String> {
+        return context.datastore.data.map {
+            it[LOCATION_SLUG_FIELD] ?: DEFAULT_RESPONSE
         }
     }
 }

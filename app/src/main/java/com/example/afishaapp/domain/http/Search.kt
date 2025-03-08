@@ -1,5 +1,6 @@
 package com.example.afishaapp.domain.http
 
+import com.example.afishaapp.data.module.QueryParameters
 import com.example.afishaapp.data.module.search.SearchResponse
 import com.example.afishaapp.domain.repository.http.SearchRepository
 import javax.inject.Inject
@@ -12,10 +13,12 @@ class Search @Inject constructor(
             return null
         }
 
-        return searchRepository.search(
-            text = text,
-            place = place
+        val queryParameters = QueryParameters(
+            searchText = text,
+            locationSlug = place
         )
+
+        return searchRepository.search(queryParameters)
     }
 
     suspend fun searchEvent(text: String, place: String = ""): SearchResponse? {
@@ -23,10 +26,12 @@ class Search @Inject constructor(
             return null
         }
 
-        return searchRepository.searchEvent(
-            text = text,
-            place = place
+        val queryParameters = QueryParameters(
+            searchText = text,
+            locationSlug = place
         )
+
+        return searchRepository.searchEvent(queryParameters)
     }
 
     suspend fun searchNews(text: String, place: String = ""): SearchResponse? {
@@ -34,10 +39,12 @@ class Search @Inject constructor(
             return null
         }
 
-        return searchRepository.searchNews(
-            text = text,
-            place = place
+        val queryParameters = QueryParameters(
+            searchText = text,
+            locationSlug = place
         )
+
+        return searchRepository.searchNews(queryParameters)
     }
 
     suspend fun searchPlace(text: String, place: String = ""): SearchResponse? {
@@ -45,9 +52,11 @@ class Search @Inject constructor(
             return null
         }
 
-        return searchRepository.searchPlace(
-            text = text,
-            place = place
+        val queryParameters = QueryParameters(
+            searchText = text,
+            locationSlug = place
         )
+
+        return searchRepository.searchPlace(queryParameters)
     }
 }

@@ -1,6 +1,6 @@
 package com.example.afishaapp.app.support
 
-object ConvertData {
+object ConvertInfo {
     fun convertTitle(title: String): String {
         return title.replaceFirstChar(Char::uppercaseChar)
     }

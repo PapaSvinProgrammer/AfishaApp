@@ -23,5 +23,6 @@ data class Movie(
     val awards: String,
     val images: List<ImageItem>,
     val poster: ImageItem,
-    val imdbRating: Float
+    val imdbRating: Float,
+    val trailer: String
 )

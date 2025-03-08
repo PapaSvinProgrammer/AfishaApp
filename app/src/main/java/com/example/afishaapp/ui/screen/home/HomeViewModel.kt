@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.afishaapp.data.module.Category
 import com.example.afishaapp.data.module.City
+import com.example.afishaapp.data.module.QueryParameters
 import com.example.afishaapp.data.module.event.EventResponse
 import com.example.afishaapp.data.module.movie.MovieResponse
 import com.example.afishaapp.domain.http.GetEvent
@@ -40,7 +41,9 @@ class HomeViewModel @Inject constructor(
 
     var city by mutableStateOf<List<City>>(listOf())
         private set
-    var defaultCity by mutableStateOf("")
+    var locationName by mutableStateOf("")
+        private set
+    var currentLocationSlug by mutableStateOf("")
         private set
 
     var eventResponse by mutableStateOf<EventResponse?>(null)
@@ -51,6 +54,7 @@ class HomeViewModel @Inject constructor(
         private set
     var eventExhibition by mutableStateOf<EventResponse?>(null)
         private set
+
     var categoryEvent by mutableStateOf<List<Category>>(listOf())
         private set
     var currentCategory by mutableStateOf(DefaultObject.DEFAULT_CATEGORY)
@@ -68,14 +72,25 @@ class HomeViewModel @Inject constructor(
 
     fun updateDefaultCity(city: City) {
         viewModelScope.launch {
-            setPreferences.setDefaultCity(city.name)
+            setPreferences.setDefaultCity(
+                city = city.name,
+                slug = city.slug
+            )
         }
     }
 
     fun getDefaultCity() {
         viewModelScope.launch {
             preferencesRepository.getDefaultCity().collect {
-                defaultCity = it
+                locationName = it
+            }
+        }
+    }
+
+    fun getLocationSlug() {
+        viewModelScope.launch {
+            preferencesRepository.getLocationSlug().collect {
+                currentLocationSlug = it
             }
         }
     }
@@ -92,40 +107,38 @@ class HomeViewModel @Inject constructor(
         currentCategory = category
     }
 
-    fun getEvents(cityName: String, category: Category) {
-        val city = city.filter { it.name == cityName }
-
-        if (city.isEmpty()) return
-
+    fun getEvents(locationSlug: String, category: Category) {
         viewModelScope.launch(Dispatchers.IO) {
-            eventResponse = getEvent.getEvents(
-                location = city.first().slug,
+            val queryParameters = QueryParameters(
+                locationSlug = locationSlug,
                 category = category.slug
             )
+
+            eventResponse = getEvent.getEvents(queryParameters)
         }
 
         viewModelScope.launch(Dispatchers.IO) {
-            eventConcert = getEvent.getEvents(
-                location = city.first().slug,
+            val queryParameters = QueryParameters(
+                locationSlug = locationSlug,
                 category = CONCERT_CATEGORY
             )
+
+            eventConcert = getEvent.getEvents(queryParameters)
         }
 
         viewModelScope.launch(Dispatchers.IO) {
-            eventExhibition = getEvent.getEvents(
-                location = city.first().slug,
+            val queryParameters = QueryParameters(
+                locationSlug = locationSlug,
                 category = EXHIBITION_CATEGORY
             )
+
+            eventExhibition = getEvent.getEvents(queryParameters)
         }
     }
 
-    fun getMovies(cityName: String) {
-        val city = city.filter { it.name == cityName }
-
-        if (city.isEmpty()) return
-
+    fun getMovies(locationSlug: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            movieResponse = getMovie.getMoviesByRating(city.first().slug)
+            movieResponse = getMovie.getMoviesByRating(locationSlug)
         }
     }
 

@@ -1,13 +1,19 @@
 package com.example.afishaapp.ui.screen.movie
 
+import androidx.compose.foundation.gestures.snapping.SnapPosition
+import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -18,6 +24,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -38,13 +45,16 @@ import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import com.example.afishaapp.R
 import com.example.afishaapp.app.support.ConvertCountTitle
-import com.example.afishaapp.app.support.ConvertData
+import com.example.afishaapp.app.support.ConvertInfo
 import com.example.afishaapp.app.support.ConvertDate
 import com.example.afishaapp.ui.theme.DefaultPadding
+import com.example.afishaapp.ui.widget.card.ImageCard
 import com.example.afishaapp.ui.widget.chip.ChipInfo
 import com.example.afishaapp.ui.widget.chip.ChipRating
 import com.example.afishaapp.ui.widget.collapsingTopBar.CollapsedTopBar
 import com.example.afishaapp.ui.widget.collapsingTopBar.ExpandedTopBar
+import com.example.afishaapp.ui.widget.row.SelectRow
+import com.example.afishaapp.ui.widget.text.EventDescriptionText
 import com.example.afishaapp.ui.widget.text.TitleTopBar
 
 @Composable
@@ -53,12 +63,20 @@ fun MovieScreen(
     viewModel: MovieViewModel,
     movieId: Int
 ) {
+    viewModel.getLocationSlug()
     viewModel.getMovie(movieId)
+    viewModel.getMovieShows(movieId, viewModel.currentLocationSlug)
 
-    val listState = rememberLazyListState()
+    val imageListState = rememberLazyListState()
+    val imageFlingBehavior = rememberSnapFlingBehavior(
+        lazyListState = imageListState,
+        snapPosition = SnapPosition.Start
+    )
+
+    val collapsedListState = rememberLazyListState()
     val isCollapsed: Boolean by remember {
         derivedStateOf {
-            listState.firstVisibleItemIndex > 0
+            collapsedListState.firstVisibleItemIndex > 0
         }
     }
 
@@ -67,7 +85,9 @@ fun MovieScreen(
         else
             Color.White
 
-    Box {
+    Box(
+        modifier = Modifier.navigationBarsPadding()
+    ) {
         CollapsedTopBar(
             isCollapsed = isCollapsed,
             title = {
@@ -115,7 +135,7 @@ fun MovieScreen(
         )
 
         LazyColumn(
-            state = listState
+            state = collapsedListState
         ) {
             item {
                 ExpandedTopBar {
@@ -157,14 +177,42 @@ fun MovieScreen(
             }
 
             item {
-                InfoRow(viewModel, navController)
+                InfoRow(viewModel)
+
+                GenresRow(viewModel)
+
+                EventDescriptionText(
+                    title = viewModel.movie?.description.toString(),
+                    bodyText = viewModel.movie?.bodyText.toString()
+                )
+
+                SelectRow(
+                    text = stringResource(R.string.images),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp
+                ) {
+
+                }
+
+                LazyRow(
+                    contentPadding = PaddingValues(DefaultPadding, 0.dp),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    state = imageListState,
+                    flingBehavior = imageFlingBehavior
+                ) {
+                    viewModel.movie?.let {
+                        items(it.images) { image ->
+                            ImageCard(image.thumbnails.highImage)
+                        }
+                    }
+                }
             }
         }
     }
 }
 
 @Composable
-private fun InfoRow(viewModel: MovieViewModel, navController: NavController) {
+private fun InfoRow(viewModel: MovieViewModel) {
     Row(
         modifier = Modifier
             .horizontalScroll(rememberScrollState())
@@ -193,7 +241,7 @@ private fun InfoRow(viewModel: MovieViewModel, navController: NavController) {
 
         ChipInfo(
             title = stringResource(R.string.age),
-            subtitle = ConvertData.convertAgeRestriction(viewModel.movie?.ageRestriction.toString())
+            subtitle = ConvertInfo.convertAgeRestriction(viewModel.movie?.ageRestriction.toString())
         )
 
         ChipInfo(
@@ -213,5 +261,22 @@ private fun InfoRow(viewModel: MovieViewModel, navController: NavController) {
             subtitle = viewModel.movie?.country.toString(),
             modifier = Modifier.padding(0.dp, 0.dp, DefaultPadding, 0.dp)
         )
+    }
+}
+
+@Composable
+private fun GenresRow(viewModel: MovieViewModel) {
+    LazyRow(
+        contentPadding = PaddingValues(DefaultPadding, 8.dp, DefaultPadding, 15.dp),
+        horizontalArrangement = Arrangement.spacedBy(5.dp)
+    ) {
+        viewModel.movie?.let {
+            items(it.genres) { genre ->
+                SuggestionChip(
+                    onClick = { },
+                    label = { Text(text = genre.name) }
+                )
+            }
+        }
     }
 }

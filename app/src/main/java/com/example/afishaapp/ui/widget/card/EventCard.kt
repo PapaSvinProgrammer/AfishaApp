@@ -22,7 +22,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
-import com.example.afishaapp.app.support.ConvertData
+import com.example.afishaapp.app.support.ConvertInfo
 import com.example.afishaapp.app.support.ConvertDate
 import com.example.afishaapp.data.module.event.Event
 
@@ -70,7 +70,7 @@ fun EventCard(
         )
 
         Text(
-            text = ConvertData.convertTitle(event.shortTitle),
+            text = ConvertInfo.convertTitle(event.shortTitle),
             fontSize = 15.sp,
             fontWeight = FontWeight.Medium,
             color = Color.Black,
@@ -87,7 +87,7 @@ fun EventCard(
         )
 
         Text(
-            text = ConvertData.convertPrice(event.price),
+            text = ConvertInfo.convertPrice(event.price),
             fontSize = 15.sp,
             fontWeight = FontWeight.Medium,
             color = Color.Black

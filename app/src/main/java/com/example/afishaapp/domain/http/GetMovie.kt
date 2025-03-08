@@ -1,8 +1,12 @@
 package com.example.afishaapp.domain.http
 
+import com.example.afishaapp.data.module.QueryParameters
 import com.example.afishaapp.data.module.movie.Movie
 import com.example.afishaapp.data.module.movie.MovieResponse
+import com.example.afishaapp.data.module.movieShow.MovieShowResponse
 import com.example.afishaapp.domain.repository.http.MovieRepository
+import java.time.LocalDate
+import java.time.ZoneId
 import javax.inject.Inject
 
 class GetMovie @Inject constructor(
@@ -10,32 +14,35 @@ class GetMovie @Inject constructor(
 ) {
     suspend fun getMoviesByRating(locationSlug: String, page: Int = 1): MovieResponse? {
         val currentTime = System.currentTimeMillis() / 1000
-
-        return movieRepository.getMoviesOrderByRating(
+        val queryParameters = QueryParameters(
             locationSlug = locationSlug,
-            actualTime = currentTime.toInt(),
-            page = page
+            page = page,
+            actualSince = currentTime.toInt()
         )
+
+        return movieRepository.getMoviesOrderByRating(queryParameters)
     }
 
     suspend fun getMoviesByTitle(locationSlug: String, page: Int = 1): MovieResponse? {
         val currentTime = System.currentTimeMillis() / 1000
-
-        return movieRepository.getMoviesOrderByTitle(
+        val queryParameters = QueryParameters(
             locationSlug = locationSlug,
-            actualTime = currentTime.toInt(),
-            page = page
+            page = page,
+            actualSince = currentTime.toInt()
         )
+
+        return movieRepository.getMoviesOrderByTitle(queryParameters)
     }
 
     suspend fun getMoviesByYear(locationSlug: String, page: Int = 1): MovieResponse? {
         val currentTime = System.currentTimeMillis() / 1000
-
-        return movieRepository.getMoviesOrderByYear(
+        val queryParameters = QueryParameters(
             locationSlug = locationSlug,
-            actualTime = currentTime.toInt(),
-            page = page
+            page = page,
+            actualSince = currentTime.toInt()
         )
+
+        return movieRepository.getMoviesOrderByYear(queryParameters)
     }
 
     suspend fun getMovieInfo(movieId: Int): Movie? {

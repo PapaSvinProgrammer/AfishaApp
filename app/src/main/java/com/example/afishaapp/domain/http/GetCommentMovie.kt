@@ -1,5 +1,6 @@
 package com.example.afishaapp.domain.http
 
+import com.example.afishaapp.data.module.QueryParameters
 import com.example.afishaapp.data.module.comment.CommentResponse
 import com.example.afishaapp.domain.repository.http.CommentRepository
 import javax.inject.Inject
@@ -12,10 +13,12 @@ class GetCommentMovie @Inject constructor(
             return null
         }
 
-        return commentRepository.getMovieCommentAsc(
-            movieId = movieId,
+        val queryParameters = QueryParameters(
+            id = movieId,
             page = page
         )
+
+        return commentRepository.getMovieCommentAsc(queryParameters)
     }
 
     suspend fun getDesc(movieId: Int, page: Int = 1): CommentResponse? {
@@ -23,9 +26,11 @@ class GetCommentMovie @Inject constructor(
             return null
         }
 
-        return commentRepository.getMovieCommentDesc(
-            movieId = movieId,
+        val queryParameters = QueryParameters(
+            id = movieId,
             page = page
         )
+
+        return commentRepository.getMovieCommentDesc(queryParameters)
     }
 }

@@ -18,6 +18,7 @@ import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.afishaapp.R
+import com.example.afishaapp.ui.theme.DefaultPadding
 import com.example.afishaapp.ui.widget.text.TitleTopBar
 
 private var selectedIndex by mutableIntStateOf(0)
@@ -33,11 +34,11 @@ fun FavoriteScreen() {
         CenterAlignedTopAppBar(
             title = {
                 TitleTopBar(stringResource(R.string.favorite_text))
-            },
+            }
         )
 
         SingleChoiceSegmentedButtonRow(
-            modifier = Modifier.padding(10.dp)
+            modifier = Modifier.padding(DefaultPadding, 10.dp)
         ) {
             ticketOptions.forEachIndexed { index, label ->
                 SegmentedButton(

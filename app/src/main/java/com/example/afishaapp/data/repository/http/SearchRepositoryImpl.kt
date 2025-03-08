@@ -1,6 +1,7 @@
 package com.example.afishaapp.data.repository.http
 
 import com.example.afishaapp.data.http.SearchService
+import com.example.afishaapp.data.module.QueryParameters
 import com.example.afishaapp.data.module.search.SearchResponse
 import com.example.afishaapp.domain.repository.http.SearchRepository
 import retrofit2.Retrofit
@@ -10,55 +11,55 @@ import javax.inject.Inject
 class SearchRepositoryImpl @Inject constructor(
     private val retrofit: Retrofit
 ): SearchRepository {
-    override suspend fun search(text: String, place: String): SearchResponse? {
+    override suspend fun search(queryParameters: QueryParameters): SearchResponse? {
         return try {
             retrofit.create<SearchService>().search(
-                text = text,
-                place = place
+                text = queryParameters.searchText,
+                location = queryParameters.locationSlug
             )
         } catch (e: Exception) {
             null
         }
     }
 
-    override suspend fun searchEvent(text: String, place: String): SearchResponse? {
+    override suspend fun searchEvent(queryParameters: QueryParameters): SearchResponse? {
         return try {
             retrofit.create<SearchService>().searchEvent(
-                text = text,
-                place = place
+                text = queryParameters.searchText,
+                location = queryParameters.locationSlug
             )
         } catch (e: Exception) {
             null
         }
     }
 
-    override suspend fun searchPlace(text: String, place: String): SearchResponse? {
+    override suspend fun searchPlace(queryParameters: QueryParameters): SearchResponse? {
         return try {
             retrofit.create<SearchService>().searchPlace(
-                text = text,
-                place = place
+                text = queryParameters.searchText,
+                location = queryParameters.locationSlug
             )
         } catch (e: Exception) {
             null
         }
     }
 
-    override suspend fun searchList(text: String, place: String): SearchResponse? {
+    override suspend fun searchList(queryParameters: QueryParameters): SearchResponse? {
         return try {
             retrofit.create<SearchService>().searchList(
-                text = text,
-                place = place
+                text = queryParameters.searchText,
+                location = queryParameters.locationSlug
             )
         } catch (e: Exception) {
             null
         }
     }
 
-    override suspend fun searchNews(text: String, place: String): SearchResponse? {
+    override suspend fun searchNews(queryParameters: QueryParameters): SearchResponse? {
         return try {
             retrofit.create<SearchService>().searchNews(
-                text = text,
-                place = place
+                text = queryParameters.searchText,
+                location = queryParameters.locationSlug
             )
         } catch (e: Exception) {
             null

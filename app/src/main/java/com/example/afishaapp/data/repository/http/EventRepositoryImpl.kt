@@ -1,6 +1,7 @@
 package com.example.afishaapp.data.repository.http
 
 import com.example.afishaapp.data.http.EventService
+import com.example.afishaapp.data.module.QueryParameters
 import com.example.afishaapp.data.module.event.Event
 import com.example.afishaapp.data.module.event.EventResponse
 import com.example.afishaapp.domain.repository.http.EventRepository
@@ -11,18 +12,13 @@ import javax.inject.Inject
 class EventRepositoryImpl @Inject constructor(
     private val retrofit: Retrofit
 ): EventRepository {
-    override suspend fun getEvents(
-        currentTime: Int,
-        location: String,
-        category: String,
-        page: Int
-    ): EventResponse? {
+    override suspend fun getEvents(queryParameters: QueryParameters): EventResponse? {
         return try {
             retrofit.create<EventService>().getEvents(
-                currentTime = currentTime,
-                location = location,
-                categories = category,
-                page = page
+                currentTime = queryParameters.actualSince,
+                location = queryParameters.locationSlug,
+                categories = queryParameters.category,
+                page = queryParameters.page
             )
         } catch (e: Exception) {
             null

@@ -59,10 +59,11 @@ fun HomeScreen(
     viewModel: HomeViewModel,
     innerPadding: PaddingValues
 ) {
-    viewModel.getEvents(viewModel.defaultCity, viewModel.currentCategory)
+    viewModel.getEvents(viewModel.currentLocationSlug, viewModel.currentCategory)
     viewModel.getCity()
     viewModel.getDefaultCity()
-    viewModel.getMovies(viewModel.defaultCity)
+    viewModel.getLocationSlug()
+    viewModel.getMovies(viewModel.currentLocationSlug)
     viewModel.getCategories()
 
     val eventListState = rememberLazyListState()
@@ -95,7 +96,7 @@ fun HomeScreen(
                             )
                     ) {
                         Text(
-                            text = viewModel.defaultCity,
+                            text = viewModel.locationName,
                             fontSize = 17.sp,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(5.dp, 0.dp, 0.dp, 0.dp)
@@ -169,7 +170,7 @@ fun HomeScreen(
                     EventListRoute(
                         title = title,
                         categorySlug = viewModel.currentCategory.slug,
-                        location = viewModel.city.first { it.name == viewModel.defaultCity }.slug
+                        location = viewModel.currentLocationSlug
                     )
                 )
             }
@@ -203,7 +204,7 @@ fun HomeScreen(
                 navController.navigate(
                     MovieListRoute(
                         title = title,
-                        location = viewModel.city.first { it.name == viewModel.defaultCity }.slug
+                        location = viewModel.currentLocationSlug
                     )
                 )
             }
@@ -237,7 +238,7 @@ fun HomeScreen(
                 navController.navigate(
                     EventListRoute(
                         title = title,
-                        location = viewModel.city.first { it.name == viewModel.defaultCity }.slug,
+                        location = viewModel.currentLocationSlug,
                         categorySlug = HomeViewModel.CONCERT_CATEGORY
                     )
                 )
@@ -272,7 +273,7 @@ fun HomeScreen(
                 navController.navigate(
                     EventListRoute(
                         title = title,
-                        location = viewModel.city.first { it.name == viewModel.defaultCity }.slug,
+                        location = viewModel.currentLocationSlug,
                         categorySlug = HomeViewModel.EXHIBITION_CATEGORY
                     )
                 )
@@ -303,7 +304,7 @@ fun HomeScreen(
         if (viewModel.cityBottomSheetState) {
             CityBottomSheet(
                 data = viewModel.city,
-                currentCity = viewModel.defaultCity,
+                currentCity = viewModel.locationName,
                 dismissRequest = { viewModel.updateCityState(false) },
                 onClick = {
                     viewModel.updateDefaultCity(it)

@@ -1,11 +1,12 @@
 package com.example.afishaapp.domain.repository.http
 
+import com.example.afishaapp.data.module.QueryParameters
 import com.example.afishaapp.data.module.comment.CommentResponse
 
 interface CommentRepository {
-    suspend fun getMovieCommentAsc(movieId: Int, page: Int): CommentResponse?
-    suspend fun getMovieCommentDesc(movieId: Int, page: Int): CommentResponse?
+    suspend fun getMovieCommentAsc(queryParameters: QueryParameters): CommentResponse?
+    suspend fun getMovieCommentDesc(queryParameters: QueryParameters): CommentResponse?
 
-    suspend fun getEventCommentAsc(eventId: Int, page: Int): CommentResponse?
-    suspend fun getEventCommentDesc(eventId: Int, page: Int): CommentResponse?
+    suspend fun getEventCommentAsc(queryParameters: QueryParameters): CommentResponse?
+    suspend fun getEventCommentDesc(queryParameters: QueryParameters): CommentResponse?
 }

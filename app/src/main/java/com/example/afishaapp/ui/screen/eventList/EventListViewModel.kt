@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.afishaapp.data.module.Category
+import com.example.afishaapp.data.module.QueryParameters
 import com.example.afishaapp.data.module.event.Event
 import com.example.afishaapp.domain.http.GetEvent
 import com.example.afishaapp.domain.repository.http.CategoryRepository
@@ -38,10 +39,12 @@ class EventListViewModel @Inject constructor(
 
     fun getEvents(location: String, category: Category) {
         viewModelScope.launch(Dispatchers.IO) {
-            val eventResponse = getEvent.getEvents(
-                location = location,
+            val queryParameters = QueryParameters(
+                locationSlug = location,
                 category = category.slug
             )
+
+            val eventResponse = getEvent.getEvents(queryParameters)
 
             eventResponse?.let {
                 events = it.results
@@ -72,11 +75,13 @@ class EventListViewModel @Inject constructor(
 
     fun loadMore(location: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val eventResponse = getEvent.getEvents(
-                location = location,
+            val queryParameters = QueryParameters(
+                locationSlug = location,
                 category = currentCategory.slug,
                 page = nextLoadPage
             )
+
+            val eventResponse = getEvent.getEvents(queryParameters)
 
             eventResponse?.let {
                 val temp = events.toMutableList()

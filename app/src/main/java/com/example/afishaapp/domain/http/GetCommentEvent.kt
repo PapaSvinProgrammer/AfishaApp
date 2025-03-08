@@ -1,5 +1,6 @@
 package com.example.afishaapp.domain.http
 
+import com.example.afishaapp.data.module.QueryParameters
 import com.example.afishaapp.data.module.comment.CommentResponse
 import com.example.afishaapp.domain.repository.http.CommentRepository
 import javax.inject.Inject
@@ -12,10 +13,12 @@ class GetCommentEvent @Inject constructor(
             return null
         }
 
-        return commentRepository.getEventCommentAsc(
-            eventId = eventId,
+        val queryParameters = QueryParameters(
+            id = eventId,
             page = page
         )
+
+        return commentRepository.getEventCommentAsc(queryParameters)
     }
 
     suspend fun getDesc(eventId: Int, page: Int = 1): CommentResponse? {
@@ -23,9 +26,11 @@ class GetCommentEvent @Inject constructor(
             return null
         }
 
-        return commentRepository.getEventCommentDesc(
-            eventId = eventId,
+        val queryParameters = QueryParameters(
+            id = eventId,
             page = page
         )
+
+        return commentRepository.getEventCommentDesc(queryParameters)
     }
 }
