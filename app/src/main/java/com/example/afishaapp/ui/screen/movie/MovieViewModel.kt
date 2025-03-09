@@ -47,14 +47,16 @@ class MovieViewModel @Inject constructor(
         }
     }
 
-    fun getMovieShows(movieId: Int, locationSlug: String) {
+    fun getMovieShows(movieId: Int) {
+        shows = listOf()
+
         viewModelScope.launch(Dispatchers.IO) {
             val queryParameters = QueryParameters(
                 id = movieId,
-                locationSlug = locationSlug
+                locationSlug = currentLocationSlug
             )
 
-            shows = getMovieShow.execute(queryParameters, 0)
+            shows = getMovieShow.execute(queryParameters, selectTime.toLong())
         }
     }
 

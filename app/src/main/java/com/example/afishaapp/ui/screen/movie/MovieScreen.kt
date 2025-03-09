@@ -193,7 +193,7 @@ fun MovieScreen(
                                     .padding(20.dp, 0.dp),
                                 onClick = {
                                     viewModel.updateShowsBottomState(true)
-                                    viewModel.getMovieShows(movieId, viewModel.currentLocationSlug)
+                                    viewModel.getMovieShows(movieId)
                                 }
                             ) {
                                 Text(
@@ -263,6 +263,7 @@ fun MovieScreen(
             onDismissRequest = { viewModel.updateTimeBottomState(false) },
             onClick = {
                 viewModel.updateSelectTime(it)
+                viewModel.getMovieShows(movieId)
                 viewModel.updateTimeBottomState(false)
                 viewModel.updateShowsBottomState(true)
             }

@@ -18,12 +18,15 @@ class GetMovieShow @Inject constructor(
 ) {
     private var resultFlag = false
     private var nextPage = 1
-    private val result = arrayListOf<Show>()
 
     suspend fun execute(
         queryParameters: QueryParameters,
         plusDays: Long
     ): List<Show> {
+        val result = arrayListOf<Show>()
+        nextPage = 1
+        resultFlag = false
+
         if (queryParameters.id <= 0 || queryParameters.locationSlug.isEmpty()) {
             return listOf()
         }
@@ -39,7 +42,7 @@ class GetMovieShow @Inject constructor(
                 return result
             }
 
-            prepareShows(showResponse)
+            result.prepareShows(showResponse)
 
             if (showResponse.next.isNullOrEmpty()) {
                 result.sort()
@@ -53,7 +56,6 @@ class GetMovieShow @Inject constructor(
         }
 
         result.sort()
-
         return result
     }
 
@@ -65,15 +67,15 @@ class GetMovieShow @Inject constructor(
         }
     }
 
-    private fun prepareShows(showResponse: MovieShowResponse) {
+    private fun ArrayList<Show>.prepareShows(showResponse: MovieShowResponse) {
         showResponse.results.forEach { movieShow ->
-            val index = result.findShow(movieShow)
+            val index = this.findShow(movieShow)
 
             if (index == -1) {
-                result.createNewShowObject(movieShow)
+                this.createNewShowObject(movieShow)
             }
             else {
-                result.updateShowObject(movieShow, index)
+                this.updateShowObject(movieShow, index)
             }
         }
     }
