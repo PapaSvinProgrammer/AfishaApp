@@ -126,8 +126,11 @@ class GetMovieShow @Inject constructor(
     }
 
     private fun calculateDateBorder(plusDays: Long): HashMap<String, Int> {
-        val actualSince = LocalDate.now().atStartOfDay(ZoneId.systemDefault())
-        actualSince.plusDays(plusDays)
+        val actualSince = LocalDate
+            .now()
+            .atStartOfDay(ZoneId.systemDefault())
+            .plusDays(plusDays)
+
         val actualUntil = actualSince.plusDays(1)
 
         val result: HashMap<String, Int> = HashMap()

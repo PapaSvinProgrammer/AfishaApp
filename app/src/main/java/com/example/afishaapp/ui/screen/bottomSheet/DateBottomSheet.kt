@@ -16,6 +16,8 @@ import com.example.afishaapp.ui.widget.text.TitleBottomSheet
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DateBottomSheet(
+    currentTime: Int,
+    onClick: (Int) -> Unit,
     onDismissRequest: () -> Unit
 ) {
     ModalBottomSheet(
@@ -27,9 +29,9 @@ fun DateBottomSheet(
             repeat(4) {
                 CheckRow(
                     text = ConvertDate.addDaysToCurrentDate(it),
-                    isCheck = false
+                    isCheck = currentTime == it
                 ) {
-
+                    onClick.invoke(it)
                 }
             }
         }

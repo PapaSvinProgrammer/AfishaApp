@@ -1,5 +1,7 @@
 package com.example.afishaapp.ui.screen.movie
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.gestures.snapping.SnapPosition
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.horizontalScroll
@@ -9,7 +11,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -63,6 +64,7 @@ import com.example.afishaapp.ui.widget.row.SelectRow
 import com.example.afishaapp.ui.widget.text.EventDescriptionText
 import com.example.afishaapp.ui.widget.text.TitleTopBar
 
+@RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
 @Composable
 fun MovieScreen(
     navController: NavController,
@@ -239,17 +241,31 @@ fun MovieScreen(
     }
 
     if (viewModel.showsBottomState) {
+        val text = if (viewModel.selectTime == 0)
+            stringResource(R.string.today)
+        else
+            ConvertDate.addDaysToCurrentDate(viewModel.selectTime)
+
         MovieShowBottomSheet(
             data = viewModel.shows,
-            currentTime = "Сегодня",
-            selectTime = { viewModel.updateTimeBottomState(true) },
+            currentTime = text,
+            selectTime = {
+                viewModel.updateTimeBottomState(true)
+                viewModel.updateShowsBottomState(false)
+            },
             onDismiss = { viewModel.updateShowsBottomState(false) }
         )
     }
 
     if (viewModel.timeBottomState) {
         DateBottomSheet(
-            onDismissRequest = { viewModel.updateTimeBottomState(false) }
+            currentTime = viewModel.selectTime,
+            onDismissRequest = { viewModel.updateTimeBottomState(false) },
+            onClick = {
+                viewModel.updateSelectTime(it)
+                viewModel.updateTimeBottomState(false)
+                viewModel.updateShowsBottomState(true)
+            }
         )
     }
 }

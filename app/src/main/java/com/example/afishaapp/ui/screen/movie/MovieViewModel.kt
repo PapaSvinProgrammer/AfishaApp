@@ -48,10 +48,6 @@ class MovieViewModel @Inject constructor(
     }
 
     fun getMovieShows(movieId: Int, locationSlug: String) {
-        if (shows.isNotEmpty()) {
-            return
-        }
-
         viewModelScope.launch(Dispatchers.IO) {
             val queryParameters = QueryParameters(
                 id = movieId,
