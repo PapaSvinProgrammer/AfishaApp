@@ -1,10 +1,12 @@
 package com.example.afishaapp.ui.screen.movie
 
+import android.util.Log
 import androidx.compose.foundation.gestures.snapping.SnapPosition
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,6 +24,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.SuggestionChip
@@ -39,6 +42,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -47,6 +51,7 @@ import com.example.afishaapp.R
 import com.example.afishaapp.app.support.ConvertCountTitle
 import com.example.afishaapp.app.support.ConvertInfo
 import com.example.afishaapp.app.support.ConvertDate
+import com.example.afishaapp.ui.screen.bottomSheet.MovieShowBottomSheet
 import com.example.afishaapp.ui.theme.DefaultPadding
 import com.example.afishaapp.ui.widget.card.ImageCard
 import com.example.afishaapp.ui.widget.chip.ChipInfo
@@ -65,7 +70,6 @@ fun MovieScreen(
 ) {
     viewModel.getLocationSlug()
     viewModel.getMovie(movieId)
-    viewModel.getMovieShows(movieId, viewModel.currentLocationSlug)
 
     val imageListState = rememberLazyListState()
     val imageFlingBehavior = rememberSnapFlingBehavior(
@@ -138,7 +142,9 @@ fun MovieScreen(
             state = collapsedListState
         ) {
             item {
-                ExpandedTopBar {
+                ExpandedTopBar(
+                    expandedTopBarHeight = 550.dp
+                ) {
                     viewModel.movie?.let {
                         AsyncImage(
                             model = it.poster.image,
@@ -162,16 +168,31 @@ fun MovieScreen(
                                 .clip(RoundedCornerShape(10.dp))
                         )
 
-                        Text(
-                            text = viewModel.movie?.title.toString(),
-                            fontSize = 24.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White,
-                            maxLines = 1,
+                        Column(
                             modifier = Modifier
                                 .align(Alignment.BottomCenter)
-                                .padding(0.dp, 0.dp, 0.dp, 35.dp)
-                        )
+                                .padding(0.dp, 0.dp, 0.dp, 15.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(10.dp)
+                        ) {
+                            Text(
+                                text = viewModel.movie?.title.toString(),
+                                fontSize = 24.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+
+                            Button(
+                                onClick = {
+                                    viewModel.updateShowsBottomState(true)
+                                    viewModel.getMovieShows(movieId, viewModel.currentLocationSlug)
+                                }
+                            ) {
+                                Text(text = stringResource(R.string.schedule))
+                            }
+                        }
                     }
                 }
             }
@@ -207,6 +228,14 @@ fun MovieScreen(
                     }
                 }
             }
+        }
+    }
+
+    if (viewModel.showsBottomState) {
+        MovieShowBottomSheet(
+            viewModel.shows
+        ) {
+            viewModel.updateShowsBottomState(false)
         }
     }
 }

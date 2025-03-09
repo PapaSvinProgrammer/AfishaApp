@@ -24,9 +24,12 @@ class MovieViewModel @Inject constructor(
         private set
     var movie by mutableStateOf<Movie?>(null)
         private set
+    var currentLocationSlug by mutableStateOf("")
+        private set
+
     var shows by mutableStateOf<List<Show>>(listOf())
         private set
-    var currentLocationSlug by mutableStateOf("")
+    var showsBottomState by mutableStateOf(false)
         private set
 
     fun updateFavoriteState(favoriteState: Boolean) {
@@ -40,6 +43,10 @@ class MovieViewModel @Inject constructor(
     }
 
     fun getMovieShows(movieId: Int, locationSlug: String) {
+        if (shows.isNotEmpty()) {
+            return
+        }
+
         viewModelScope.launch(Dispatchers.IO) {
             val queryParameters = QueryParameters(
                 id = movieId,
@@ -56,5 +63,9 @@ class MovieViewModel @Inject constructor(
                 currentLocationSlug = it
             }
         }
+    }
+
+    fun updateShowsBottomState(showsBottomState: Boolean) {
+        this.showsBottomState = showsBottomState
     }
 }

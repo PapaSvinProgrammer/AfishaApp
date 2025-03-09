@@ -3,10 +3,7 @@ package com.example.afishaapp.domain.http
 import com.example.afishaapp.data.module.QueryParameters
 import com.example.afishaapp.data.module.movie.Movie
 import com.example.afishaapp.data.module.movie.MovieResponse
-import com.example.afishaapp.data.module.movieShow.MovieShowResponse
 import com.example.afishaapp.domain.repository.http.MovieRepository
-import java.time.LocalDate
-import java.time.ZoneId
 import javax.inject.Inject
 
 class GetMovie @Inject constructor(

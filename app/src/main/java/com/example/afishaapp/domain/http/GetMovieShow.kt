@@ -35,12 +35,14 @@ class GetMovieShow @Inject constructor(
 
         while (!resultFlag) {
             if (showResponse == null) {
+                result.sort()
                 return result
             }
 
             prepareShows(showResponse)
 
             if (showResponse.next.isNullOrEmpty()) {
+                result.sort()
                 return result
             }
 
@@ -50,7 +52,17 @@ class GetMovieShow @Inject constructor(
             showResponse = movieRepository.getMovieShows(newQueryParameters)
         }
 
+        result.sort()
+
         return result
+    }
+
+    private fun ArrayList<Show>.sort() {
+        this.forEach {
+            it.priceTime.sortBy { priceTime ->
+                priceTime.time
+            }
+        }
     }
 
     private fun prepareShows(showResponse: MovieShowResponse) {

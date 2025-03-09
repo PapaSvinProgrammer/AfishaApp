@@ -1,7 +1,12 @@
 package com.example.afishaapp.app.support
 
+import android.util.Log
 import com.example.afishaapp.data.module.search.DateRange
 import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.LocalTime
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 private const val DEFAULT_RESPONSE = "Уточняйте на сайте"
@@ -48,6 +53,15 @@ object ConvertDate {
         val minutes = time % 60
 
         return generateText(hours, minutes)
+    }
+
+    fun convertShowTime(time: Long): String {
+        val instant = Instant.ofEpochSecond(time)
+        val localZone = ZoneOffset.systemDefault()
+
+        val formatter = DateTimeFormatter.ofPattern("HH:mm").withZone(localZone)
+
+        return formatter.format(instant)
     }
 
     private fun convertDate(time: Long): String {
