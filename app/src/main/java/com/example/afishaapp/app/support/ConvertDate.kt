@@ -1,12 +1,14 @@
 package com.example.afishaapp.app.support
 
-import android.util.Log
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.example.afishaapp.data.module.search.DateRange
 import java.text.SimpleDateFormat
 import java.time.Instant
-import java.time.LocalTime
+import java.time.LocalDate
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
+import java.time.format.TextStyle
 import java.util.Locale
 
 private const val DEFAULT_RESPONSE = "Уточняйте на сайте"
@@ -62,6 +64,27 @@ object ConvertDate {
         val formatter = DateTimeFormatter.ofPattern("HH:mm").withZone(localZone)
 
         return formatter.format(instant)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
+    fun convertSelectTime(time: Long): String {
+        val instant = Instant.ofEpochSecond(time)
+        val localZone = ZoneOffset.systemDefault()
+
+        val localDate = LocalDate.ofInstant(instant, localZone)
+        val dayOfWeek = localDate.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault())
+
+        val formatter = DateTimeFormatter.ofPattern("d MMMM").withZone(localZone)
+
+        return "${formatter.format(instant)}, $dayOfWeek"
+    }
+
+    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
+    fun addDaysToCurrentDate(days: Int): String {
+        val localDate = LocalDate.now().atStartOfDay(ZoneOffset.systemDefault())
+        val time = localDate.plusDays(days.toLong()).toEpochSecond()
+
+        return convertSelectTime(time)
     }
 
     private fun convertDate(time: Long): String {

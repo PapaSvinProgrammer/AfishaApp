@@ -62,6 +62,7 @@
     <string name="country">Страна</string>
     <string name="year">Год</string>
     <string name="schedule">Расписание</string>
+    <string name="shows_dates">Даты показа</string>
 
     <string-array name="ticket_segmented_button">
         <item>"События"</item>

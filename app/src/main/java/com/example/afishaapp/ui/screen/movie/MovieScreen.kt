@@ -1,6 +1,5 @@
 package com.example.afishaapp.ui.screen.movie
 
-import android.util.Log
 import androidx.compose.foundation.gestures.snapping.SnapPosition
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.horizontalScroll
@@ -10,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -51,6 +51,7 @@ import com.example.afishaapp.R
 import com.example.afishaapp.app.support.ConvertCountTitle
 import com.example.afishaapp.app.support.ConvertInfo
 import com.example.afishaapp.app.support.ConvertDate
+import com.example.afishaapp.ui.screen.bottomSheet.DateBottomSheet
 import com.example.afishaapp.ui.screen.bottomSheet.MovieShowBottomSheet
 import com.example.afishaapp.ui.theme.DefaultPadding
 import com.example.afishaapp.ui.widget.card.ImageCard
@@ -171,7 +172,7 @@ fun MovieScreen(
                         Column(
                             modifier = Modifier
                                 .align(Alignment.BottomCenter)
-                                .padding(0.dp, 0.dp, 0.dp, 15.dp),
+                                .padding(0.dp, 0.dp, 0.dp, 10.dp),
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.spacedBy(10.dp)
                         ) {
@@ -185,12 +186,18 @@ fun MovieScreen(
                             )
 
                             Button(
+                                modifier = Modifier
+                                    .fillParentMaxWidth()
+                                    .padding(20.dp, 0.dp),
                                 onClick = {
                                     viewModel.updateShowsBottomState(true)
                                     viewModel.getMovieShows(movieId, viewModel.currentLocationSlug)
                                 }
                             ) {
-                                Text(text = stringResource(R.string.schedule))
+                                Text(
+                                    text = stringResource(R.string.schedule),
+                                    fontSize = 16.sp
+                                )
                             }
                         }
                     }
@@ -233,10 +240,17 @@ fun MovieScreen(
 
     if (viewModel.showsBottomState) {
         MovieShowBottomSheet(
-            viewModel.shows
-        ) {
-            viewModel.updateShowsBottomState(false)
-        }
+            data = viewModel.shows,
+            currentTime = "Сегодня",
+            selectTime = { viewModel.updateTimeBottomState(true) },
+            onDismiss = { viewModel.updateShowsBottomState(false) }
+        )
+    }
+
+    if (viewModel.timeBottomState) {
+        DateBottomSheet(
+            onDismissRequest = { viewModel.updateTimeBottomState(false) }
+        )
     }
 }
 

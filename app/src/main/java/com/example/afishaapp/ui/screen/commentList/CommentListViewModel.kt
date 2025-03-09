@@ -10,6 +10,7 @@ import com.example.afishaapp.data.module.comment.CommentResponse
 import com.example.afishaapp.domain.http.GetCommentEvent
 import com.example.afishaapp.domain.http.GetCommentMovie
 import com.example.afishaapp.domain.module.DirectedFilterType
+import com.example.afishaapp.domain.module.EventCategory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -29,15 +30,15 @@ class CommentListViewModel @Inject constructor(
 
     fun getComments(id: Int, type: String) {
         when (type) {
-            "event" -> getEventComments(id)
-            "movie" -> getMovieComments(id)
+            EventCategory.EVENT.slug -> getEventComments(id)
+            EventCategory.MOVIE.slug -> getMovieComments(id)
         }
     }
 
     fun loadMoreComments(id: Int, type: String) {
         when (type) {
-            "event" -> loadMoreEventComments(id)
-            "movie" -> loadMoreMovieComments(id)
+            EventCategory.EVENT.slug -> loadMoreEventComments(id)
+            EventCategory.MOVIE.slug -> loadMoreMovieComments(id)
         }
     }
 

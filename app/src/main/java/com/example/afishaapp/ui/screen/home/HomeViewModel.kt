@@ -12,6 +12,7 @@ import com.example.afishaapp.data.module.event.EventResponse
 import com.example.afishaapp.data.module.movie.MovieResponse
 import com.example.afishaapp.domain.http.GetEvent
 import com.example.afishaapp.domain.http.GetMovie
+import com.example.afishaapp.domain.module.EventCategory
 import com.example.afishaapp.domain.preferences.SetPreferences
 import com.example.afishaapp.domain.repository.PreferencesRepository
 import com.example.afishaapp.domain.repository.http.CategoryRepository
@@ -29,11 +30,6 @@ class HomeViewModel @Inject constructor(
     private val getEvent: GetEvent,
     private val getMovie: GetMovie
 ): ViewModel() {
-    companion object {
-        const val CONCERT_CATEGORY = "concert"
-        const val EXHIBITION_CATEGORY = "exhibition"
-    }
-
     var cityBottomSheetState by mutableStateOf(false)
         private set
     var categoryBottomSheetState by mutableStateOf(false)
@@ -120,7 +116,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val queryParameters = QueryParameters(
                 locationSlug = locationSlug,
-                category = CONCERT_CATEGORY
+                category = EventCategory.CONCERT.slug
             )
 
             eventConcert = getEvent.getEvents(queryParameters)
@@ -129,7 +125,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val queryParameters = QueryParameters(
                 locationSlug = locationSlug,
-                category = EXHIBITION_CATEGORY
+                category = EventCategory.EXHIBITION.slug
             )
 
             eventExhibition = getEvent.getEvents(queryParameters)

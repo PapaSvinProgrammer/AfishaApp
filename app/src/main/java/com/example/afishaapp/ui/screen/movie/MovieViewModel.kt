@@ -32,6 +32,11 @@ class MovieViewModel @Inject constructor(
     var showsBottomState by mutableStateOf(false)
         private set
 
+    var timeBottomState by mutableStateOf(false)
+        private set
+    var selectTime by mutableStateOf(0)
+        private set
+
     fun updateFavoriteState(favoriteState: Boolean) {
         this.favoriteState = favoriteState
     }
@@ -67,5 +72,13 @@ class MovieViewModel @Inject constructor(
 
     fun updateShowsBottomState(showsBottomState: Boolean) {
         this.showsBottomState = showsBottomState
+    }
+
+    fun updateTimeBottomState(timeBottomState: Boolean) {
+        this.timeBottomState = timeBottomState
+    }
+
+    fun updateSelectTime(selectTime: Int) {
+        this.selectTime = selectTime
     }
 }

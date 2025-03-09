@@ -48,6 +48,7 @@ import com.example.afishaapp.app.navigation.CommentListRoute
 import com.example.afishaapp.app.support.ConvertCountTitle
 import com.example.afishaapp.app.support.ConvertInfo
 import com.example.afishaapp.app.support.ConvertDate
+import com.example.afishaapp.domain.module.EventCategory
 import com.example.afishaapp.ui.theme.DefaultPadding
 import com.example.afishaapp.ui.widget.chip.ChipInfo
 import com.example.afishaapp.ui.widget.row.SelectRow
@@ -200,7 +201,7 @@ fun EventScreen(
                     navController.navigate(
                         CommentListRoute(
                             name = viewModel.event?.shortTitle.toString(),
-                            type = "event",
+                            type = EventCategory.EVENT.slug,
                             id = viewModel.event?.id ?: -1
                         )
                     )
@@ -278,7 +279,7 @@ private fun InfoRow(viewModel: EventViewModel, navController: NavController) {
                     navController.navigate(
                         CommentListRoute(
                             name = viewModel.event?.shortTitle.toString(),
-                            type = "event",
+                            type = EventCategory.EVENT.slug,
                             id = viewModel.event?.id ?: -1
                         )
                     )
