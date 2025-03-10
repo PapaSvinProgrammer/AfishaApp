@@ -1,6 +1,7 @@
 package com.example.afishaapp.di.viewModel
 
 import androidx.lifecycle.ViewModel
+import com.example.afishaapp.ui.screen.movieShowBottomSheet.MovieShowViewModel
 import com.example.afishaapp.ui.screen.commentList.CommentListViewModel
 import com.example.afishaapp.ui.screen.entry.EntryViewModel
 import com.example.afishaapp.ui.screen.event.EventViewModel
@@ -65,4 +66,9 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(MovieViewModel::class)
     fun bindMovieViewModel(viewModel: MovieViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MovieShowViewModel::class)
+    fun bindMovieShowViewModel(viewModel: MovieShowViewModel): ViewModel
 }

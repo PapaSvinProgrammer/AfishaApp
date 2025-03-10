@@ -5,36 +5,22 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.afishaapp.data.module.QueryParameters
 import com.example.afishaapp.data.module.movie.Movie
-import com.example.afishaapp.data.module.movieShow.Show
 import com.example.afishaapp.domain.http.GetMovie
-import com.example.afishaapp.domain.http.GetMovieShow
 import com.example.afishaapp.domain.repository.PreferencesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MovieViewModel @Inject constructor(
-    private val getMovieShow: GetMovieShow,
-    private val getMovie: GetMovie,
-    private val preferencesRepository: PreferencesRepository
+    private val getMovie: GetMovie
 ): ViewModel() {
     var favoriteState by mutableStateOf(false)
         private set
     var movie by mutableStateOf<Movie?>(null)
         private set
-    var currentLocationSlug by mutableStateOf("")
-        private set
 
-    var shows by mutableStateOf<List<Show>>(listOf())
-        private set
     var showsBottomState by mutableStateOf(false)
-        private set
-
-    var timeBottomState by mutableStateOf(false)
-        private set
-    var selectTime by mutableStateOf(0)
         private set
 
     fun updateFavoriteState(favoriteState: Boolean) {
@@ -47,36 +33,7 @@ class MovieViewModel @Inject constructor(
         }
     }
 
-    fun getMovieShows(movieId: Int) {
-        shows = listOf()
-
-        viewModelScope.launch(Dispatchers.IO) {
-            val queryParameters = QueryParameters(
-                id = movieId,
-                locationSlug = currentLocationSlug
-            )
-
-            shows = getMovieShow.execute(queryParameters, selectTime.toLong())
-        }
-    }
-
-    fun getLocationSlug() {
-        viewModelScope.launch {
-            preferencesRepository.getLocationSlug().collect {
-                currentLocationSlug = it
-            }
-        }
-    }
-
     fun updateShowsBottomState(showsBottomState: Boolean) {
         this.showsBottomState = showsBottomState
-    }
-
-    fun updateTimeBottomState(timeBottomState: Boolean) {
-        this.timeBottomState = timeBottomState
-    }
-
-    fun updateSelectTime(selectTime: Int) {
-        this.selectTime = selectTime
     }
 }

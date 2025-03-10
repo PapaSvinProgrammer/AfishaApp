@@ -1,5 +1,7 @@
 package com.example.afishaapp.app.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.EaseIn
 import androidx.compose.animation.core.EaseOut
@@ -34,6 +36,7 @@ import com.example.afishaapp.ui.screen.search.SearchScreen
 import com.example.afishaapp.ui.screen.start.StartScreen
 import com.example.afishaapp.ui.screen.ticket.TicketScreen
 
+@RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
 @Composable
 fun NavigationGraph(
     navController: NavHostController,
@@ -247,7 +250,8 @@ fun NavigationGraph(
             MovieScreen(
                 navController = navController,
                 viewModel = viewModel,
-                movieId = movieRoute.id
+                movieId = movieRoute.id,
+                viewModelFactory = viewModelFactory
             )
         }
     }

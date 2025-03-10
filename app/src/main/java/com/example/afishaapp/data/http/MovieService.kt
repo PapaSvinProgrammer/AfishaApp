@@ -13,7 +13,8 @@ interface MovieService {
         @Query("location") location: String,
         @Query("actual_since") actualTime: Int,
         @Query("page") page: Int,
-        @Query("fields") fields: String = "id,title,poster,imdb_rating,year"
+        @Query("fields") fields: String = "id,title,poster,imdb_rating,year",
+        @Query("expand") expand: String = "poster"
     ): MovieResponse
 
     @GET("/public-api/v1.4/movies/?order_by=-year")
@@ -21,7 +22,8 @@ interface MovieService {
         @Query("location") location: String,
         @Query("actual_since") actualTime: Int,
         @Query("page") page: Int,
-        @Query("fields") fields: String = "id,title,poster,imdb_rating,year"
+        @Query("fields") fields: String = "id,title,poster,imdb_rating,year",
+        @Query("expand") expand: String = "poster"
     ): MovieResponse
 
     @GET("/public-api/v1.4/movies/?order_by=-imdb_rating")
@@ -29,13 +31,14 @@ interface MovieService {
         @Query("location") location: String,
         @Query("actual_since") actualTime: Int,
         @Query("page") page: Int,
-        @Query("fields") fields: String = "id,title,poster,imdb_rating,year"
+        @Query("fields") fields: String = "id,title,poster,imdb_rating,year",
+        @Query("expand") expand: String = "poster"
     ): MovieResponse
 
     @GET("public-api/v1.4/movies/{movieId}")
     suspend fun getMovieInfo(
         @Path("movieId") movieId: Int,
-        @Query("expand") expand: String = "images"
+        @Query("expand") expand: String = "images,poster"
     ): Movie
 
     @GET("public-api/v1.4/movies/{movieId}/showings/")

@@ -60,7 +60,7 @@ fun EventCard(
         }
     ) {
         AsyncImage(
-            model = event.images[0].image,
+            model = event.images[0].thumbnails.highImage,
             contentDescription = "",
             contentScale = ContentScale.Crop,
             modifier = Modifier

@@ -48,7 +48,7 @@ fun MovieCard(
     ) {
         Box {
             AsyncImage(
-                model = movie.poster.image,
+                model = movie.poster.thumbnails.highImage,
                 contentDescription = null,
                 modifier = Modifier
                     .height(250.dp)

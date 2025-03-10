@@ -14,7 +14,7 @@ interface EventService {
         @Query("categories") categories: String,
         @Query("page") page: Int = 1,
         @Query("fields") fields: String = "id,title,place,price,dates,images,short_title",
-        @Query("expand") expand: String = "place"
+        @Query("expand") expand: String = "place,images"
     ): EventResponse
 
     @GET("public-api/v1.4/events/{eventId}/?expand=place,images")

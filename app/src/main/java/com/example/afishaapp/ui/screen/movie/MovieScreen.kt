@@ -52,8 +52,8 @@ import com.example.afishaapp.R
 import com.example.afishaapp.app.support.ConvertCountTitle
 import com.example.afishaapp.app.support.ConvertInfo
 import com.example.afishaapp.app.support.ConvertDate
-import com.example.afishaapp.ui.screen.bottomSheet.DateBottomSheet
-import com.example.afishaapp.ui.screen.bottomSheet.MovieShowBottomSheet
+import com.example.afishaapp.di.viewModel.ViewModelFactory
+import com.example.afishaapp.ui.screen.movieShowBottomSheet.MovieShowBottomSheet
 import com.example.afishaapp.ui.theme.DefaultPadding
 import com.example.afishaapp.ui.widget.card.ImageCard
 import com.example.afishaapp.ui.widget.chip.ChipInfo
@@ -69,9 +69,9 @@ import com.example.afishaapp.ui.widget.text.TitleTopBar
 fun MovieScreen(
     navController: NavController,
     viewModel: MovieViewModel,
+    viewModelFactory: ViewModelFactory,
     movieId: Int
 ) {
-    viewModel.getLocationSlug()
     viewModel.getMovie(movieId)
 
     val imageListState = rememberLazyListState()
@@ -150,7 +150,7 @@ fun MovieScreen(
                 ) {
                     viewModel.movie?.let {
                         AsyncImage(
-                            model = it.poster.image,
+                            model = it.poster.thumbnails.lowImage,
                             contentDescription = null,
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
@@ -162,7 +162,7 @@ fun MovieScreen(
                         )
 
                         AsyncImage(
-                            model = it.poster.image,
+                            model = it.poster.thumbnails.highImage,
                             contentDescription = null,
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
@@ -191,10 +191,7 @@ fun MovieScreen(
                                 modifier = Modifier
                                     .fillParentMaxWidth()
                                     .padding(20.dp, 0.dp),
-                                onClick = {
-                                    viewModel.updateShowsBottomState(true)
-                                    viewModel.getMovieShows(movieId)
-                                }
+                                onClick = { viewModel.updateShowsBottomState(true) }
                             ) {
                                 Text(
                                     text = stringResource(R.string.schedule),
@@ -241,32 +238,10 @@ fun MovieScreen(
     }
 
     if (viewModel.showsBottomState) {
-        val text = if (viewModel.selectTime == 0)
-            stringResource(R.string.today)
-        else
-            ConvertDate.addDaysToCurrentDate(viewModel.selectTime)
-
         MovieShowBottomSheet(
-            data = viewModel.shows,
-            currentTime = text,
-            selectTime = {
-                viewModel.updateTimeBottomState(true)
-                viewModel.updateShowsBottomState(false)
-            },
-            onDismiss = { viewModel.updateShowsBottomState(false) }
-        )
-    }
-
-    if (viewModel.timeBottomState) {
-        DateBottomSheet(
-            currentTime = viewModel.selectTime,
-            onDismissRequest = { viewModel.updateTimeBottomState(false) },
-            onClick = {
-                viewModel.updateSelectTime(it)
-                viewModel.getMovieShows(movieId)
-                viewModel.updateTimeBottomState(false)
-                viewModel.updateShowsBottomState(true)
-            }
+            onDismiss = { viewModel.updateShowsBottomState(false) },
+            viewModelFactory = viewModelFactory,
+            movieId = movieId
         )
     }
 }
