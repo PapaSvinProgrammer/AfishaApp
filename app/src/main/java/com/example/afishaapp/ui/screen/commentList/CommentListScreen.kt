@@ -17,6 +17,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.example.afishaapp.R
+import com.example.afishaapp.domain.module.EventCategory
 import com.example.afishaapp.ui.screen.bottomSheet.DirectedFilterBottomSheet
 import com.example.afishaapp.ui.widget.card.CommentCardFill
 import com.example.afishaapp.ui.widget.endlessLazy.EndlessLazyColumn
@@ -30,7 +31,7 @@ fun CommentListScreen(
     viewModel: CommentListViewModel,
     objectId: Int,
     objectName: String,
-    type: String
+    type: EventCategory
 ) {
     viewModel.getComments(
         id = objectId,

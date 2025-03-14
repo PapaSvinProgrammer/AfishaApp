@@ -51,10 +51,12 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import com.example.afishaapp.R
+import com.example.afishaapp.app.navigation.AboutEvent
 import com.example.afishaapp.app.support.ConvertCountTitle
 import com.example.afishaapp.app.support.ConvertInfo
 import com.example.afishaapp.app.support.ConvertDate
 import com.example.afishaapp.di.viewModel.ViewModelFactory
+import com.example.afishaapp.domain.module.EventCategory
 import com.example.afishaapp.ui.screen.movieShowBottomSheet.MovieShowBottomSheet
 import com.example.afishaapp.ui.theme.DefaultPadding
 import com.example.afishaapp.ui.widget.card.ImageCard
@@ -213,7 +215,14 @@ fun MovieScreen(
                 EventDescriptionText(
                     title = viewModel.movie?.description.toString(),
                     bodyText = viewModel.movie?.bodyText.toString()
-                )
+                ) {
+                    navController.navigate(
+                        AboutEvent(
+                            id = 1,
+                            type = EventCategory.MOVIE
+                        )
+                    )
+                }
 
                 SelectRow(
                     text = stringResource(R.string.images),

@@ -28,17 +28,19 @@ class CommentListViewModel @Inject constructor(
     var directedFilterState by mutableStateOf(false)
         private set
 
-    fun getComments(id: Int, type: String) {
+    fun getComments(id: Int, type: EventCategory) {
         when (type) {
-            EventCategory.EVENT.slug -> getEventComments(id)
-            EventCategory.MOVIE.slug -> getMovieComments(id)
+            EventCategory.EVENT-> getEventComments(id)
+            EventCategory.MOVIE -> getMovieComments(id)
+            else -> {}
         }
     }
 
-    fun loadMoreComments(id: Int, type: String) {
+    fun loadMoreComments(id: Int, type: EventCategory) {
         when (type) {
-            EventCategory.EVENT.slug -> loadMoreEventComments(id)
-            EventCategory.MOVIE.slug -> loadMoreMovieComments(id)
+            EventCategory.EVENT -> loadMoreEventComments(id)
+            EventCategory.MOVIE -> loadMoreMovieComments(id)
+            else -> {}
         }
     }
 

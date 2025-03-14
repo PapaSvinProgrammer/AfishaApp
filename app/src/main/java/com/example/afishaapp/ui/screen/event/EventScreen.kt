@@ -44,6 +44,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import com.example.afishaapp.R
+import com.example.afishaapp.app.navigation.AboutEvent
 import com.example.afishaapp.app.navigation.CommentListRoute
 import com.example.afishaapp.app.support.ConvertCountTitle
 import com.example.afishaapp.app.support.ConvertInfo
@@ -189,7 +190,14 @@ fun EventScreen(
                 EventDescriptionText(
                     title = viewModel.event?.title.toString(),
                     bodyText = viewModel.event?.bodyText.toString()
-                )
+                ) {
+                    navController.navigate(
+                        AboutEvent(
+                            id = 1,
+                            type = EventCategory.EVENT
+                        )
+                    )
+                }
 
                 if ((viewModel.event?.commentsCount ?: 0) > 0) {
                     SelectRow(
@@ -202,7 +210,7 @@ fun EventScreen(
                         navController.navigate(
                             CommentListRoute(
                                 name = viewModel.event?.shortTitle.toString(),
-                                type = EventCategory.EVENT.slug,
+                                type = EventCategory.EVENT,
                                 id = viewModel.event?.id ?: -1
                             )
                         )
@@ -281,7 +289,7 @@ private fun InfoRow(viewModel: EventViewModel, navController: NavController) {
                     navController.navigate(
                         CommentListRoute(
                             name = viewModel.event?.shortTitle.toString(),
-                            type = EventCategory.EVENT.slug,
+                            type = EventCategory.EVENT,
                             id = viewModel.event?.id ?: -1
                         )
                     )

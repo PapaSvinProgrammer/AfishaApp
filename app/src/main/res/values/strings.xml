@@ -69,6 +69,7 @@
     <string name="rating_MPAA">Рейтинг MPAA</string>
     <string name="rating_IMDB">Рейтинг IMDB</string>
     <string name="no_info">Нет информаци</string>
+    <string name="read_more">Читать далее</string>
 
     <string-array name="ticket_segmented_button">
         <item>"События"</item>

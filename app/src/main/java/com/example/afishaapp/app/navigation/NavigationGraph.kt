@@ -14,6 +14,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.example.afishaapp.di.viewModel.ViewModelFactory
+import com.example.afishaapp.ui.screen.aboutEvent.AboutEventScreen
+import com.example.afishaapp.ui.screen.aboutEvent.AboutEventViewModel
 import com.example.afishaapp.ui.screen.commentList.CommentListScreen
 import com.example.afishaapp.ui.screen.commentList.CommentListViewModel
 import com.example.afishaapp.ui.screen.entry.EntryScreen
@@ -252,6 +254,31 @@ fun NavigationGraph(
                 viewModel = viewModel,
                 movieId = movieRoute.id,
                 viewModelFactory = viewModelFactory
+            )
+        }
+
+        composable<AboutEvent> (
+            enterTransition = {
+                slideIntoContainer(
+                    animationSpec = tween(300, easing = EaseIn),
+                    towards = AnimatedContentTransitionScope.SlideDirection.Start
+                )
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    animationSpec = tween(300, easing = EaseOut),
+                    towards = AnimatedContentTransitionScope.SlideDirection.End
+                )
+            }
+        ) {
+            val route = it.toRoute<AboutEvent>()
+            val viewModel: AboutEventViewModel = viewModel(factory = viewModelFactory)
+
+            AboutEventScreen(
+                id = route.id,
+                type = route.type,
+                viewModel = viewModel,
+                navController = navController
             )
         }
     }
