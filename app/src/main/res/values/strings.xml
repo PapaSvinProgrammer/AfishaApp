@@ -64,6 +64,11 @@
     <string name="schedule">Расписание</string>
     <string name="shows_dates">Даты показа</string>
     <string name="today">Сегодня</string>
+    <string name="director">Режиссер</string>
+    <string name="writer">Сценарист</string>
+    <string name="rating_MPAA">Рейтинг MPAA</string>
+    <string name="rating_IMDB">Рейтинг IMDB</string>
+    <string name="no_info">Нет информаци</string>
 
     <string-array name="ticket_segmented_button">
         <item>"События"</item>

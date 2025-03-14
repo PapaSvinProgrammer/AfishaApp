@@ -191,30 +191,32 @@ fun EventScreen(
                     bodyText = viewModel.event?.bodyText.toString()
                 )
 
-                SelectRow(
-                    text = ConvertCountTitle.convertCommentsCount(
-                        count = viewModel.event?.commentsCount ?: 0
-                    ),
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
-                ) {
-                    navController.navigate(
-                        CommentListRoute(
-                            name = viewModel.event?.shortTitle.toString(),
-                            type = EventCategory.EVENT.slug,
-                            id = viewModel.event?.id ?: -1
+                if ((viewModel.event?.commentsCount ?: 0) > 0) {
+                    SelectRow(
+                        text = ConvertCountTitle.convertCommentsCount(
+                            count = viewModel.event?.commentsCount ?: 0
+                        ),
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    ) {
+                        navController.navigate(
+                            CommentListRoute(
+                                name = viewModel.event?.shortTitle.toString(),
+                                type = EventCategory.EVENT.slug,
+                                id = viewModel.event?.id ?: -1
+                            )
                         )
-                    )
-                }
+                    }
 
-                LazyRow(
-                    contentPadding = PaddingValues(DefaultPadding, 0.dp),
-                    horizontalArrangement = Arrangement.spacedBy(10.dp),
-                    state = commentLazyState,
-                    flingBehavior = commentSnapBehavior
-                ) {
-                    items(viewModel.comments) { comment ->
-                        CommentCard(comment)
+                    LazyRow(
+                        contentPadding = PaddingValues(DefaultPadding, 0.dp),
+                        horizontalArrangement = Arrangement.spacedBy(10.dp),
+                        state = commentLazyState,
+                        flingBehavior = commentSnapBehavior
+                    ) {
+                        items(viewModel.comments) { comment ->
+                            CommentCard(comment)
+                        }
                     }
                 }
 

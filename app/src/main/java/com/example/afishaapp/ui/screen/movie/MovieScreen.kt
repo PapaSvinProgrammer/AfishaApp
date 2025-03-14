@@ -11,9 +11,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -146,7 +148,7 @@ fun MovieScreen(
         ) {
             item {
                 ExpandedTopBar(
-                    expandedTopBarHeight = 550.dp
+                    expandedTopBarHeight = 520.dp
                 ) {
                     viewModel.movie?.let {
                         AsyncImage(
@@ -190,7 +192,7 @@ fun MovieScreen(
                             Button(
                                 modifier = Modifier
                                     .fillParentMaxWidth()
-                                    .padding(20.dp, 0.dp),
+                                    .padding(10.dp, 0.dp),
                                 onClick = { viewModel.updateShowsBottomState(true) }
                             ) {
                                 Text(
@@ -233,6 +235,8 @@ fun MovieScreen(
                         }
                     }
                 }
+
+                FilmCrew(viewModel)
             }
         }
     }
@@ -310,6 +314,78 @@ private fun GenresRow(viewModel: MovieViewModel) {
                 SuggestionChip(
                     onClick = { },
                     label = { Text(text = genre.name) }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun FilmCrew(viewModel: MovieViewModel) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .padding(DefaultPadding, 20.dp)
+    ) {
+        viewModel.movie?.let {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .weight(1f)
+            ) {
+                Text(
+                    text = stringResource(R.string.director),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 15.sp
+                )
+
+                Text(
+                    text = it.director,
+                    fontSize = 14.sp
+                )
+
+                Text(
+                    text = stringResource(R.string.writer),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 15.sp,
+                    modifier = Modifier.padding(0.dp, 10.dp, 0.dp, 0.dp)
+                )
+
+                Text(
+                    text = it.writer,
+                    fontSize = 14.sp
+                )
+            }
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .weight(1f)
+            ) {
+                Text(
+                    text = stringResource(R.string.rating_MPAA),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 15.sp
+                )
+
+                Text(
+                    text = it.mpaaRating.ifEmpty { stringResource(R.string.no_info) },
+                    fontSize = 14.sp
+                )
+
+                Text(
+                    text = stringResource(R.string.rating_IMDB),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 15.sp,
+                    modifier = Modifier.padding(0.dp, 10.dp, 0.dp, 0.dp)
+                )
+
+                Text(
+                    text = it.imdbRating.toString(),
+                    fontSize = 14.sp
                 )
             }
         }
