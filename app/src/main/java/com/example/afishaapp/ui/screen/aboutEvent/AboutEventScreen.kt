@@ -35,7 +35,9 @@ import com.example.afishaapp.app.support.ConvertInfo
 import com.example.afishaapp.data.module.event.Event
 import com.example.afishaapp.ui.theme.DefaultPadding
 import com.example.afishaapp.ui.widget.chip.AboutChipInfo
+import com.example.afishaapp.ui.widget.text.DefaultDetailDescription
 import com.example.afishaapp.ui.widget.text.SubtitleTopBar
+import com.example.afishaapp.ui.widget.text.TextDescription
 import com.example.afishaapp.ui.widget.text.TitleTopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -47,6 +49,7 @@ fun AboutEventScreen(
 ) {
     viewModel.getCategory()
     viewModel.getEvent(id)
+    viewModel.parseInf()
 
     Scaffold(
         topBar = {
@@ -87,7 +90,10 @@ fun AboutEventScreen(
             ) {
                 InfoChipRow(event)
 
-                TextDescription(event)
+                TextDescription(
+                    description = viewModel.parseEventDescription,
+                    bodyText = viewModel.parseEventBodyText
+                )
 
                 DefaultDetailDescription(
                     title = stringResource(R.string.date),
@@ -139,37 +145,6 @@ private fun InfoChipRow(event: Event) {
             )
         }
     }
-}
-
-@Composable
-private fun TextDescription(event: Event) {
-    Text(
-        text = event.description,
-        fontWeight = FontWeight.Bold,
-        fontSize = 15.sp,
-        modifier = Modifier.padding(bottom = 5.dp)
-    )
-
-    Text(
-        text = event.bodyText,
-        fontSize = 15.sp,
-        modifier = Modifier.padding(bottom = 5.dp)
-    )
-}
-
-@Composable
-private fun DefaultDetailDescription(title: String, subtitle: String) {
-    Text(
-        text = title,
-        fontWeight = FontWeight.Bold,
-        fontSize = 15.sp,
-        modifier = Modifier.padding(top = 15.dp)
-    )
-
-    Text(
-        text = subtitle,
-        fontSize = 15.sp
-    )
 }
 
 @OptIn(ExperimentalLayoutApi::class)

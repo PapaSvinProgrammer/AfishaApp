@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.afishaapp.app.support.ParseHtml
 import com.example.afishaapp.data.module.movie.Movie
 import com.example.afishaapp.domain.http.GetMovie
 import kotlinx.coroutines.Dispatchers
@@ -21,6 +22,21 @@ class MovieViewModel @Inject constructor(
 
     var showsBottomState by mutableStateOf(false)
         private set
+    var parseMovieDescription by mutableStateOf("")
+        private set
+    var parseMovieBodyText by mutableStateOf("")
+        private set
+
+    fun parseInfo(
+        item: Movie? = movie
+    ) {
+        item?.let {
+            viewModelScope.launch {
+                parseMovieDescription = ParseHtml.getText(it.description)
+                parseMovieBodyText = ParseHtml.getText(it.bodyText)
+            }
+        }
+    }
 
     fun updateFavoriteState(favoriteState: Boolean) {
         this.favoriteState = favoriteState

@@ -44,7 +44,7 @@ android {
 }
 
 dependencies {
-
+    implementation(libs.jsoup)
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
     implementation(libs.retrofit)

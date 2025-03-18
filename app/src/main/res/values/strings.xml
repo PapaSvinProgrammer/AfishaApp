@@ -74,6 +74,9 @@
     <string name="price">Цена</string>
     <string name="age_restriction">Возрастное ограничение</string>
     <string name="tags">Тэги</string>
+    <string name="about_movie">О фильме</string>
+    <string name="genres">Жанры</string>
+    <string name="cast">Актерский состав</string>
 
     <string-array name="ticket_segmented_button">
         <item>"События"</item>

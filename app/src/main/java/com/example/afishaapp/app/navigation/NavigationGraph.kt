@@ -16,6 +16,8 @@ import androidx.navigation.toRoute
 import com.example.afishaapp.di.viewModel.ViewModelFactory
 import com.example.afishaapp.ui.screen.aboutEvent.AboutEventScreen
 import com.example.afishaapp.ui.screen.aboutEvent.AboutEventViewModel
+import com.example.afishaapp.ui.screen.aboutMovie.AboutMovieScreen
+import com.example.afishaapp.ui.screen.aboutMovie.AboutMovieViewModel
 import com.example.afishaapp.ui.screen.commentList.CommentListScreen
 import com.example.afishaapp.ui.screen.commentList.CommentListViewModel
 import com.example.afishaapp.ui.screen.entry.EntryScreen
@@ -257,7 +259,7 @@ fun NavigationGraph(
             )
         }
 
-        composable<AboutEvent> (
+        composable<AboutEventRoute> (
             enterTransition = {
                 slideIntoContainer(
                     animationSpec = tween(300, easing = EaseIn),
@@ -271,13 +273,37 @@ fun NavigationGraph(
                 )
             }
         ) {
-            val route = it.toRoute<AboutEvent>()
+            val route = it.toRoute<AboutEventRoute>()
             val viewModel: AboutEventViewModel = viewModel(factory = viewModelFactory)
 
             AboutEventScreen(
                 id = route.id,
                 viewModel = viewModel,
                 navController = navController
+            )
+        }
+
+        composable<AboutMovieRoute> (
+            enterTransition = {
+                slideIntoContainer(
+                    animationSpec = tween(300, easing = EaseIn),
+                    towards = AnimatedContentTransitionScope.SlideDirection.Start
+                )
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    animationSpec = tween(300, easing = EaseOut),
+                    towards = AnimatedContentTransitionScope.SlideDirection.End
+                )
+            }
+        ) {
+            val route = it.toRoute<AboutMovieRoute>()
+            val viewModel: AboutMovieViewModel = viewModel(factory = viewModelFactory)
+
+            AboutMovieScreen(
+                viewModel = viewModel,
+                navController = navController,
+                id = route.id
             )
         }
     }

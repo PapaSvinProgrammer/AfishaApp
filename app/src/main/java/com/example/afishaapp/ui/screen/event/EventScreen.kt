@@ -1,6 +1,6 @@
 package com.example.afishaapp.ui.screen.event
 
-import androidx.compose.foundation.clickable
+import  androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.snapping.SnapPosition
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.horizontalScroll
@@ -44,7 +44,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import com.example.afishaapp.R
-import com.example.afishaapp.app.navigation.AboutEvent
+import com.example.afishaapp.app.navigation.AboutEventRoute
 import com.example.afishaapp.app.navigation.CommentListRoute
 import com.example.afishaapp.app.support.ConvertCountTitle
 import com.example.afishaapp.app.support.ConvertInfo
@@ -72,6 +72,7 @@ fun EventScreen(
 
     viewModel.getEventInfo(derivedEventId)
     viewModel.getComments(derivedEventId)
+    viewModel.parseEventInfo()
 
     val listState = rememberLazyListState()
     val isCollapsed: Boolean by remember {
@@ -192,11 +193,11 @@ fun EventScreen(
                 TagsRow(viewModel)
 
                 EventDescriptionText(
-                    title = viewModel.event?.title.toString(),
-                    bodyText = viewModel.event?.bodyText.toString()
+                    title = viewModel.parseEventDescription,
+                    bodyText = viewModel.parseEventBodyText
                 ) {
                     navController.navigate(
-                        AboutEvent(derivedEventId)
+                        AboutEventRoute(derivedEventId)
                     )
                 }
 

@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.afishaapp.app.support.ParseHtml
 import com.example.afishaapp.data.module.comment.Comment
 import com.example.afishaapp.data.module.event.Event
 import com.example.afishaapp.domain.http.GetCommentEvent
@@ -23,6 +24,22 @@ class EventViewModel @Inject constructor(
         private set
     var comments by mutableStateOf<List<Comment>>(listOf())
         private set
+
+    var parseEventDescription by mutableStateOf("")
+        private set
+    var parseEventBodyText by mutableStateOf("")
+        private set
+
+    fun parseEventInfo(
+        item: Event? = event
+    ) {
+        item?.let {
+            viewModelScope.launch {
+                parseEventDescription = ParseHtml.getText(it.description)
+                parseEventBodyText = ParseHtml.getText(it.bodyText)
+            }
+        }
+    }
 
     fun updateFavoriteState(state: Boolean) {
         favoriteState = state

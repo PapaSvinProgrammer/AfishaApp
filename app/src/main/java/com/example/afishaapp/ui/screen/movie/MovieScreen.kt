@@ -51,6 +51,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import com.example.afishaapp.R
+import com.example.afishaapp.app.navigation.AboutMovieRoute
 import com.example.afishaapp.app.support.ConvertCountTitle
 import com.example.afishaapp.app.support.ConvertInfo
 import com.example.afishaapp.app.support.ConvertDate
@@ -63,6 +64,7 @@ import com.example.afishaapp.ui.widget.chip.ChipRating
 import com.example.afishaapp.ui.widget.collapsingTopBar.CollapsedTopBar
 import com.example.afishaapp.ui.widget.collapsingTopBar.ExpandedTopBar
 import com.example.afishaapp.ui.widget.row.SelectRow
+import com.example.afishaapp.ui.widget.text.DefaultDetailDescription
 import com.example.afishaapp.ui.widget.text.EventDescriptionText
 import com.example.afishaapp.ui.widget.text.TitleTopBar
 
@@ -75,6 +77,7 @@ fun MovieScreen(
     movieId: Int
 ) {
     viewModel.getMovie(movieId)
+    viewModel.parseInfo()
 
     val imageListState = rememberLazyListState()
     val imageFlingBehavior = rememberSnapFlingBehavior(
@@ -211,10 +214,12 @@ fun MovieScreen(
                 GenresRow(viewModel)
 
                 EventDescriptionText(
-                    title = viewModel.movie?.description.toString(),
-                    bodyText = viewModel.movie?.bodyText.toString()
+                    title = viewModel.parseMovieDescription,
+                    bodyText = viewModel.parseMovieBodyText
                 ) {
-
+                    navController.navigate(
+                        AboutMovieRoute(movieId)
+                    )
                 }
 
                 SelectRow(
@@ -239,6 +244,15 @@ fun MovieScreen(
                 }
 
                 FilmCrew(viewModel)
+
+                Column(
+                    modifier = Modifier.padding(horizontal = DefaultPadding)
+                ) {
+                    DefaultDetailDescription(
+                        title = stringResource(R.string.cast),
+                        subtitle = viewModel.movie?.stars.toString()
+                    )
+                }
             }
         }
     }
@@ -328,7 +342,12 @@ private fun FilmCrew(viewModel: MovieViewModel) {
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .padding(horizontal = DefaultPadding, vertical = 20.dp)
+            .padding(
+                top = 20.dp,
+                start = DefaultPadding,
+                end = DefaultPadding
+            ),
+        horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         viewModel.movie?.let {
             Column(
