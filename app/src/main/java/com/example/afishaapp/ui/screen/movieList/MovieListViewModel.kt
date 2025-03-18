@@ -27,7 +27,9 @@ class MovieListViewModel @Inject constructor(
     var filterStateBottomSheet by mutableStateOf(false)
         private set
 
-    fun getMovies(filter: BaseFilterType) {
+    fun getMovies(
+        filter: BaseFilterType = currentFilter
+    ) {
         when (filter) {
             BaseFilterType.RATING -> getMovieByRating()
             BaseFilterType.YEAR -> getMovieByYear()

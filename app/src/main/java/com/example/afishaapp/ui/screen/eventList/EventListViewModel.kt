@@ -25,7 +25,7 @@ class EventListViewModel @Inject constructor(
         private set
     var categories by mutableStateOf<List<Category>>(listOf())
         private set
-    var currentCategory by mutableStateOf(DefaultObject.DEFAULT_CATEGORY)
+    var currentCategory by mutableStateOf("")
         private set
     var categoryStateBottomSheet by mutableStateOf(false)
         private set
@@ -33,15 +33,18 @@ class EventListViewModel @Inject constructor(
     var events by mutableStateOf<List<Event>>(listOf())
         private set
 
-    fun updateCurrentCategory(category: Category) {
+    fun updateCurrentCategory(category: String) {
         currentCategory = category
     }
 
-    fun getEvents(location: String, category: Category) {
+    fun getEvents(
+        location: String,
+        category: String = currentCategory
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
             val queryParameters = QueryParameters(
                 locationSlug = location,
-                category = category.slug
+                category = category
             )
 
             val eventResponse = getEvent.getEvents(queryParameters)
@@ -77,7 +80,7 @@ class EventListViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val queryParameters = QueryParameters(
                 locationSlug = location,
-                category = currentCategory.slug,
+                category = currentCategory,
                 page = nextLoadPage
             )
 

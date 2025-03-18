@@ -54,11 +54,11 @@ fun HomeScreen(
     viewModel: HomeViewModel,
     innerPadding: PaddingValues
 ) {
-    viewModel.getEvents(viewModel.currentLocationSlug, viewModel.currentCategory)
+    viewModel.getEvents()
     viewModel.getCity()
     viewModel.getDefaultCity()
     viewModel.getLocationSlug()
-    viewModel.getMovies(viewModel.currentLocationSlug)
+    viewModel.getMovies()
     viewModel.getCategories()
 
     val eventListState = rememberLazyListState()
@@ -96,10 +96,8 @@ fun HomeScreen(
         Column(
             modifier = Modifier
                 .padding(
-                    0.dp,
-                    padding.calculateTopPadding(),
-                    0.dp,
-                    innerPadding.calculateBottomPadding()
+                    top = padding.calculateTopPadding(),
+                    bottom = innerPadding.calculateBottomPadding()
                 )
                 .verticalScroll(rememberScrollState())
         ) {
@@ -110,7 +108,7 @@ fun HomeScreen(
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 FilledTonalButton(
-                    modifier = Modifier.padding(DefaultPadding, 0.dp, 0.dp, 0.dp),
+                    modifier = Modifier.padding(start = DefaultPadding),
                     shape = RoundedCornerShape(10.dp),
                     onClick = { }
                 ) {
@@ -120,7 +118,7 @@ fun HomeScreen(
                 FilledTonalButton(
                     onClick = { viewModel.updateCategoryState(true) },
                     shape = RoundedCornerShape(10.dp),
-                    modifier = Modifier.padding(0.dp, 0.dp, 10.dp, 0.dp),
+                    modifier = Modifier.padding(end = 10.dp),
                 ) {
                     Text(
                         text = viewModel.currentCategory.name,
@@ -149,7 +147,7 @@ fun HomeScreen(
             }
 
             LazyRow(
-                contentPadding = PaddingValues(DefaultPadding, 0.dp),
+                contentPadding = PaddingValues(horizontal = DefaultPadding),
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
                 state = eventListState,
                 flingBehavior = eventFlingBehavior
@@ -172,7 +170,7 @@ fun HomeScreen(
                 text = stringResource(R.string.expected_in_cinema),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
-                paddingValues = PaddingValues(0.dp, 5.dp)
+                paddingValues = PaddingValues(vertical =  5.dp)
             ) { title ->
                 navController.navigate(
                     MovieListRoute(
@@ -183,7 +181,7 @@ fun HomeScreen(
             }
 
             LazyRow(
-                contentPadding = PaddingValues(DefaultPadding, 0.dp),
+                contentPadding = PaddingValues(horizontal = DefaultPadding),
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
                 state = movieListState,
                 flingBehavior = movieFlingBehavior
@@ -206,7 +204,7 @@ fun HomeScreen(
                 text = stringResource(R.string.concerts),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
-                paddingValues = PaddingValues(0.dp, 15.dp, 0.dp, 0.dp)
+                paddingValues = PaddingValues(top = 15.dp)
             ) { title ->
                 navController.navigate(
                     EventListRoute(
@@ -218,7 +216,7 @@ fun HomeScreen(
             }
 
             LazyRow(
-                contentPadding = PaddingValues(DefaultPadding, 0.dp),
+                contentPadding = PaddingValues(horizontal = DefaultPadding),
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
                 state = concertListState,
                 flingBehavior = concertFlingBehavior
@@ -241,7 +239,7 @@ fun HomeScreen(
                 text = stringResource(R.string.exhibitions),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
-                paddingValues = PaddingValues(0.dp, 15.dp, 0.dp, 0.dp)
+                paddingValues = PaddingValues(top = 15.dp)
             ) { title ->
                 navController.navigate(
                     EventListRoute(
@@ -253,8 +251,8 @@ fun HomeScreen(
             }
 
             LazyRow(
-                modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 20.dp),
-                contentPadding = PaddingValues(DefaultPadding, 0.dp),
+                modifier = Modifier.padding(bottom = 20.dp),
+                contentPadding = PaddingValues(horizontal = DefaultPadding),
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
                 state = exhibitionListState,
                 flingBehavior = exhibitionFlingBehavior
@@ -289,7 +287,7 @@ fun HomeScreen(
         if (viewModel.categoryBottomSheetState) {
             CategoryEventBottomSheet(
                 data = viewModel.categoryEvent,
-                currentCategory = viewModel.currentCategory,
+                currentCategory = viewModel.currentCategory.slug,
                 onDismiss = { viewModel.updateCategoryState(false) },
                 onClick = {
                     viewModel.updateCurrentCategory(it)

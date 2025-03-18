@@ -34,7 +34,7 @@ fun MovieListScreen(
     location: String
 ) {
     viewModel.updateLocationSlug(location)
-    viewModel.getMovies(viewModel.currentFilter)
+    viewModel.getMovies()
 
     Scaffold(
         topBar = {
@@ -75,7 +75,7 @@ fun MovieListScreen(
         EndlessLazyVerticalGrid(
             columns = GridCells.Fixed(2),
             modifier = Modifier.padding(innerPadding),
-            contentPadding = PaddingValues(10.dp, 0.dp),
+            contentPadding = PaddingValues(horizontal = 10.dp),
             verticalArrangement = Arrangement.spacedBy(30.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
             items = viewModel.movies,

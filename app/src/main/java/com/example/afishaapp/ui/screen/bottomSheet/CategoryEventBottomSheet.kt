@@ -19,7 +19,7 @@ import com.example.afishaapp.ui.widget.row.CheckRow
 @Composable
 fun CategoryEventBottomSheet(
     data: List<Category>,
-    currentCategory: Category,
+    currentCategory: String,
     onClick: (Category) -> Unit,
     onDismiss: () -> Unit
 ) {
@@ -36,7 +36,7 @@ fun CategoryEventBottomSheet(
                 items(data) { category ->
                     CheckRow(
                         text = category.name,
-                        isCheck = currentCategory.slug == category.slug
+                        isCheck = currentCategory == category.slug
                     ) {
                         onClick.invoke(category)
                     }

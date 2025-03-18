@@ -103,7 +103,10 @@ class HomeViewModel @Inject constructor(
         currentCategory = category
     }
 
-    fun getEvents(locationSlug: String, category: Category) {
+    fun getEvents(
+        locationSlug: String = currentLocationSlug,
+        category: Category = currentCategory
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
             val queryParameters = QueryParameters(
                 locationSlug = locationSlug,
@@ -132,7 +135,9 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun getMovies(locationSlug: String) {
+    fun getMovies(
+        locationSlug: String = currentLocationSlug
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
             movieResponse = getMovie.getMoviesByRating(locationSlug)
         }

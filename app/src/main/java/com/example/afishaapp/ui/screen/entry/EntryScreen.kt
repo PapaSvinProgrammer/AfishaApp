@@ -70,7 +70,7 @@ fun EntryScreen(
                     value = viewModel.emailValue,
                     onValueChange = { viewModel.updateEmail(it) },
                     label = { Text(text = stringResource(R.string.input_email_text)) },
-                    modifier = Modifier.padding(0.dp, 50.dp, 0.dp, 0.dp),
+                    modifier = Modifier.padding(top = 50.dp),
                     isError = viewModel.errorEmail || viewModel.entryError,
                     supportingText = {
                         if (viewModel.errorEmail)
@@ -134,7 +134,7 @@ fun EntryScreen(
                         viewModel.entry()
                     },
                     enabled = !viewModel.visibilityProgressBar,
-                    modifier = Modifier.padding(0.dp, 10.dp, 0.dp, 0.dp)
+                    modifier = Modifier.padding(top = 10.dp)
                 ) {
                     Text(text = stringResource(R.string.entry_button_text))
                 }

@@ -37,7 +37,7 @@ fun EventDescriptionText(
             text = ConvertInfo.convertTitle(title),
             fontWeight = FontWeight.Bold,
             fontSize = 15.sp,
-            modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 5.dp)
+            modifier = Modifier.padding(bottom = 5.dp)
         )
 
         Text(

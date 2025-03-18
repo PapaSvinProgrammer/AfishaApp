@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun SelectRow(
     text: String,
-    paddingValues: PaddingValues = PaddingValues(0.dp, 0.dp),
+    paddingValues: PaddingValues = PaddingValues(0.dp),
     fontWeight: FontWeight = FontWeight.Medium,
     fontFamily: FontFamily = FontFamily.Default,
     fontSize: TextUnit = 15.sp,
@@ -59,7 +59,7 @@ fun SelectRow(
                 imageVector = it,
                 contentDescription = null,
                 modifier = Modifier
-                    .padding(0.dp, 0.dp, 15.dp, 0.dp)
+                    .padding(end = 15.dp)
                     .align(Alignment.CenterVertically),
             )
         }

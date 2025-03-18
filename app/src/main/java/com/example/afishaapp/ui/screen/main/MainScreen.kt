@@ -1,5 +1,7 @@
 package com.example.afishaapp.ui.screen.main
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,6 +18,7 @@ import com.example.afishaapp.di.viewModel.ViewModelFactory
 
 private val visibilityState = mutableStateOf(false)
 
+@RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
 @Composable
 fun MainScreen(
     viewModelFactory: ViewModelFactory

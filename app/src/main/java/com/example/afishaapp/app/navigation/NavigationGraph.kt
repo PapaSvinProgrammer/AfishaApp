@@ -276,7 +276,6 @@ fun NavigationGraph(
 
             AboutEventScreen(
                 id = route.id,
-                type = route.type,
                 viewModel = viewModel,
                 navController = navController
             )

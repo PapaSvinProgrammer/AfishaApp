@@ -58,7 +58,7 @@ fun CommentCardFill(
                 )
 
                 Column(
-                    modifier = Modifier.padding(10.dp, 0.dp, 0.dp, 0.dp)
+                    modifier = Modifier.padding(start = 10.dp)
                 ) {
                     Text(
                         text = comment.user.name,
@@ -78,7 +78,7 @@ fun CommentCardFill(
                 text = comment.text,
                 fontSize = 15.sp,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.padding(0.dp, 10.dp, 0.dp, 0.dp)
+                modifier = Modifier.padding(top = 10.dp)
             )
         }
     }

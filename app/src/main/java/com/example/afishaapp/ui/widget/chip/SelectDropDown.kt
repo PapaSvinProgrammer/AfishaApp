@@ -27,7 +27,7 @@ fun SelectDropDown(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .padding(10.dp, 0.dp, 0.dp, 0.dp)
+            .padding(start = 10.dp)
             .clip(CircleShape)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },

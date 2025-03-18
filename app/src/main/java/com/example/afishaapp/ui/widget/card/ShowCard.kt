@@ -52,7 +52,7 @@ fun ShowCard(
         }
 
         FlowRow(
-            modifier = Modifier.padding(0.dp, 15.dp, 0.dp, 0.dp),
+            modifier = Modifier.padding(top = 15.dp),
             horizontalArrangement = Arrangement.spacedBy(5.dp),
             verticalArrangement = Arrangement.spacedBy(5.dp)
         ) {
@@ -96,7 +96,7 @@ private fun SubwayRow(text: String) {
             contentDescription = null,
             tint = Color.Unspecified,
             modifier = Modifier
-                .padding(0.dp, 0.dp, 5.dp, 0.dp)
+                .padding(end = 5.dp)
                 .size(16.dp)
         )
 

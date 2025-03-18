@@ -66,21 +66,21 @@ fun ProfileScreen(navController: NavController) {
             contentDescription = stringResource(R.string.ic_account_circle_content_description),
             modifier = Modifier
                 .size(180.dp)
-                .padding(0.dp, 50.dp, 0.dp, 0.dp)
+                .padding(top = 50.dp)
         )
 
         Text(
             text = "Урайкин Роман",
             fontFamily = acidFontFamily,
             fontSize = 32.sp,
-            modifier = Modifier.padding(0.dp, 10.dp, 0.dp, 0.dp)
+            modifier = Modifier.padding(top = 10.dp)
         )
 
         Text(
             text = "UraykinRab@yandex.ru",
             fontSize = 15.sp,
             color = Color.Gray,
-            modifier = Modifier.padding(0.dp, 5.dp, 0.dp, 60.dp)
+            modifier = Modifier.padding(top = 5.dp, bottom = 60.dp)
         )
 
         SelectRow(

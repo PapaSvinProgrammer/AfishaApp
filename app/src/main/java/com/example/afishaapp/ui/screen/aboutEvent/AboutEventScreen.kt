@@ -3,7 +3,14 @@ package com.example.afishaapp.ui.screen.aboutEvent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -11,14 +18,23 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SuggestionChip
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.navOptions
 import com.example.afishaapp.R
-import com.example.afishaapp.domain.module.EventCategory
+import com.example.afishaapp.app.support.ConvertCountTitle
+import com.example.afishaapp.app.support.ConvertDate
+import com.example.afishaapp.app.support.ConvertInfo
+import com.example.afishaapp.data.module.event.Event
+import com.example.afishaapp.ui.theme.DefaultPadding
+import com.example.afishaapp.ui.widget.chip.AboutChipInfo
 import com.example.afishaapp.ui.widget.text.SubtitleTopBar
 import com.example.afishaapp.ui.widget.text.TitleTopBar
 
@@ -26,10 +42,12 @@ import com.example.afishaapp.ui.widget.text.TitleTopBar
 @Composable
 fun AboutEventScreen(
     id: Int,
-    type: EventCategory,
     viewModel: AboutEventViewModel,
     navController: NavController
 ) {
+    viewModel.getCategory()
+    viewModel.getEvent(id)
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -38,8 +56,8 @@ fun AboutEventScreen(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
-                        TitleTopBar("О событии")
-                        SubtitleTopBar(text = "название события")
+                        TitleTopBar(stringResource(R.string.about_event))
+                        SubtitleTopBar(text = viewModel.event?.shortTitle.toString())
                     }
                 },
                 navigationIcon = {
@@ -55,10 +73,155 @@ fun AboutEventScreen(
             )
         }
     ) { innerPadding ->
-        Box(
-            modifier = Modifier.padding(innerPadding)
-        ) {
+        viewModel.event?.let { event ->
+            Column(
+                modifier = Modifier
+                    .padding(
+                        start = DefaultPadding,
+                        end = DefaultPadding,
+                        top = innerPadding.calculateTopPadding(),
+                        bottom = innerPadding.calculateBottomPadding()
+                    )
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+            ) {
+                InfoChipRow(event)
 
+                TextDescription(event)
+
+                DefaultDetailDescription(
+                    title = stringResource(R.string.date),
+                    subtitle = ConvertDate.convertListDateRange(event.dates)
+                )
+
+                DefaultDetailDescription(
+                    title = stringResource(R.string.age_restriction),
+                    subtitle = event.ageRestriction
+                )
+
+                ListCategoriesDetailDescription(
+                    event = event,
+                    viewModel = viewModel
+                )
+
+                ListDetailDescription(
+                    title = stringResource(R.string.tags),
+                    data = event.tags
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun InfoChipRow(event: Event) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 20.dp),
+        horizontalArrangement = Arrangement.spacedBy(20.dp)
+    ) {
+        Box(
+            modifier = Modifier.weight(1f)
+        ) {
+            AboutChipInfo(
+                title = ConvertCountTitle.convertLikeCount(event.favoritesCount),
+                subTitle = ConvertCountTitle.convertCommentsCount(event.commentsCount)
+            )
+        }
+
+        Box(
+            modifier = Modifier.weight(1f)
+        ) {
+            AboutChipInfo(
+                title = stringResource(R.string.price),
+                subTitle =  ConvertInfo.convertPrice(event.price)
+            )
+        }
+    }
+}
+
+@Composable
+private fun TextDescription(event: Event) {
+    Text(
+        text = event.description,
+        fontWeight = FontWeight.Bold,
+        fontSize = 15.sp,
+        modifier = Modifier.padding(bottom = 5.dp)
+    )
+
+    Text(
+        text = event.bodyText,
+        fontSize = 15.sp,
+        modifier = Modifier.padding(bottom = 5.dp)
+    )
+}
+
+@Composable
+private fun DefaultDetailDescription(title: String, subtitle: String) {
+    Text(
+        text = title,
+        fontWeight = FontWeight.Bold,
+        fontSize = 15.sp,
+        modifier = Modifier.padding(top = 15.dp)
+    )
+
+    Text(
+        text = subtitle,
+        fontSize = 15.sp
+    )
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun ListDetailDescription(title: String, data: List<String>) {
+    Text(
+        text = title,
+        fontWeight = FontWeight.Bold,
+        fontSize = 15.sp,
+        modifier = Modifier.padding(top = 15.dp)
+    )
+
+    FlowRow(
+        horizontalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        data.forEach {
+            SuggestionChip(
+                label = {
+                    Text(
+                        text = it,
+                        fontSize = 14.sp
+                    )
+                },
+                onClick = { }
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun ListCategoriesDetailDescription(event: Event, viewModel: AboutEventViewModel) {
+    Text(
+        text = stringResource(R.string.categories),
+        fontSize = 15.sp,
+        fontWeight = FontWeight.Bold,
+        modifier = Modifier.padding(top = 15.dp)
+    )
+
+    FlowRow(
+        horizontalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        event.categories.forEach {
+            SuggestionChip(
+                label = {
+                    Text(
+                        text = viewModel.categories[it].toString(),
+                        fontSize = 14.sp
+                    )
+                },
+                onClick = { }
+            )
         }
     }
 }

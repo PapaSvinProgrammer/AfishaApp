@@ -67,7 +67,7 @@ fun RegistrationScreen(
                 label = { Text(stringResource(R.string.input_email_text)) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 singleLine = true,
-                modifier = Modifier.padding(0.dp, 50.dp, 0.dp, 0.dp),
+                modifier = Modifier.padding(top = 50.dp),
                 supportingText = {
                     if (viewModel.errorEmail)
                         Text(text = stringResource(R.string.invalid_email_text))
@@ -179,7 +179,7 @@ fun RegistrationScreen(
                 onClick = {
                     viewModel.registration()
                 },
-                modifier = Modifier.padding(0.dp, 10.dp, 0.dp, 0.dp),
+                modifier = Modifier.padding(top = 10.dp),
                 enabled = !viewModel.visibilityProgressBar
             ) {
                 Text(stringResource(R.string.registration_button_text))

@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.afishaapp.R
 import com.example.afishaapp.app.navigation.EventRoute
-import com.example.afishaapp.data.module.Category
 import com.example.afishaapp.ui.screen.bottomSheet.CategoryEventBottomSheet
 import com.example.afishaapp.ui.widget.endlessLazy.EndlessLazyColumn
 import com.example.afishaapp.ui.widget.card.EventCard
@@ -36,12 +35,12 @@ fun EventListScreen(
     location: String
 ) {
     if (viewModel.isStartCategories) {
-        viewModel.updateCurrentCategory(Category(0, categorySlug, ""))
+        viewModel.updateCurrentCategory(categorySlug)
         viewModel.startCategorySuccess()
     }
 
     viewModel.getCategories()
-    viewModel.getEvents(location, viewModel.currentCategory)
+    viewModel.getEvents(location)
 
     Scaffold(
         topBar = {
@@ -82,7 +81,7 @@ fun EventListScreen(
         }
     ) { innerPadding ->
         EndlessLazyColumn(
-            contentPadding = PaddingValues(10.dp, 0.dp),
+            contentPadding = PaddingValues(horizontal = 10.dp),
             verticalArrangement = Arrangement.spacedBy(40.dp),
             modifier = Modifier.padding(innerPadding),
             items = viewModel.events,
@@ -108,7 +107,7 @@ fun EventListScreen(
                 currentCategory = viewModel.currentCategory,
                 onDismiss = { viewModel.updateCategoryStateBottomSheet(false) },
                 onClick = {
-                    viewModel.updateCurrentCategory(it)
+                    viewModel.updateCurrentCategory(it.slug)
                     viewModel.updateCategoryStateBottomSheet(false)
                 }
             )

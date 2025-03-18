@@ -57,6 +57,5 @@ data class MovieRoute(
 
 @Serializable
 data class AboutEvent(
-    val id: Int,
-    val type: EventCategory
+    val id: Int
 )

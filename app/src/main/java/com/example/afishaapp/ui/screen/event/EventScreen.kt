@@ -66,8 +66,12 @@ fun EventScreen(
     viewModel: EventViewModel,
     eventId: Int
 ) {
-    viewModel.getEventInfo(eventId)
-    viewModel.getComments(eventId)
+    val derivedEventId by remember {
+        derivedStateOf { eventId }
+    }
+
+    viewModel.getEventInfo(derivedEventId)
+    viewModel.getComments(derivedEventId)
 
     val listState = rememberLazyListState()
     val isCollapsed: Boolean by remember {
@@ -192,10 +196,7 @@ fun EventScreen(
                     bodyText = viewModel.event?.bodyText.toString()
                 ) {
                     navController.navigate(
-                        AboutEvent(
-                            id = 1,
-                            type = EventCategory.EVENT
-                        )
+                        AboutEvent(derivedEventId)
                     )
                 }
 
@@ -217,7 +218,7 @@ fun EventScreen(
                     }
 
                     LazyRow(
-                        contentPadding = PaddingValues(DefaultPadding, 0.dp),
+                        contentPadding = PaddingValues(horizontal = DefaultPadding),
                         horizontalArrangement = Arrangement.spacedBy(10.dp),
                         state = commentLazyState,
                         flingBehavior = commentSnapBehavior
@@ -247,7 +248,7 @@ fun EventScreen(
                 }
 
                 LazyRow(
-                    contentPadding = PaddingValues(DefaultPadding, 0.dp),
+                    contentPadding = PaddingValues(horizontal = DefaultPadding),
                     horizontalArrangement = Arrangement.spacedBy(10.dp),
                     state = imageListState,
                     flingBehavior = imageSnapBehavior
@@ -278,12 +279,12 @@ private fun InfoRow(viewModel: EventViewModel, navController: NavController) {
     Row(
         modifier = Modifier
             .horizontalScroll(rememberScrollState())
-            .padding(0.dp, 20.dp, 0.dp, 0.dp),
+            .padding(top = 20.dp),
         horizontalArrangement = Arrangement.spacedBy(5.dp)
     ) {
         ChipInfo(
             modifier = Modifier
-                .padding(DefaultPadding, 0.dp, 0.dp,0.dp)
+                .padding(start = DefaultPadding)
                 .clip(RoundedCornerShape(10.dp))
                 .clickable {
                     navController.navigate(
@@ -302,7 +303,7 @@ private fun InfoRow(viewModel: EventViewModel, navController: NavController) {
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier
-                        .padding(0.dp, 0.dp, 10.dp, 0.dp)
+                        .padding(end = 10.dp)
                         .size(28.dp),
                 )
             }
@@ -314,7 +315,7 @@ private fun InfoRow(viewModel: EventViewModel, navController: NavController) {
         )
 
         ChipInfo(
-            modifier = Modifier.padding(0.dp, 0.dp, DefaultPadding,0.dp),
+            modifier = Modifier.padding(end = DefaultPadding),
             title = stringResource(R.string.duration),
             subtitle = ConvertDate.convertListDateRange(viewModel.event?.dates ?: listOf())
         )

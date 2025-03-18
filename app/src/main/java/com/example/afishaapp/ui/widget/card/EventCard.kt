@@ -74,7 +74,7 @@ fun EventCard(
             fontSize = 15.sp,
             fontWeight = FontWeight.Medium,
             color = Color.Black,
-            modifier = Modifier.padding(0.dp, 10.dp, 0.dp, 0.dp),
+            modifier = Modifier.padding(top = 10.dp),
             maxLines = 2,
             overflow = TextOverflow.Ellipsis
         )

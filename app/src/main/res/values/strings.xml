@@ -70,6 +70,10 @@
     <string name="rating_IMDB">Рейтинг IMDB</string>
     <string name="no_info">Нет информаци</string>
     <string name="read_more">Читать далее</string>
+    <string name="about_event">О событии</string>
+    <string name="price">Цена</string>
+    <string name="age_restriction">Возрастное ограничение</string>
+    <string name="tags">Тэги</string>
 
     <string-array name="ticket_segmented_button">
         <item>"События"</item>

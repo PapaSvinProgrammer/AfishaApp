@@ -42,7 +42,7 @@ fun <T: Any> EndlessLazyColumn(
         contentPadding = contentPadding,
         verticalArrangement = verticalArrangement
     ) {
-        itemsIndexed(items) { index, item ->
+        itemsIndexed(items) { _, item ->
             itemContent.invoke(item)
         }
     }

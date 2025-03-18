@@ -51,12 +51,10 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import com.example.afishaapp.R
-import com.example.afishaapp.app.navigation.AboutEvent
 import com.example.afishaapp.app.support.ConvertCountTitle
 import com.example.afishaapp.app.support.ConvertInfo
 import com.example.afishaapp.app.support.ConvertDate
 import com.example.afishaapp.di.viewModel.ViewModelFactory
-import com.example.afishaapp.domain.module.EventCategory
 import com.example.afishaapp.ui.screen.movieShowBottomSheet.MovieShowBottomSheet
 import com.example.afishaapp.ui.theme.DefaultPadding
 import com.example.afishaapp.ui.widget.card.ImageCard
@@ -178,7 +176,7 @@ fun MovieScreen(
                         Column(
                             modifier = Modifier
                                 .align(Alignment.BottomCenter)
-                                .padding(0.dp, 0.dp, 0.dp, 10.dp),
+                                .padding(bottom = 10.dp),
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.spacedBy(10.dp)
                         ) {
@@ -194,7 +192,7 @@ fun MovieScreen(
                             Button(
                                 modifier = Modifier
                                     .fillParentMaxWidth()
-                                    .padding(10.dp, 0.dp),
+                                    .padding(horizontal = 10.dp),
                                 onClick = { viewModel.updateShowsBottomState(true) }
                             ) {
                                 Text(
@@ -216,12 +214,7 @@ fun MovieScreen(
                     title = viewModel.movie?.description.toString(),
                     bodyText = viewModel.movie?.bodyText.toString()
                 ) {
-                    navController.navigate(
-                        AboutEvent(
-                            id = 1,
-                            type = EventCategory.MOVIE
-                        )
-                    )
+
                 }
 
                 SelectRow(
@@ -233,7 +226,7 @@ fun MovieScreen(
                 }
 
                 LazyRow(
-                    contentPadding = PaddingValues(DefaultPadding, 0.dp),
+                    contentPadding = PaddingValues(horizontal = DefaultPadding),
                     horizontalArrangement = Arrangement.spacedBy(10.dp),
                     state = imageListState,
                     flingBehavior = imageFlingBehavior
@@ -264,7 +257,7 @@ private fun InfoRow(viewModel: MovieViewModel) {
     Row(
         modifier = Modifier
             .horizontalScroll(rememberScrollState())
-            .padding(0.dp, 20.dp, 0.dp, 0.dp),
+            .padding(top = 20.dp),
         horizontalArrangement = Arrangement.spacedBy(5.dp),
     ) {
         ChipInfo(
@@ -278,13 +271,13 @@ private fun InfoRow(viewModel: MovieViewModel) {
                 ChipRating(
                     rating = viewModel.movie?.imdbRating.toString(),
                     modifier = Modifier
-                        .padding(0.dp, 0.dp, 5.dp, 0.dp)
+                        .padding(end = 5.dp)
                         .size(36.dp)
                         .align(Alignment.CenterVertically),
                     shape = CircleShape
                 )
             },
-            modifier = Modifier.padding(DefaultPadding, 0.dp, 0.dp, 0.dp)
+            modifier = Modifier.padding(start = DefaultPadding)
         )
 
         ChipInfo(
@@ -307,7 +300,7 @@ private fun InfoRow(viewModel: MovieViewModel) {
         ChipInfo(
             title = stringResource(R.string.country),
             subtitle = viewModel.movie?.country.toString(),
-            modifier = Modifier.padding(0.dp, 0.dp, DefaultPadding, 0.dp)
+            modifier = Modifier.padding(end = DefaultPadding)
         )
     }
 }
@@ -335,7 +328,7 @@ private fun FilmCrew(viewModel: MovieViewModel) {
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .padding(DefaultPadding, 20.dp)
+            .padding(horizontal = DefaultPadding, vertical = 20.dp)
     ) {
         viewModel.movie?.let {
             Column(
@@ -359,7 +352,7 @@ private fun FilmCrew(viewModel: MovieViewModel) {
                     text = stringResource(R.string.writer),
                     fontWeight = FontWeight.Bold,
                     fontSize = 15.sp,
-                    modifier = Modifier.padding(0.dp, 10.dp, 0.dp, 0.dp)
+                    modifier = Modifier.padding(top = 10.dp)
                 )
 
                 Text(
@@ -389,7 +382,7 @@ private fun FilmCrew(viewModel: MovieViewModel) {
                     text = stringResource(R.string.rating_IMDB),
                     fontWeight = FontWeight.Bold,
                     fontSize = 15.sp,
-                    modifier = Modifier.padding(0.dp, 10.dp, 0.dp, 0.dp)
+                    modifier = Modifier.padding(top = 10.dp)
                 )
 
                 Text(

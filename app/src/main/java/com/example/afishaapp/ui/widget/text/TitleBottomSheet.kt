@@ -18,7 +18,7 @@ fun TitleBottomSheet(text: String) {
         fontSize = 28.sp,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(0.dp, 0.dp, 0.dp, 10.dp),
+            .padding(bottom = 10.dp),
         textAlign = TextAlign.Center
     )
 }

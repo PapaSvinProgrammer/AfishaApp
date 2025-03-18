@@ -50,7 +50,10 @@ fun StartScreen(
     )
 
     Column(
-        modifier = Modifier.padding(20.dp, padding.calculateTopPadding() + 60.dp)
+        modifier = Modifier.padding(
+            horizontal = 20.dp,
+            vertical = padding.calculateTopPadding() + 60.dp
+        )
     ) {
         Text(
             text = stringResource(R.string.music_text),
@@ -117,7 +120,7 @@ fun StartScreen(
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 10.dp)
+                modifier = Modifier.padding(bottom = 10.dp)
             ) {
                 HorizontalDivider(
                     thickness = 1.dp,
@@ -142,11 +145,11 @@ fun StartScreen(
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(0.dp, 0.dp, 0.dp, padding.calculateBottomPadding() + 35.dp)
+                modifier = Modifier.padding(bottom = padding.calculateBottomPadding() + 35.dp)
             ) {
                 IconButton(
                     onClick = {  },
-                    modifier = Modifier.padding(10.dp, 0.dp).size(45.dp)
+                    modifier = Modifier.padding(vertical = 10.dp).size(45.dp)
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.ic_vk),

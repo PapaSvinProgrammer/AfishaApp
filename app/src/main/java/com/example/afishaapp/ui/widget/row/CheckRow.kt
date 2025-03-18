@@ -44,7 +44,7 @@ fun CheckRow(
                 imageVector = Icons.Default.Check,
                 contentDescription = stringResource(R.string.ic_check_content_description),
                 modifier = Modifier
-                    .padding(0.dp, 0.dp, 15.dp, 0.dp)
+                    .padding(end = 15.dp)
                     .align(Alignment.CenterVertically),
             )
         }

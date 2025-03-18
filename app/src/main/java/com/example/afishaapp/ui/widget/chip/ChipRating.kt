@@ -31,7 +31,7 @@ fun ChipRating(
             text = rating,
             fontWeight = FontWeight.Bold,
             color = Color.White,
-            modifier = Modifier.padding(5.dp, 0.dp).align(Alignment.Center),
+            modifier = Modifier.padding(horizontal = 5.dp).align(Alignment.Center),
             fontSize = 14.sp
         )
     }
