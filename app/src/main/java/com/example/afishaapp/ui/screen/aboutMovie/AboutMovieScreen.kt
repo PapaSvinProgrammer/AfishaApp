@@ -9,7 +9,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -23,6 +25,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -35,6 +39,7 @@ import com.example.afishaapp.data.module.Genre
 import com.example.afishaapp.data.module.movie.Movie
 import com.example.afishaapp.ui.theme.DefaultPadding
 import com.example.afishaapp.ui.widget.chip.AboutChipInfo
+import com.example.afishaapp.ui.widget.chip.ChipRating
 import com.example.afishaapp.ui.widget.text.DefaultDetailDescription
 import com.example.afishaapp.ui.widget.text.SubtitleTopBar
 import com.example.afishaapp.ui.widget.text.TextDescription
@@ -153,7 +158,17 @@ private fun InfoChipRow(movie: Movie) {
         ) {
             AboutChipInfo(
                 title = ConvertCountTitle.convertLikeCount(movie.favoritesCount),
-                subTitle = ConvertCountTitle.convertCommentsCount(movie.commentsCount)
+                subTitle = ConvertCountTitle.convertCommentsCount(movie.commentsCount),
+                icon = {
+                    ChipRating(
+                        rating = movie.imdbRating.toString(),
+                        shape = CircleShape,
+                        modifier = Modifier
+                            .padding(bottom = 10.dp)
+                            .size(42.dp)
+                            .align(Alignment.Center)
+                    )
+                }
             )
         }
 
@@ -162,7 +177,15 @@ private fun InfoChipRow(movie: Movie) {
         ) {
             AboutChipInfo(
                 title = stringResource(R.string.rating_IMDB),
-                subTitle =  movie.imdbRating.toString()
+                subTitle =  movie.imdbRating.toString(),
+                icon = {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_imdb_logo),
+                        contentDescription = null,
+                        tint = Color.Unspecified,
+                        modifier = Modifier.padding(bottom = 10.dp).size(42.dp)
+                    )
+                }
             )
         }
     }

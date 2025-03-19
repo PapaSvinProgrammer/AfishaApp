@@ -15,13 +15,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.afishaapp.app.support.ConvertCountTitle
 import com.example.afishaapp.ui.theme.LightGray
 
 @Composable
 fun AboutChipInfo(
     title: String,
-    subTitle: String
+    subTitle: String,
+    icon: @Composable () -> Unit = { }
 ) {
     Box(
         modifier = Modifier
@@ -32,8 +32,11 @@ fun AboutChipInfo(
         Column(
             modifier = Modifier
                 .padding(top = 15.dp, bottom = 15.dp)
-                .align(Alignment.Center)
+                .align(Alignment.Center),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            icon()
+
             Text(
                 text = title,
                 fontWeight = FontWeight.Bold,
