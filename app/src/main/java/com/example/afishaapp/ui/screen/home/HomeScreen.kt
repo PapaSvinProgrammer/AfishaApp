@@ -46,6 +46,8 @@ import com.example.afishaapp.ui.widget.card.EventCard
 import com.example.afishaapp.ui.widget.card.MovieCard
 import com.example.afishaapp.ui.widget.chip.SelectDropDown
 import com.example.afishaapp.ui.widget.row.SelectRow
+import com.example.afishaapp.ui.widget.shimmer.card.ShimmerEventCard
+import com.example.afishaapp.ui.widget.shimmer.card.ShimmerMovieCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -152,16 +154,21 @@ fun HomeScreen(
                 state = eventListState,
                 flingBehavior = eventFlingBehavior
             ) {
+                if (viewModel.eventResponse == null) {
+                    items(3) {
+                        ShimmerEventCard()
+                    }
+                }
+
                 viewModel.eventResponse?.let {
                     items(it.results) { event ->
                         EventCard(
-                            event = event,
-                            onClick = {
-                                navController.navigate(
-                                    EventRoute(event.id)
-                                )
-                            }
-                        )
+                            event = event
+                        ) {
+                            navController.navigate(
+                                EventRoute(event.id)
+                            )
+                        }
                     }
                 }
             }
@@ -186,6 +193,12 @@ fun HomeScreen(
                 state = movieListState,
                 flingBehavior = movieFlingBehavior
             ) {
+                if (viewModel.movieResponse == null) {
+                    items(3) {
+                        ShimmerMovieCard()
+                    }
+                }
+
                 viewModel.movieResponse?.let {
                     items(it.results) { movie ->
                         MovieCard(
@@ -221,6 +234,12 @@ fun HomeScreen(
                 state = concertListState,
                 flingBehavior = concertFlingBehavior
             ) {
+                if (viewModel.eventConcert == null) {
+                    items(3) {
+                        ShimmerEventCard()
+                    }
+                }
+
                 viewModel.eventConcert?.let {
                     items(it.results) { event ->
                         EventCard(
@@ -257,6 +276,12 @@ fun HomeScreen(
                 state = exhibitionListState,
                 flingBehavior = exhibitionFlingBehavior
             ) {
+                if (viewModel.eventExhibition == null) {
+                    items(3) {
+                        ShimmerEventCard()
+                    }
+                }
+
                 viewModel.eventExhibition?.let {
                     items(it.results) { event ->
                         EventCard(

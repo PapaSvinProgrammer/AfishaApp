@@ -41,6 +41,8 @@ class EventListViewModel @Inject constructor(
         location: String,
         category: String = currentCategory
     ) {
+        events = listOf()
+
         viewModelScope.launch(Dispatchers.IO) {
             val queryParameters = QueryParameters(
                 locationSlug = location,

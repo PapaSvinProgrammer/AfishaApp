@@ -29,8 +29,8 @@ import com.example.afishaapp.data.module.event.Event
 @Composable
 fun EventCard(
     event: Event,
-    onClick: (Event) -> Unit,
-    fill: Boolean = false
+    fill: Boolean = false,
+    onClick: (Event) -> Unit
 ) {
     Column(
         modifier = if (fill) {

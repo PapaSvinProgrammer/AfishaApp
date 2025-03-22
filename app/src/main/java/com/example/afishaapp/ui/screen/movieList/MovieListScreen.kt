@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.DateRange
@@ -23,6 +24,7 @@ import com.example.afishaapp.app.navigation.MovieRoute
 import com.example.afishaapp.ui.screen.bottomSheet.BaseFilterBottomSheet
 import com.example.afishaapp.ui.widget.endlessLazy.EndlessLazyVerticalGrid
 import com.example.afishaapp.ui.widget.card.MovieCard
+import com.example.afishaapp.ui.widget.shimmer.card.ShimmerMovieCard
 import com.example.afishaapp.ui.widget.text.TitleTopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -72,27 +74,32 @@ fun MovieListScreen(
             )
         }
     ) { innerPadding ->
-        EndlessLazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            modifier = Modifier.padding(innerPadding),
-            contentPadding = PaddingValues(horizontal = 10.dp),
-            verticalArrangement = Arrangement.spacedBy(30.dp),
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
-            items = viewModel.movies,
-            loadMore = {
-                viewModel.loadMoreMovies()
-            },
-            itemContent = { movie ->
-                MovieCard(
-                    movie = movie,
-                    onClick = {
-                        navController.navigate(
-                            MovieRoute(movie.id)
-                        )
-                    }
-                )
-            }
-        )
+        if (viewModel.movies.isEmpty()) {
+            ShimmerMovieList(innerPadding)
+        }
+        else {
+            EndlessLazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                modifier = Modifier.padding(innerPadding),
+                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 10.dp),
+                verticalArrangement = Arrangement.spacedBy(30.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                items = viewModel.movies,
+                loadMore = {
+                    viewModel.loadMoreMovies()
+                },
+                itemContent = { movie ->
+                    MovieCard(
+                        movie = movie,
+                        onClick = {
+                            navController.navigate(
+                                MovieRoute(movie.id)
+                            )
+                        }
+                    )
+                }
+            )
+        }
 
         if (viewModel.filterStateBottomSheet) {
             BaseFilterBottomSheet(
@@ -103,6 +110,21 @@ fun MovieListScreen(
                     viewModel.updateFilterStateBottomSheet(false)
                 }
             )
+        }
+    }
+}
+
+@Composable
+private fun ShimmerMovieList(padding: PaddingValues) {
+    LazyVerticalGrid(
+        modifier = Modifier.padding(padding),
+        columns = GridCells.Fixed(2),
+        contentPadding = PaddingValues(horizontal = 10.dp, vertical = 10.dp),
+        verticalArrangement = Arrangement.spacedBy(30.dp),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+    ) {
+        items(4) {
+            ShimmerMovieCard()
         }
     }
 }

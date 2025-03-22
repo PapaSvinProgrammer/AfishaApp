@@ -2,7 +2,11 @@ package com.example.afishaapp.ui.screen.eventList
 
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -21,8 +25,10 @@ import androidx.navigation.NavController
 import com.example.afishaapp.R
 import com.example.afishaapp.app.navigation.EventRoute
 import com.example.afishaapp.ui.screen.bottomSheet.CategoryEventBottomSheet
+import com.example.afishaapp.ui.theme.DefaultPadding
 import com.example.afishaapp.ui.widget.endlessLazy.EndlessLazyColumn
 import com.example.afishaapp.ui.widget.card.EventCard
+import com.example.afishaapp.ui.widget.shimmer.card.ShimmerFillEventCard
 import com.example.afishaapp.ui.widget.text.TitleTopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -80,26 +86,34 @@ fun EventListScreen(
             )
         }
     ) { innerPadding ->
-        EndlessLazyColumn(
-            contentPadding = PaddingValues(horizontal = 10.dp),
-            verticalArrangement = Arrangement.spacedBy(40.dp),
-            modifier = Modifier.padding(innerPadding),
-            items = viewModel.events,
-            loadMore = {
-                viewModel.loadMore(location)
-            },
-            itemContent = { event ->
-                EventCard(
-                    event = event,
-                    fill = true,
-                    onClick = {
-                        navController.navigate(
-                            EventRoute(event.id)
-                        )
-                    }
-                )
-            }
-        )
+        if (viewModel.events.isEmpty()) {
+            ShimmerEventList(innerPadding)
+        }
+        else {
+            EndlessLazyColumn(
+                contentPadding = PaddingValues(
+                    horizontal = DefaultPadding,
+                    vertical = 10.dp
+                ),
+                verticalArrangement = Arrangement.spacedBy(40.dp),
+                modifier = Modifier.padding(innerPadding),
+                items = viewModel.events,
+                loadMore = {
+                    viewModel.loadMore(location)
+                },
+                itemContent = { event ->
+                    EventCard(
+                        event = event,
+                        fill = true,
+                        onClick = {
+                            navController.navigate(
+                                EventRoute(event.id)
+                            )
+                        }
+                    )
+                }
+            )
+        }
 
         if (viewModel.categoryStateBottomSheet) {
             CategoryEventBottomSheet(
@@ -111,6 +125,27 @@ fun EventListScreen(
                     viewModel.updateCategoryStateBottomSheet(false)
                 }
             )
+        }
+    }
+}
+
+@Composable
+private fun ShimmerEventList(padding: PaddingValues) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                start = DefaultPadding,
+                end = DefaultPadding,
+                top = padding.calculateTopPadding(),
+                bottom = padding.calculateBottomPadding()
+            ),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        Spacer(modifier = Modifier.height(10.dp))
+
+        repeat(4) {
+            ShimmerFillEventCard()
         }
     }
 }

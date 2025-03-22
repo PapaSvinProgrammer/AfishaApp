@@ -57,6 +57,8 @@ import com.example.afishaapp.ui.widget.card.CommentCard
 import com.example.afishaapp.ui.widget.card.ImageCard
 import com.example.afishaapp.ui.widget.collapsingTopBar.CollapsedTopBar
 import com.example.afishaapp.ui.widget.collapsingTopBar.ExpandedTopBar
+import com.example.afishaapp.ui.widget.shimmer.screen.ShimmerEvent
+import com.example.afishaapp.ui.widget.shimmer.screen.ShimmerExpandedToolbar
 import com.example.afishaapp.ui.widget.text.EventDescriptionText
 import com.example.afishaapp.ui.widget.text.TitleTopBar
 
@@ -82,16 +84,10 @@ fun EventScreen(
     }
 
     val imageListState = rememberLazyListState()
-    val imageSnapBehavior = rememberSnapFlingBehavior(
-        lazyListState = imageListState,
-        snapPosition = SnapPosition.Start
-    )
+    val imageSnapBehavior = rememberSnapFlingBehavior(imageListState, SnapPosition.Start)
 
     val commentLazyState = rememberLazyListState()
-    val commentSnapBehavior = rememberSnapFlingBehavior(
-        lazyListState = commentLazyState,
-        snapPosition = SnapPosition.Start
-    )
+    val commentSnapBehavior = rememberSnapFlingBehavior(commentLazyState,SnapPosition.Start)
 
     Box {
         val color = if (isCollapsed)
@@ -150,8 +146,12 @@ fun EventScreen(
             modifier = Modifier.navigationBarsPadding()
         ) {
             item {
-                ExpandedTopBar {
-                    viewModel.event?.let {
+                if (viewModel.event == null) {
+                    ShimmerExpandedToolbar()
+                }
+
+                viewModel.event?.let {
+                    ExpandedTopBar {
                         AsyncImage(
                             model = it.images[0].image,
                             contentDescription = null,
@@ -188,86 +188,78 @@ fun EventScreen(
             }
 
             item {
-                InfoRow(viewModel, navController)
-
-                TagsRow(viewModel)
-
-                EventDescriptionText(
-                    title = viewModel.parseEventDescription,
-                    bodyText = viewModel.parseEventBodyText
-                ) {
-                    navController.navigate(
-                        AboutEventRoute(derivedEventId)
-                    )
+                if (viewModel.event == null) {
+                    ShimmerEvent()
                 }
 
-                if ((viewModel.event?.commentsCount ?: 0) > 0) {
+                viewModel.event?.let { event ->
+                    InfoRow(viewModel, navController)
+
+                    TagsRow(viewModel)
+
+                    EventDescriptionText(
+                        title = viewModel.parseEventDescription,
+                        bodyText = viewModel.parseEventBodyText
+                    ) {
+                        navController.navigate(
+                            AboutEventRoute(derivedEventId)
+                        )
+                    }
+
+                    if (event.commentsCount > 0) {
+                        SelectRow(
+                            text = ConvertCountTitle.convertCommentsCount(event.commentsCount),
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold
+                        ) {
+                            navController.navigate(
+                                CommentListRoute(
+                                    name = event.shortTitle,
+                                    type = EventCategory.EVENT,
+                                    id = event.id
+                                )
+                            )
+                        }
+
+                        LazyRow(
+                            contentPadding = PaddingValues(horizontal = DefaultPadding),
+                            horizontalArrangement = Arrangement.spacedBy(10.dp),
+                            state = commentLazyState,
+                            flingBehavior = commentSnapBehavior
+                        ) {
+                            items(viewModel.comments) { comment ->
+                                CommentCard(comment)
+                            }
+                        }
+                    }
+
                     SelectRow(
-                        text = ConvertCountTitle.convertCommentsCount(
-                            count = viewModel.event?.commentsCount ?: 0
-                        ),
+                        text = stringResource(R.string.address),
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        icon = null
+                    ) {
+
+                    }
+
+                    SelectRow(
+                        text = stringResource(R.string.images),
+                        icon = null,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold
                     ) {
-                        navController.navigate(
-                            CommentListRoute(
-                                name = viewModel.event?.shortTitle.toString(),
-                                type = EventCategory.EVENT,
-                                id = viewModel.event?.id ?: -1
-                            )
-                        )
+
                     }
 
                     LazyRow(
                         contentPadding = PaddingValues(horizontal = DefaultPadding),
                         horizontalArrangement = Arrangement.spacedBy(10.dp),
-                        state = commentLazyState,
-                        flingBehavior = commentSnapBehavior
+                        state = imageListState,
+                        flingBehavior = imageSnapBehavior
                     ) {
-                        items(viewModel.comments) { comment ->
-                            CommentCard(comment)
-                        }
-                    }
-                }
-
-                SelectRow(
-                    text = stringResource(R.string.address),
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    icon = null
-                ) {
-
-                }
-
-                SelectRow(
-                    text = stringResource(R.string.images),
-                    icon = null,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
-                ) {
-
-                }
-
-                LazyRow(
-                    contentPadding = PaddingValues(horizontal = DefaultPadding),
-                    horizontalArrangement = Arrangement.spacedBy(10.dp),
-                    state = imageListState,
-                    flingBehavior = imageSnapBehavior
-                ) {
-                    viewModel.event?.let {
-                        items(it.images) { imageItem ->
+                        items(event.images) { imageItem ->
                             ImageCard(imageItem.thumbnails.highImage)
                         }
-                    }
-                }
-
-                if (!viewModel.event?.participants.isNullOrEmpty()) {
-                    SelectRow(
-                        text = stringResource(R.string.participants),
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
-                    ) {
-
                     }
                 }
             }
@@ -332,7 +324,11 @@ private fun TagsRow(viewModel: EventViewModel) {
         viewModel.event?.let {
             items(it.tags) { tag ->
                 SuggestionChip(
-                    label = { Text(text = tag) },
+                    label = {
+                        Text(
+                            text = ConvertInfo.convertTitle(tag)
+                        )
+                    },
                     onClick = {  }
                 )
             }

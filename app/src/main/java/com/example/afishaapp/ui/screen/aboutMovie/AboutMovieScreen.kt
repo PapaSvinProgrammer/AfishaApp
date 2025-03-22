@@ -6,8 +6,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -35,11 +37,13 @@ import androidx.navigation.NavController
 import com.example.afishaapp.R
 import com.example.afishaapp.app.support.ConvertCountTitle
 import com.example.afishaapp.app.support.ConvertDate
+import com.example.afishaapp.app.support.ConvertInfo
 import com.example.afishaapp.data.module.Genre
 import com.example.afishaapp.data.module.movie.Movie
 import com.example.afishaapp.ui.theme.DefaultPadding
 import com.example.afishaapp.ui.widget.chip.AboutChipInfo
 import com.example.afishaapp.ui.widget.chip.ChipRating
+import com.example.afishaapp.ui.widget.shimmer.screen.ShimmerAboutEvent
 import com.example.afishaapp.ui.widget.text.DefaultDetailDescription
 import com.example.afishaapp.ui.widget.text.SubtitleTopBar
 import com.example.afishaapp.ui.widget.text.TextDescription
@@ -91,7 +95,13 @@ fun AboutMovieScreen(
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
         ) {
+            if (viewModel.movie == null) {
+                ShimmerAboutEvent()
+            }
+
             viewModel.movie?.let {
+                Spacer(modifier = Modifier.height(10.dp))
+
                 InfoChipRow(it)
 
                 TextDescription(
@@ -208,7 +218,7 @@ private fun ListDetailDescription(data: List<Genre>) {
             SuggestionChip(
                 label = {
                     Text(
-                        text = it.name,
+                        text = ConvertInfo.convertTitle(it.name),
                         fontSize = 14.sp
                     )
                 },

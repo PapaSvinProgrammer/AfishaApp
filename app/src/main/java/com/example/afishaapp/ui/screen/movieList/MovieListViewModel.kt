@@ -30,6 +30,8 @@ class MovieListViewModel @Inject constructor(
     fun getMovies(
         filter: BaseFilterType = currentFilter
     ) {
+        movies = listOf()
+
         when (filter) {
             BaseFilterType.RATING -> getMovieByRating()
             BaseFilterType.YEAR -> getMovieByYear()

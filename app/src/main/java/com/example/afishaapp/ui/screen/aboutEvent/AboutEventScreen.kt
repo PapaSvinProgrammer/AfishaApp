@@ -6,8 +6,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -35,6 +37,7 @@ import com.example.afishaapp.app.support.ConvertInfo
 import com.example.afishaapp.data.module.event.Event
 import com.example.afishaapp.ui.theme.DefaultPadding
 import com.example.afishaapp.ui.widget.chip.AboutChipInfo
+import com.example.afishaapp.ui.widget.shimmer.screen.ShimmerAboutEvent
 import com.example.afishaapp.ui.widget.text.DefaultDetailDescription
 import com.example.afishaapp.ui.widget.text.SubtitleTopBar
 import com.example.afishaapp.ui.widget.text.TextDescription
@@ -76,18 +79,24 @@ fun AboutEventScreen(
             )
         }
     ) { innerPadding ->
-        viewModel.event?.let { event ->
-            Column(
-                modifier = Modifier
-                    .padding(
-                        start = DefaultPadding,
-                        end = DefaultPadding,
-                        top = innerPadding.calculateTopPadding(),
-                        bottom = innerPadding.calculateBottomPadding()
-                    )
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
-            ) {
+        Column(
+            modifier = Modifier
+                .padding(
+                    start = DefaultPadding,
+                    end = DefaultPadding,
+                    top = innerPadding.calculateTopPadding(),
+                    bottom = innerPadding.calculateBottomPadding()
+                )
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+        ) {
+            if (viewModel.event == null) {
+                ShimmerAboutEvent()
+            }
+
+            viewModel.event?.let { event ->
+                Spacer(modifier = Modifier.height(10.dp))
+
                 InfoChipRow(event)
 
                 TextDescription(
@@ -164,7 +173,7 @@ private fun ListDetailDescription(title: String, data: List<String>) {
             SuggestionChip(
                 label = {
                     Text(
-                        text = it,
+                        text = ConvertInfo.convertTitle(it),
                         fontSize = 14.sp
                     )
                 },
@@ -191,7 +200,7 @@ private fun ListCategoriesDetailDescription(event: Event, viewModel: AboutEventV
             SuggestionChip(
                 label = {
                     Text(
-                        text = viewModel.categories[it].toString(),
+                        text = ConvertInfo.convertTitle(viewModel.categories[it].toString()),
                         fontSize = 14.sp
                     )
                 },

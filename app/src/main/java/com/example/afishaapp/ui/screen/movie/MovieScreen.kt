@@ -64,6 +64,8 @@ import com.example.afishaapp.ui.widget.chip.ChipRating
 import com.example.afishaapp.ui.widget.collapsingTopBar.CollapsedTopBar
 import com.example.afishaapp.ui.widget.collapsingTopBar.ExpandedTopBar
 import com.example.afishaapp.ui.widget.row.SelectRow
+import com.example.afishaapp.ui.widget.shimmer.screen.ShimmerEvent
+import com.example.afishaapp.ui.widget.shimmer.screen.ShimmerExpandedToolbar
 import com.example.afishaapp.ui.widget.text.DefaultDetailDescription
 import com.example.afishaapp.ui.widget.text.EventDescriptionText
 import com.example.afishaapp.ui.widget.text.TitleTopBar
@@ -150,10 +152,14 @@ fun MovieScreen(
             state = collapsedListState
         ) {
             item {
-                ExpandedTopBar(
-                    expandedTopBarHeight = 520.dp
-                ) {
-                    viewModel.movie?.let {
+                if (viewModel.movie == null) {
+                    ShimmerExpandedToolbar()
+                }
+
+                viewModel.movie?.let {
+                    ExpandedTopBar(
+                        expandedTopBarHeight = 520.dp
+                    ) {
                         AsyncImage(
                             model = it.poster.thumbnails.lowImage,
                             contentDescription = null,
@@ -209,49 +215,53 @@ fun MovieScreen(
             }
 
             item {
-                InfoRow(viewModel)
-
-                GenresRow(viewModel)
-
-                EventDescriptionText(
-                    title = viewModel.parseMovieDescription,
-                    bodyText = viewModel.parseMovieBodyText
-                ) {
-                    navController.navigate(
-                        AboutMovieRoute(movieId)
-                    )
+                if (viewModel.movie == null) {
+                    ShimmerEvent()
                 }
 
-                SelectRow(
-                    text = stringResource(R.string.images),
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp
-                ) {
+                viewModel.movie?.let {
+                    InfoRow(viewModel)
 
-                }
+                    GenresRow(viewModel)
 
-                LazyRow(
-                    contentPadding = PaddingValues(horizontal = DefaultPadding),
-                    horizontalArrangement = Arrangement.spacedBy(10.dp),
-                    state = imageListState,
-                    flingBehavior = imageFlingBehavior
-                ) {
-                    viewModel.movie?.let {
+                    EventDescriptionText(
+                        title = viewModel.parseMovieDescription,
+                        bodyText = viewModel.parseMovieBodyText
+                    ) {
+                        navController.navigate(
+                            AboutMovieRoute(movieId)
+                        )
+                    }
+
+                    SelectRow(
+                        text = stringResource(R.string.images),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp
+                    ) {
+
+                    }
+
+                    LazyRow(
+                        contentPadding = PaddingValues(horizontal = DefaultPadding),
+                        horizontalArrangement = Arrangement.spacedBy(10.dp),
+                        state = imageListState,
+                        flingBehavior = imageFlingBehavior
+                    ) {
                         items(it.images) { image ->
                             ImageCard(image.thumbnails.highImage)
                         }
                     }
-                }
 
-                FilmCrew(viewModel)
+                    FilmCrew(viewModel)
 
-                Column(
-                    modifier = Modifier.padding(horizontal = DefaultPadding)
-                ) {
-                    DefaultDetailDescription(
-                        title = stringResource(R.string.cast),
-                        subtitle = viewModel.movie?.stars.toString()
-                    )
+                    Column(
+                        modifier = Modifier.padding(horizontal = DefaultPadding)
+                    ) {
+                        DefaultDetailDescription(
+                            title = stringResource(R.string.cast),
+                            subtitle = it.stars
+                        )
+                    }
                 }
             }
         }
@@ -329,7 +339,11 @@ private fun GenresRow(viewModel: MovieViewModel) {
             items(it.genres) { genre ->
                 SuggestionChip(
                     onClick = { },
-                    label = { Text(text = genre.name) }
+                    label = {
+                        Text(
+                            text = ConvertInfo.convertTitle(genre.name)
+                        )
+                    }
                 )
             }
         }
