@@ -6,17 +6,20 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.afishaapp.app.support.ParseHtml
+import com.example.afishaapp.data.module.Coordinate
 import com.example.afishaapp.data.module.comment.Comment
 import com.example.afishaapp.data.module.event.Event
 import com.example.afishaapp.domain.http.GetCommentEvent
 import com.example.afishaapp.domain.http.GetEvent
+import com.example.afishaapp.domain.repository.http.MapImageRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class EventViewModel @Inject constructor(
     private val getEvent: GetEvent,
-    private val getCommentEvent: GetCommentEvent
+    private val getCommentEvent: GetCommentEvent,
+    private val mapImageRepository: MapImageRepository
 ): ViewModel() {
     var favoriteState by mutableStateOf(false)
         private set
@@ -28,6 +31,9 @@ class EventViewModel @Inject constructor(
     var parseEventDescription by mutableStateOf("")
         private set
     var parseEventBodyText by mutableStateOf("")
+        private set
+
+    var imageMap by mutableStateOf("")
         private set
 
     fun parseEventInfo(
@@ -58,6 +64,18 @@ class EventViewModel @Inject constructor(
             temp?.let {
                 comments = it.results
             }
+        }
+    }
+
+    fun getImageUrl(
+        coordinate: Coordinate? = event?.place?.coordinates
+    ) {
+        if (coordinate == null) {
+            return
+        }
+
+        viewModelScope.launch(Dispatchers.IO) {
+            imageMap = mapImageRepository.getImageUrl(coordinate)
         }
     }
 }

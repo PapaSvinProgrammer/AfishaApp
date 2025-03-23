@@ -22,6 +22,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "MAPKIT_API_KEY", "\"${rootProject.extra["mapKitKey"]}\"")
+        buildConfigField("String", "STATIC_API_KEY", "\"${rootProject.extra["staticKey"]}\"")
     }
 
     buildTypes {

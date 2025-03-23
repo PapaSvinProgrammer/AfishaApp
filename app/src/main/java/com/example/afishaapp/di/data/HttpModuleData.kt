@@ -5,6 +5,7 @@ import com.example.afishaapp.data.repository.http.CategoryRepositoryImpl
 import com.example.afishaapp.data.repository.http.CityRepositoryImpl
 import com.example.afishaapp.data.repository.http.CommentRepositoryImpl
 import com.example.afishaapp.data.repository.http.EventRepositoryImpl
+import com.example.afishaapp.data.repository.http.MapImageRepositoryYandex
 import com.example.afishaapp.data.repository.http.MovieRepositoryImpl
 import com.example.afishaapp.data.repository.http.SearchRepositoryImpl
 import com.example.afishaapp.domain.repository.http.AgentRepository
@@ -12,6 +13,7 @@ import com.example.afishaapp.domain.repository.http.CategoryRepository
 import com.example.afishaapp.domain.repository.http.CityRepository
 import com.example.afishaapp.domain.repository.http.CommentRepository
 import com.example.afishaapp.domain.repository.http.EventRepository
+import com.example.afishaapp.domain.repository.http.MapImageRepository
 import com.example.afishaapp.domain.repository.http.MovieRepository
 import com.example.afishaapp.domain.repository.http.SearchRepository
 import dagger.Binds
@@ -47,4 +49,8 @@ interface HttpModuleData {
     @Singleton
     @Binds
     fun bindEventRepositoryImpl(repository: EventRepositoryImpl): EventRepository
+
+    @Singleton
+    @Binds
+    fun bindMapImageRepositoryYandex(repository: MapImageRepositoryYandex): MapImageRepository
 }

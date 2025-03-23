@@ -4,12 +4,15 @@ import  androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.snapping.SnapPosition
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -50,12 +53,14 @@ import com.example.afishaapp.app.navigation.MapRoute
 import com.example.afishaapp.app.support.ConvertCountTitle
 import com.example.afishaapp.app.support.ConvertInfo
 import com.example.afishaapp.app.support.ConvertDate
+import com.example.afishaapp.data.module.Place
 import com.example.afishaapp.domain.module.EventCategory
 import com.example.afishaapp.ui.theme.DefaultPadding
 import com.example.afishaapp.ui.widget.chip.ChipInfo
 import com.example.afishaapp.ui.widget.row.SelectRow
 import com.example.afishaapp.ui.widget.card.CommentCard
 import com.example.afishaapp.ui.widget.card.ImageCard
+import com.example.afishaapp.ui.widget.card.MapImageCard
 import com.example.afishaapp.ui.widget.collapsingTopBar.CollapsedTopBar
 import com.example.afishaapp.ui.widget.collapsingTopBar.ExpandedTopBar
 import com.example.afishaapp.ui.widget.shimmer.screen.ShimmerEvent
@@ -76,6 +81,7 @@ fun EventScreen(
     viewModel.getEventInfo(derivedEventId)
     viewModel.getComments(derivedEventId)
     viewModel.parseEventInfo()
+    viewModel.getImageUrl()
 
     val listState = rememberLazyListState()
     val isCollapsed: Boolean by remember {
@@ -234,21 +240,37 @@ fun EventScreen(
                         }
                     }
 
-                    SelectRow(
-                        text = stringResource(R.string.address),
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        icon = null
-                    ) {
-                        event.place?.coordinates?.let {
-                            navController.navigate(
-                                MapRoute(
-                                    lat = it.lat,
-                                    lon = it.lon
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    event.place?.let { place ->
+                        SelectRow(
+                            text = ConvertInfo.convertTitle(place.title),
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold,
+                            icon = null
+                        ) {
+                            navigateToMap(navController, place)
+                        }
+
+                        Box(
+                            modifier = Modifier
+                                .padding(
+                                    start = DefaultPadding,
+                                    end = DefaultPadding
                                 )
-                            )
+                                .clickable(
+                                    interactionSource = MutableInteractionSource(),
+                                    indication = null,
+                                    onClick = {
+                                        navigateToMap(navController, place)
+                                    }
+                                )
+                        ) {
+                            MapImageCard(viewModel.imageMap)
                         }
                     }
+
+                    Spacer(modifier = Modifier.height(10.dp))
 
                     SelectRow(
                         text = stringResource(R.string.images),
@@ -342,4 +364,13 @@ private fun TagsRow(viewModel: EventViewModel) {
             }
         }
     }
+}
+
+private fun navigateToMap(navController: NavController, place: Place) {
+    navController.navigate(
+        MapRoute(
+            lat = place.coordinates.lat,
+            lon = place.coordinates.lon
+        )
+    )
 }

@@ -10,6 +10,7 @@ plugins {
 
 extra.apply {
     set("mapKitKey", getMapKitKey())
+    set("staticKey", getStaticKey())
 }
 
 private fun getMapKitKey(): String {
@@ -18,4 +19,12 @@ private fun getMapKitKey(): String {
     properties.load(FileInputStream(file))
 
     return properties.getProperty("MAPKIT_API_KEY", "")
+}
+
+private fun getStaticKey(): String {
+    val properties = Properties()
+    val file = rootProject.file("local.properties")
+    properties.load(FileInputStream(file))
+
+    return properties.getProperty("STATIC_API_KEY", "")
 }
