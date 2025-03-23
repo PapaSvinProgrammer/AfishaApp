@@ -64,3 +64,12 @@ data class AboutEventRoute(
 data class AboutMovieRoute(
     val id: Int
 )
+
+@Serializable
+object AboutAppRoute
+
+@Serializable
+data class MapRoute(
+    val lat: Double,
+    val lon: Double
+)

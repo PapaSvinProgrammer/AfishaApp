@@ -14,6 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.example.afishaapp.di.viewModel.ViewModelFactory
+import com.example.afishaapp.ui.screen.aboutApp.AboutAppScreen
 import com.example.afishaapp.ui.screen.aboutEvent.AboutEventScreen
 import com.example.afishaapp.ui.screen.aboutEvent.AboutEventViewModel
 import com.example.afishaapp.ui.screen.aboutMovie.AboutMovieScreen
@@ -29,6 +30,7 @@ import com.example.afishaapp.ui.screen.eventList.EventListViewModel
 import com.example.afishaapp.ui.screen.favorite.FavoriteScreen
 import com.example.afishaapp.ui.screen.home.HomeScreen
 import com.example.afishaapp.ui.screen.home.HomeViewModel
+import com.example.afishaapp.ui.screen.map.MapScreen
 import com.example.afishaapp.ui.screen.movie.MovieScreen
 import com.example.afishaapp.ui.screen.movie.MovieViewModel
 import com.example.afishaapp.ui.screen.movieList.MovieListScreen
@@ -304,6 +306,46 @@ fun NavigationGraph(
                 viewModel = viewModel,
                 navController = navController,
                 id = route.id
+            )
+        }
+
+        composable<AboutAppRoute> (
+            enterTransition = {
+                slideIntoContainer(
+                    animationSpec = tween(300, easing = EaseIn),
+                    towards = AnimatedContentTransitionScope.SlideDirection.Start
+                )
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    animationSpec = tween(300, easing = EaseOut),
+                    towards = AnimatedContentTransitionScope.SlideDirection.End
+                )
+            }
+        ) {
+            AboutAppScreen(navController)
+        }
+
+        composable<MapRoute> (
+            enterTransition = {
+                slideIntoContainer(
+                    animationSpec = tween(300, easing = EaseIn),
+                    towards = AnimatedContentTransitionScope.SlideDirection.Start
+                )
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    animationSpec = tween(300, easing = EaseOut),
+                    towards = AnimatedContentTransitionScope.SlideDirection.End
+                )
+            }
+        ) {
+            val route = it.toRoute<MapRoute>()
+
+            MapScreen(
+                navController = navController,
+                lat = route.lat,
+                lon = route.lon
             )
         }
     }

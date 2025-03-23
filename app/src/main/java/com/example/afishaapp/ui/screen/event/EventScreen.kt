@@ -46,6 +46,7 @@ import coil3.compose.AsyncImage
 import com.example.afishaapp.R
 import com.example.afishaapp.app.navigation.AboutEventRoute
 import com.example.afishaapp.app.navigation.CommentListRoute
+import com.example.afishaapp.app.navigation.MapRoute
 import com.example.afishaapp.app.support.ConvertCountTitle
 import com.example.afishaapp.app.support.ConvertInfo
 import com.example.afishaapp.app.support.ConvertDate
@@ -239,7 +240,14 @@ fun EventScreen(
                         fontWeight = FontWeight.Bold,
                         icon = null
                     ) {
-
+                        event.place?.coordinates?.let {
+                            navController.navigate(
+                                MapRoute(
+                                    lat = it.lat,
+                                    lon = it.lon
+                                )
+                            )
+                        }
                     }
 
                     SelectRow(

@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.afishaapp.R
+import com.example.afishaapp.app.navigation.AboutAppRoute
 import com.example.afishaapp.app.navigation.StartRoute
 import com.example.afishaapp.ui.theme.acidFontFamily
 import com.example.afishaapp.ui.widget.row.SelectRow
@@ -101,6 +102,8 @@ fun ProfileScreen(navController: NavController) {
 
         SelectRow(
             text = stringResource(R.string.about_app)
-        ) { }
+        ) {
+            navController.navigate(AboutAppRoute)
+        }
     }
 }
