@@ -2,6 +2,7 @@ package com.example.afishaapp.ui.screen.commentList
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -21,6 +22,7 @@ import com.example.afishaapp.domain.module.EventCategory
 import com.example.afishaapp.ui.screen.bottomSheet.DirectedFilterBottomSheet
 import com.example.afishaapp.ui.widget.card.CommentCardFill
 import com.example.afishaapp.ui.widget.endlessLazy.EndlessLazyColumn
+import com.example.afishaapp.ui.widget.shimmer.card.ShimmerCommentCard
 import com.example.afishaapp.ui.widget.text.SubtitleTopBar
 import com.example.afishaapp.ui.widget.text.TitleTopBar
 
@@ -75,17 +77,22 @@ fun CommentListScreen(
             )
         }
     ) { innerPadding ->
-        EndlessLazyColumn(
-            modifier = Modifier.padding(innerPadding),
-            items = viewModel.comments,
-            loadMore = {
-                viewModel.loadMoreComments(
-                    id = objectId,
-                    type = type
-                )
+        if (viewModel.comments.isEmpty()) {
+            ShimmerCommentList(innerPadding)
+        }
+        else {
+            EndlessLazyColumn(
+                modifier = Modifier.padding(innerPadding),
+                items = viewModel.comments,
+                loadMore = {
+                    viewModel.loadMoreComments(
+                        id = objectId,
+                        type = type
+                    )
+                }
+            ) { comment ->
+                CommentCardFill(comment)
             }
-        ) { comment ->
-            CommentCardFill(comment)
         }
 
         if (viewModel.directedFilterState) {
@@ -96,6 +103,17 @@ fun CommentListScreen(
                 viewModel.updateFilter(it)
                 viewModel.updateDirectedFilterState(false)
             }
+        }
+    }
+}
+
+@Composable
+private fun ShimmerCommentList(padding: PaddingValues) {
+    Column(
+        modifier = Modifier.padding(padding)
+    ) {
+        repeat(4) {
+            ShimmerCommentCard()
         }
     }
 }

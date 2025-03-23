@@ -29,6 +29,8 @@ class CommentListViewModel @Inject constructor(
         private set
 
     fun getComments(id: Int, type: EventCategory) {
+        comments = listOf()
+
         when (type) {
             EventCategory.EVENT-> getEventComments(id)
             EventCategory.MOVIE -> getMovieComments(id)
