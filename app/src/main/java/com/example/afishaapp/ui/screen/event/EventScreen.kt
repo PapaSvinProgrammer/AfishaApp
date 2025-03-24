@@ -53,7 +53,7 @@ import com.example.afishaapp.app.navigation.MapRoute
 import com.example.afishaapp.app.support.ConvertCountTitle
 import com.example.afishaapp.app.support.ConvertInfo
 import com.example.afishaapp.app.support.ConvertDate
-import com.example.afishaapp.data.module.Place
+import com.example.afishaapp.data.module.place.Place
 import com.example.afishaapp.domain.module.EventCategory
 import com.example.afishaapp.ui.theme.DefaultPadding
 import com.example.afishaapp.ui.widget.chip.ChipInfo
@@ -370,7 +370,8 @@ private fun navigateToMap(navController: NavController, place: Place) {
     navController.navigate(
         MapRoute(
             lat = place.coordinates.lat,
-            lon = place.coordinates.lon
+            lon = place.coordinates.lon,
+            placeId = place.id
         )
     )
 }

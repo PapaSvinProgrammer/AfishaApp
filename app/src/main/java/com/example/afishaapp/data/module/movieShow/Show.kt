@@ -1,6 +1,6 @@
 package com.example.afishaapp.data.module.movieShow
 
-import com.example.afishaapp.data.module.Place
+import com.example.afishaapp.data.module.place.Place
 
 data class Show(
     val id: Int,

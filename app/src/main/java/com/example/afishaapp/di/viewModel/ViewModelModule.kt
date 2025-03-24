@@ -9,6 +9,7 @@ import com.example.afishaapp.ui.screen.entry.EntryViewModel
 import com.example.afishaapp.ui.screen.event.EventViewModel
 import com.example.afishaapp.ui.screen.eventList.EventListViewModel
 import com.example.afishaapp.ui.screen.home.HomeViewModel
+import com.example.afishaapp.ui.screen.map.MapViewModel
 import com.example.afishaapp.ui.screen.movie.MovieViewModel
 import com.example.afishaapp.ui.screen.movieList.MovieListViewModel
 import com.example.afishaapp.ui.screen.registration.RegistrationViewModel
@@ -83,4 +84,9 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(AboutMovieViewModel::class)
     fun bindAboutMovieViewModel(viewModel: AboutMovieViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MapViewModel::class)
+    fun binMapViewModel(viewmodel: MapViewModel): ViewModel
 }

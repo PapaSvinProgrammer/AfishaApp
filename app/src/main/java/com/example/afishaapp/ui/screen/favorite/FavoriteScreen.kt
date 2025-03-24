@@ -2,6 +2,7 @@ package com.example.afishaapp.ui.screen.favorite
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SegmentedButton
@@ -26,7 +27,7 @@ private var selectedIndex by mutableIntStateOf(0)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FavoriteScreen() {
-    val ticketOptions = stringArrayResource(R.array.ticket_segmented_button)
+    val segmentedButtonsList = stringArrayResource(R.array.ticket_segmented_button)
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
@@ -40,15 +41,17 @@ fun FavoriteScreen() {
         SingleChoiceSegmentedButtonRow(
             modifier = Modifier.padding(DefaultPadding, 10.dp)
         ) {
-            ticketOptions.forEachIndexed { index, label ->
+            segmentedButtonsList.forEachIndexed { index, label ->
                 SegmentedButton(
                     shape = SegmentedButtonDefaults.itemShape(
                         index = index,
-                        count = ticketOptions.size
+                        count = segmentedButtonsList.size,
+                        baseShape = RoundedCornerShape(8.dp)
                     ),
                     onClick = { selectedIndex = index },
                     selected = index == selectedIndex,
-                    label = { Text(text = label) }
+                    label = { Text(text = label) },
+                    icon = {}
                 )
             }
         }

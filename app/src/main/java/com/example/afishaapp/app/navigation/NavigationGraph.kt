@@ -31,6 +31,7 @@ import com.example.afishaapp.ui.screen.favorite.FavoriteScreen
 import com.example.afishaapp.ui.screen.home.HomeScreen
 import com.example.afishaapp.ui.screen.home.HomeViewModel
 import com.example.afishaapp.ui.screen.map.MapScreen
+import com.example.afishaapp.ui.screen.map.MapViewModel
 import com.example.afishaapp.ui.screen.movie.MovieScreen
 import com.example.afishaapp.ui.screen.movie.MovieViewModel
 import com.example.afishaapp.ui.screen.movieList.MovieListScreen
@@ -49,6 +50,8 @@ fun NavigationGraph(
     padding: PaddingValues,
     viewModelFactory: ViewModelFactory
 ) {
+    //MapRoute(lat = 59.926251, lon = 30.280609, placeId = 12271)
+
     NavHost(
         navController = navController,
         startDestination = HomeRoute
@@ -341,11 +344,14 @@ fun NavigationGraph(
             }
         ) {
             val route = it.toRoute<MapRoute>()
+            val viewModel: MapViewModel = viewModel(factory = viewModelFactory)
 
             MapScreen(
                 navController = navController,
+                viewModel = viewModel,
                 lat = route.lat,
-                lon = route.lon
+                lon = route.lon,
+                placeId = route.placeId
             )
         }
     }

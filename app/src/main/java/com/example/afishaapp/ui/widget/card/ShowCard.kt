@@ -92,12 +92,12 @@ private fun SubwayRow(text: String) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
-            painter = painterResource(R.drawable.ic_moscov_metro),
+            painter = painterResource(R.drawable.ic_metro_msk),
             contentDescription = null,
             tint = Color.Unspecified,
             modifier = Modifier
                 .padding(end = 5.dp)
-                .size(16.dp)
+                .size(20.dp)
         )
 
         Text(

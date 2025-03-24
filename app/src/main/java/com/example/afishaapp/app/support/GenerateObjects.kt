@@ -13,3 +13,11 @@ private val imageArray = listOf(
 fun generateAccountImage(): Int {
     return imageArray.random()
 }
+
+val metro = mapOf(
+    "msk" to R.drawable.ic_metro_msk,
+    "spb" to R.drawable.ic_metro_spb,
+    "ekb" to R.drawable.ic_metro_ekb,
+    "kzn" to R.drawable.ic_metro_kzn,
+    "nnv" to R.drawable.ic_metro_nnv
+)

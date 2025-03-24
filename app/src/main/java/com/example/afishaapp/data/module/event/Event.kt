@@ -1,6 +1,6 @@
 package com.example.afishaapp.data.module.event
 
-import com.example.afishaapp.data.module.Place
+import com.example.afishaapp.data.module.place.Place
 import com.example.afishaapp.data.module.image.ImageItem
 import com.example.afishaapp.data.module.search.DateRange
 

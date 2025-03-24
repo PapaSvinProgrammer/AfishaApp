@@ -70,6 +70,7 @@ object AboutAppRoute
 
 @Serializable
 data class MapRoute(
+    val placeId: Int,
     val lat: Double,
     val lon: Double
 )

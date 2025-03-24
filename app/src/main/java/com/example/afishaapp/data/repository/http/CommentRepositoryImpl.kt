@@ -54,4 +54,12 @@ class CommentRepositoryImpl @Inject constructor(
             null
         }
     }
+
+    override suspend fun getPlaceCommentAsc(queryParameters: QueryParameters): CommentResponse? {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getPlaceCommentDesc(queryParameters: QueryParameters): CommentResponse? {
+        TODO("Not yet implemented")
+    }
 }

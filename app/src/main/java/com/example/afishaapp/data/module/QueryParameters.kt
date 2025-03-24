@@ -7,5 +7,6 @@ data class QueryParameters(
     val actualUntil: Int = 0,
     val page: Int = 1,
     val searchText: String = "",
-    val category: String = ""
+    val category: String = "",
+    val categories: List<String> = listOf()
 )

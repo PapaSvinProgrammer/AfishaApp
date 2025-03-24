@@ -9,4 +9,7 @@ interface CommentRepository {
 
     suspend fun getEventCommentAsc(queryParameters: QueryParameters): CommentResponse?
     suspend fun getEventCommentDesc(queryParameters: QueryParameters): CommentResponse?
+
+    suspend fun getPlaceCommentAsc(queryParameters: QueryParameters): CommentResponse?
+    suspend fun getPlaceCommentDesc(queryParameters: QueryParameters): CommentResponse?
 }
