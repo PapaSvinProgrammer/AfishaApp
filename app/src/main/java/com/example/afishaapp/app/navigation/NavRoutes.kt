@@ -74,3 +74,8 @@ data class MapRoute(
     val lat: Double,
     val lon: Double
 )
+
+@Serializable
+data class PlaceRoute(
+    val placeId: Int
+)

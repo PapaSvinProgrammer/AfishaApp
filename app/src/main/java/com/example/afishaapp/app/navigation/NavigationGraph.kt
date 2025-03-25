@@ -36,6 +36,7 @@ import com.example.afishaapp.ui.screen.movie.MovieScreen
 import com.example.afishaapp.ui.screen.movie.MovieViewModel
 import com.example.afishaapp.ui.screen.movieList.MovieListScreen
 import com.example.afishaapp.ui.screen.movieList.MovieListViewModel
+import com.example.afishaapp.ui.screen.place.PlaceScreen
 import com.example.afishaapp.ui.screen.profile.ProfileScreen
 import com.example.afishaapp.ui.screen.registration.RegistrationScreen
 import com.example.afishaapp.ui.screen.registration.RegistrationViewModel
@@ -54,7 +55,7 @@ fun NavigationGraph(
 
     NavHost(
         navController = navController,
-        startDestination = HomeRoute
+        startDestination = MapRoute(lat = 59.926251, lon = 30.280609, placeId = 12271)
     ) {
         composable<HomeRoute> {
             val viewModel: HomeViewModel = viewModel(factory = viewModelFactory)
@@ -351,6 +352,28 @@ fun NavigationGraph(
                 viewModel = viewModel,
                 lat = route.lat,
                 lon = route.lon,
+                placeId = route.placeId
+            )
+        }
+
+        composable<PlaceRoute> (
+            enterTransition = {
+                slideIntoContainer(
+                    animationSpec = tween(300, easing = EaseIn),
+                    towards = AnimatedContentTransitionScope.SlideDirection.Start
+                )
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    animationSpec = tween(300, easing = EaseOut),
+                    towards = AnimatedContentTransitionScope.SlideDirection.End
+                )
+            }
+        ) {
+            val route = it.toRoute<PlaceRoute>()
+
+            PlaceScreen(
+                navController = navController,
                 placeId = route.placeId
             )
         }

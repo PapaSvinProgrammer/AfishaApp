@@ -24,6 +24,7 @@ interface PlaceService {
     @GET("public-api/v1.4/places/{placeId}/")
     suspend fun getPlaceShortInfo(
         @Path("placeId") placeId: Int,
-        @Query("fields") fields: String = "id,title,address,phone,subway,location,images"
+        @Query("fields") fields: String = "id,title,address,phone,subway,location,images,coords",
+        @Query("expand") expand: String = "images"
     ): Place?
 }
