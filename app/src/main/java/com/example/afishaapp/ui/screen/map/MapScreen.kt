@@ -49,7 +49,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -71,11 +70,11 @@ import androidx.core.graphics.createBitmap
 import androidx.core.net.toUri
 import com.example.afishaapp.app.navigation.PlaceRoute
 import com.example.afishaapp.app.support.ConvertInfo
-import com.example.afishaapp.app.support.metro
 import com.example.afishaapp.data.module.Coordinate
 import com.example.afishaapp.data.module.image.ImageItem
 import com.example.afishaapp.data.module.place.Place
 import com.example.afishaapp.ui.widget.card.ImageCard
+import com.example.afishaapp.ui.widget.row.MetroRow
 
 @SuppressLint("StaticFieldLeak")
 private lateinit var context: Context
@@ -118,7 +117,9 @@ fun MapScreen(
         sheetPeekHeight = 100.dp,
         sheetContent = {
             Column(
-                modifier = Modifier.navigationBarsPadding().fillMaxWidth(),
+                modifier = Modifier
+                    .navigationBarsPadding()
+                    .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 SingleChoiceSegmentedButtonRow {
@@ -146,7 +147,9 @@ fun MapScreen(
         }
     ) { innerPadding ->
         Box(
-            modifier = Modifier.fillMaxSize().padding(innerPadding)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
         ) {
             AndroidView(
                 factory = { context ->
@@ -208,7 +211,7 @@ private fun InformationSheetContent(navController: NavController, place: Place?)
                     start = DefaultPadding,
                     end = DefaultPadding
                 ),
-            text = "Адрес: ${place.address}",
+            text = stringResource(R.string.address_param, place.address),
             textAlign = TextAlign.Start,
             fontSize = 15.sp
         )
@@ -217,7 +220,7 @@ private fun InformationSheetContent(navController: NavController, place: Place?)
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = DefaultPadding),
-            text = "Номер: ${place.phone}",
+            text = stringResource(R.string.number_param, place.phone),
             textAlign = TextAlign.Start,
             fontSize = 15.sp
         )
@@ -225,35 +228,6 @@ private fun InformationSheetContent(navController: NavController, place: Place?)
         MetroRow(place)
         ImagesRow(place.images)
         ControlButtonsRow(navController, place)
-    }
-}
-
-@Composable
-private fun MetroRow(place: Place) {
-    Row(
-        modifier = Modifier
-            .padding(
-                top = 5.dp,
-                start = DefaultPadding,
-                end = DefaultPadding
-            ),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        val icon = metro[place.location] ?: R.drawable.ic_error
-
-        Icon(
-            painter = painterResource(icon),
-            contentDescription = null,
-            tint = Color.Unspecified,
-            modifier = Modifier.size(20.dp)
-        )
-
-        Text(
-            modifier = Modifier.fillMaxWidth().padding(start = 10.dp),
-            text = place.subway,
-            textAlign = TextAlign.Start,
-            fontSize = 15.sp
-        )
     }
 }
 
@@ -273,20 +247,24 @@ private fun ControlButtonsRow(navController: NavController, place: Place) {
             onClick = {
                 navigateToYandexMaps(place.coordinates)
             },
-            modifier = Modifier.fillMaxWidth().weight(1f),
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
             shape = RoundedCornerShape(10.dp)
         ) {
-            Text(text = "Маршрут")
+            Text(text = stringResource(R.string.route))
         }
 
         Button(
             onClick = {
                 navigateToPlaceScreen(navController, place.id)
             },
-            modifier = Modifier.fillMaxWidth().weight(1f),
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
             shape = RoundedCornerShape(10.dp)
         ) {
-            Text(text = "Подробнее")
+            Text(text = stringResource(R.string.more_detail))
         }
     }
 }

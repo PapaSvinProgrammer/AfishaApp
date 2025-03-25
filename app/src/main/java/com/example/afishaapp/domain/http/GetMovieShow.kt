@@ -24,6 +24,8 @@ class GetMovieShow @Inject constructor(
         plusDays: Long
     ): List<Show> {
         val result = arrayListOf<Show>()
+        val map = HashMap<Int, Int>()
+
         nextPage = 1
         resultFlag = false
 
@@ -42,7 +44,7 @@ class GetMovieShow @Inject constructor(
                 return result
             }
 
-            result.prepareShows(showResponse)
+            result.prepareShows(showResponse, map)
 
             if (showResponse.next.isNullOrEmpty()) {
                 result.sort()
@@ -67,12 +69,13 @@ class GetMovieShow @Inject constructor(
         }
     }
 
-    private fun ArrayList<Show>.prepareShows(showResponse: MovieShowResponse) {
+    private fun ArrayList<Show>.prepareShows(showResponse: MovieShowResponse, map: HashMap<Int, Int>) {
+
         showResponse.results.forEach { movieShow ->
-            val index = this.findShow(movieShow)
+            val index = map.getOrDefault(movieShow.place.id, -1)
 
             if (index == -1) {
-                this.createNewShowObject(movieShow)
+                this.createNewShowObject(movieShow, map)
             }
             else {
                 this.updateShowObject(movieShow, index)
@@ -80,17 +83,7 @@ class GetMovieShow @Inject constructor(
         }
     }
 
-    private fun ArrayList<Show>.findShow(movieShow: MovieShow): Int {
-        for (i in this.indices) {
-            if (this[i].place.id == movieShow.place.id) {
-                return i
-            }
-        }
-
-        return -1
-    }
-
-    private fun ArrayList<Show>.createNewShowObject(movieShow: MovieShow) {
+    private fun ArrayList<Show>.createNewShowObject(movieShow: MovieShow, map: HashMap<Int, Int>) {
         val priceTime = PriceTime(
             price = movieShow.price.toString(),
             time = movieShow.dateTime
@@ -103,6 +96,8 @@ class GetMovieShow @Inject constructor(
                 priceTime = arrayListOf(priceTime)
             )
         )
+
+        map[movieShow.place.id] = this.size - 1
     }
 
     private fun ArrayList<Show>.updateShowObject(movieShow: MovieShow, index: Int) {

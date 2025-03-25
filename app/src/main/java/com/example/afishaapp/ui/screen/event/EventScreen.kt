@@ -53,6 +53,8 @@ import com.example.afishaapp.app.navigation.MapRoute
 import com.example.afishaapp.app.support.ConvertCountTitle
 import com.example.afishaapp.app.support.ConvertInfo
 import com.example.afishaapp.app.support.ConvertDate
+import com.example.afishaapp.data.module.comment.Comment
+import com.example.afishaapp.data.module.event.Event
 import com.example.afishaapp.data.module.place.Place
 import com.example.afishaapp.domain.module.EventCategory
 import com.example.afishaapp.ui.theme.DefaultPadding
@@ -63,6 +65,7 @@ import com.example.afishaapp.ui.widget.card.ImageCard
 import com.example.afishaapp.ui.widget.card.MapImageCard
 import com.example.afishaapp.ui.widget.collapsingTopBar.CollapsedTopBar
 import com.example.afishaapp.ui.widget.collapsingTopBar.ExpandedTopBar
+import com.example.afishaapp.ui.widget.row.MetroRow
 import com.example.afishaapp.ui.widget.shimmer.screen.ShimmerEvent
 import com.example.afishaapp.ui.widget.shimmer.screen.ShimmerExpandedToolbar
 import com.example.afishaapp.ui.widget.text.EventDescriptionText
@@ -92,9 +95,6 @@ fun EventScreen(
 
     val imageListState = rememberLazyListState()
     val imageSnapBehavior = rememberSnapFlingBehavior(imageListState, SnapPosition.Start)
-
-    val commentLazyState = rememberLazyListState()
-    val commentSnapBehavior = rememberSnapFlingBehavior(commentLazyState,SnapPosition.Start)
 
     Box {
         val color = if (isCollapsed)
@@ -213,62 +213,19 @@ fun EventScreen(
                         )
                     }
 
-                    if (event.commentsCount > 0) {
-                        SelectRow(
-                            text = ConvertCountTitle.convertCommentsCount(event.commentsCount),
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold
-                        ) {
-                            navController.navigate(
-                                CommentListRoute(
-                                    name = event.shortTitle,
-                                    type = EventCategory.EVENT,
-                                    id = event.id
-                                )
-                            )
-                        }
-
-                        LazyRow(
-                            contentPadding = PaddingValues(horizontal = DefaultPadding),
-                            horizontalArrangement = Arrangement.spacedBy(10.dp),
-                            state = commentLazyState,
-                            flingBehavior = commentSnapBehavior
-                        ) {
-                            items(viewModel.comments) { comment ->
-                                CommentCard(comment)
-                            }
-                        }
-                    }
+                    CommentRow(
+                        event = event,
+                        navController = navController,
+                        comments = viewModel.comments
+                    )
 
                     Spacer(modifier = Modifier.height(10.dp))
 
-                    event.place?.let { place ->
-                        SelectRow(
-                            text = ConvertInfo.convertTitle(place.title),
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold,
-                            icon = null
-                        ) {
-                            navigateToMap(navController, place)
-                        }
-
-                        Box(
-                            modifier = Modifier
-                                .padding(
-                                    start = DefaultPadding,
-                                    end = DefaultPadding
-                                )
-                                .clickable(
-                                    interactionSource = MutableInteractionSource(),
-                                    indication = null,
-                                    onClick = {
-                                        navigateToMap(navController, place)
-                                    }
-                                )
-                        ) {
-                            MapImageCard(viewModel.imageMap)
-                        }
-                    }
+                    PlaceRow(
+                        place = viewModel.event?.place,
+                        navController = navController,
+                        imageMap = viewModel.imageMap
+                    )
 
                     Spacer(modifier = Modifier.height(10.dp))
 
@@ -295,6 +252,86 @@ fun EventScreen(
             }
         }
     }
+}
+
+@Composable
+private fun CommentRow(event: Event, navController: NavController, comments: List<Comment>) {
+    val commentLazyState = rememberLazyListState()
+    val commentSnapBehavior = rememberSnapFlingBehavior(commentLazyState,SnapPosition.Start)
+
+    if (event.commentsCount > 0) {
+        SelectRow(
+            text = ConvertCountTitle.convertCommentsCount(event.commentsCount),
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold
+        ) {
+            navController.navigate(
+                CommentListRoute(
+                    name = event.shortTitle,
+                    type = EventCategory.EVENT,
+                    id = event.id
+                )
+            )
+        }
+
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = DefaultPadding),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            state = commentLazyState,
+            flingBehavior = commentSnapBehavior
+        ) {
+            items(comments) { comment ->
+                CommentCard(comment)
+            }
+        }
+    }
+}
+
+@Composable
+private fun PlaceRow(place: Place?, navController: NavController, imageMap: String) {
+    if (place == null) {
+        return
+    }
+
+    SelectRow(
+        text = ConvertInfo.convertTitle(place.title),
+        fontSize = 18.sp,
+        fontWeight = FontWeight.Bold,
+        icon = null
+    ) {
+        navigateToMap(navController, place)
+    }
+
+    Box(
+        modifier = Modifier
+            .padding(
+                start = DefaultPadding,
+                end = DefaultPadding
+            )
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                onClick = {
+                    navigateToMap(navController, place)
+                }
+            )
+    ) {
+        MapImageCard(imageMap)
+    }
+
+    Text(
+        text = place.address,
+        fontWeight = FontWeight.Bold,
+        fontSize = 16.sp,
+        modifier = Modifier
+            .padding(
+                start = DefaultPadding,
+                end = DefaultPadding,
+                top = 15.dp
+            )
+    )
+
+    MetroRow(place)
 }
 
 @Composable

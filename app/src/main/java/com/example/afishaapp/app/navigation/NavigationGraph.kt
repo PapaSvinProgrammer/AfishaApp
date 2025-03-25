@@ -55,7 +55,7 @@ fun NavigationGraph(
 
     NavHost(
         navController = navController,
-        startDestination = MapRoute(lat = 59.926251, lon = 30.280609, placeId = 12271)
+        startDestination = HomeRoute
     ) {
         composable<HomeRoute> {
             val viewModel: HomeViewModel = viewModel(factory = viewModelFactory)
