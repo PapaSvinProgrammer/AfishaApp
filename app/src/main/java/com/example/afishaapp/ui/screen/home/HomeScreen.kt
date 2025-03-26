@@ -38,6 +38,8 @@ import com.example.afishaapp.app.navigation.EventListRoute
 import com.example.afishaapp.app.navigation.EventRoute
 import com.example.afishaapp.app.navigation.MovieListRoute
 import com.example.afishaapp.app.navigation.MovieRoute
+import com.example.afishaapp.data.module.event.EventResponse
+import com.example.afishaapp.data.module.movie.MovieResponse
 import com.example.afishaapp.domain.module.EventCategory
 import com.example.afishaapp.ui.screen.bottomSheet.CategoryEventBottomSheet
 import com.example.afishaapp.ui.screen.bottomSheet.CityBottomSheet
@@ -62,18 +64,6 @@ fun HomeScreen(
     viewModel.getLocationSlug()
     viewModel.getMovies()
     viewModel.getCategories()
-
-    val eventListState = rememberLazyListState()
-    val eventFlingBehavior = rememberSnapFlingBehavior(eventListState, SnapPosition.Start)
-
-    val movieListState = rememberLazyListState()
-    val movieFlingBehavior = rememberSnapFlingBehavior(movieListState, SnapPosition.Start)
-
-    val concertListState = rememberLazyListState()
-    val concertFlingBehavior = rememberSnapFlingBehavior(concertListState, SnapPosition.Start)
-
-    val exhibitionListState = rememberLazyListState()
-    val exhibitionFlingBehavior = rememberSnapFlingBehavior(exhibitionListState, SnapPosition.Start)
 
     Scaffold(
         topBar = {
@@ -148,29 +138,8 @@ fun HomeScreen(
                 )
             }
 
-            LazyRow(
-                contentPadding = PaddingValues(horizontal = DefaultPadding),
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
-                state = eventListState,
-                flingBehavior = eventFlingBehavior
-            ) {
-                if (viewModel.eventResponse == null) {
-                    items(3) {
-                        ShimmerEventCard()
-                    }
-                }
-
-                viewModel.eventResponse?.let {
-                    items(it.results) { event ->
-                        EventCard(
-                            event = event
-                        ) {
-                            navController.navigate(
-                                EventRoute(event.id)
-                            )
-                        }
-                    }
-                }
+            EventList(viewModel.eventResponse) {
+                navController.navigate(EventRoute(it))
             }
 
             SelectRow(
@@ -187,30 +156,8 @@ fun HomeScreen(
                 )
             }
 
-            LazyRow(
-                contentPadding = PaddingValues(horizontal = DefaultPadding),
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
-                state = movieListState,
-                flingBehavior = movieFlingBehavior
-            ) {
-                if (viewModel.movieResponse == null) {
-                    items(3) {
-                        ShimmerMovieCard()
-                    }
-                }
-
-                viewModel.movieResponse?.let {
-                    items(it.results) { movie ->
-                        MovieCard(
-                            movie = movie,
-                            onClick = {
-                                navController.navigate(
-                                    MovieRoute(movie.id)
-                                )
-                            }
-                        )
-                    }
-                }
+            MovieList(viewModel.movieResponse) {
+                navController.navigate(MovieRoute(it))
             }
 
             SelectRow(
@@ -228,30 +175,8 @@ fun HomeScreen(
                 )
             }
 
-            LazyRow(
-                contentPadding = PaddingValues(horizontal = DefaultPadding),
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
-                state = concertListState,
-                flingBehavior = concertFlingBehavior
-            ) {
-                if (viewModel.eventConcert == null) {
-                    items(3) {
-                        ShimmerEventCard()
-                    }
-                }
-
-                viewModel.eventConcert?.let {
-                    items(it.results) { event ->
-                        EventCard(
-                            event = event,
-                            onClick = {
-                                navController.navigate(
-                                    EventRoute(event.id)
-                                )
-                            }
-                        )
-                    }
-                }
+            ConcertList(viewModel.eventConcert) {
+                navController.navigate(EventRoute(it))
             }
 
             SelectRow(
@@ -269,31 +194,8 @@ fun HomeScreen(
                 )
             }
 
-            LazyRow(
-                modifier = Modifier.padding(bottom = 20.dp),
-                contentPadding = PaddingValues(horizontal = DefaultPadding),
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
-                state = exhibitionListState,
-                flingBehavior = exhibitionFlingBehavior
-            ) {
-                if (viewModel.eventExhibition == null) {
-                    items(3) {
-                        ShimmerEventCard()
-                    }
-                }
-
-                viewModel.eventExhibition?.let {
-                    items(it.results) { event ->
-                        EventCard(
-                            event = event,
-                            onClick = {
-                                navController.navigate(
-                                    EventRoute(event.id)
-                                )
-                            }
-                        )
-                    }
-                }
+            ExhibitionList(viewModel.eventExhibition) {
+                navController.navigate(EventRoute(it))
             }
         }
 
@@ -319,6 +221,126 @@ fun HomeScreen(
                     viewModel.updateCategoryState(false)
                 }
             )
+        }
+    }
+}
+
+@Composable
+private fun EventList(eventResponse: EventResponse?, onClick: (Int) -> Unit) {
+    val eventListState = rememberLazyListState()
+    val eventFlingBehavior = rememberSnapFlingBehavior(eventListState, SnapPosition.Start)
+
+    LazyRow(
+        contentPadding = PaddingValues(horizontal = DefaultPadding),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        state = eventListState,
+        flingBehavior = eventFlingBehavior
+    ) {
+        if (eventResponse == null) {
+            items(3) {
+                ShimmerEventCard()
+            }
+        }
+
+        eventResponse?.let {
+            items(it.results) { event ->
+                EventCard(
+                    event = event
+                ) {
+                    onClick.invoke(event.id)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun MovieList(movieResponse: MovieResponse?, onClick: (Int) -> Unit) {
+    val movieListState = rememberLazyListState()
+    val movieFlingBehavior = rememberSnapFlingBehavior(movieListState, SnapPosition.Start)
+
+    LazyRow(
+        contentPadding = PaddingValues(horizontal = DefaultPadding),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        state = movieListState,
+        flingBehavior = movieFlingBehavior
+    ) {
+        if (movieResponse == null) {
+            items(3) {
+                ShimmerMovieCard()
+            }
+        }
+
+        movieResponse?.let {
+            items(it.results) { movie ->
+                MovieCard(
+                    movie = movie,
+                    onClick = {
+                        onClick.invoke(movie.id)
+                    }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ConcertList(eventConcert: EventResponse?, onClick: (Int) -> Unit) {
+    val concertListState = rememberLazyListState()
+    val concertFlingBehavior = rememberSnapFlingBehavior(concertListState, SnapPosition.Start)
+
+    LazyRow(
+        contentPadding = PaddingValues(horizontal = DefaultPadding),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        state = concertListState,
+        flingBehavior = concertFlingBehavior
+    ) {
+        if (eventConcert == null) {
+            items(3) {
+                ShimmerEventCard()
+            }
+        }
+
+        eventConcert?.let {
+            items(it.results) { event ->
+                EventCard(
+                    event = event,
+                    onClick = {
+                        onClick.invoke(event.id)
+                    }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ExhibitionList(eventExhibition: EventResponse?, onClick: (Int) -> Unit) {
+    val exhibitionListState = rememberLazyListState()
+    val exhibitionFlingBehavior = rememberSnapFlingBehavior(exhibitionListState, SnapPosition.Start)
+
+    LazyRow(
+        modifier = Modifier.padding(bottom = 20.dp),
+        contentPadding = PaddingValues(horizontal = DefaultPadding),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        state = exhibitionListState,
+        flingBehavior = exhibitionFlingBehavior
+    ) {
+        if (eventExhibition == null) {
+            items(3) {
+                ShimmerEventCard()
+            }
+        }
+
+        eventExhibition?.let {
+            items(it.results) { event ->
+                EventCard(
+                    event = event,
+                    onClick = {
+                        onClick.invoke(event.id)
+                    }
+                )
+            }
         }
     }
 }

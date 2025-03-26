@@ -10,6 +10,10 @@ class GetMovie @Inject constructor(
     private val movieRepository: MovieRepository
 ) {
     suspend fun getMoviesByRating(locationSlug: String, page: Int = 1): MovieResponse? {
+        if (locationSlug.isEmpty()) {
+            return null
+        }
+
         val currentTime = System.currentTimeMillis() / 1000
         val queryParameters = QueryParameters(
             locationSlug = locationSlug,
@@ -21,6 +25,10 @@ class GetMovie @Inject constructor(
     }
 
     suspend fun getMoviesByTitle(locationSlug: String, page: Int = 1): MovieResponse? {
+        if (locationSlug.isEmpty()) {
+            return null
+        }
+
         val currentTime = System.currentTimeMillis() / 1000
         val queryParameters = QueryParameters(
             locationSlug = locationSlug,
@@ -32,6 +40,10 @@ class GetMovie @Inject constructor(
     }
 
     suspend fun getMoviesByYear(locationSlug: String, page: Int = 1): MovieResponse? {
+        if (locationSlug.isEmpty()) {
+            return null
+        }
+
         val currentTime = System.currentTimeMillis() / 1000
         val queryParameters = QueryParameters(
             locationSlug = locationSlug,

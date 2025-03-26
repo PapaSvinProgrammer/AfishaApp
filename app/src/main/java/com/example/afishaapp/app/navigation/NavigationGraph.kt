@@ -55,7 +55,31 @@ fun NavigationGraph(
 
     NavHost(
         navController = navController,
-        startDestination = HomeRoute
+        startDestination = HomeRoute,
+        enterTransition = {
+            slideIntoContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                animationSpec = tween(300)
+            )
+        },
+        exitTransition = {
+            slideOutOfContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                animationSpec = tween(300)
+            )
+        },
+        popEnterTransition = {
+            slideIntoContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.End,
+                animationSpec = tween(300)
+            )
+        },
+        popExitTransition = {
+            slideOutOfContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.End,
+                animationSpec = tween(300)
+            )
+        }
     ) {
         composable<HomeRoute> {
             val viewModel: HomeViewModel = viewModel(factory = viewModelFactory)
@@ -80,20 +104,7 @@ fun NavigationGraph(
             )
         }
 
-        composable<EntryRoute> (
-            enterTransition = {
-                slideIntoContainer(
-                    animationSpec = tween(300, easing = EaseIn),
-                    towards = AnimatedContentTransitionScope.SlideDirection.Start
-                )
-            },
-            exitTransition = {
-                slideOutOfContainer(
-                    animationSpec = tween(300, easing = EaseOut),
-                    towards = AnimatedContentTransitionScope.SlideDirection.End
-                )
-            }
-        ) {
+        composable<EntryRoute>  {
             val viewModel: EntryViewModel = viewModel(factory = viewModelFactory)
             EntryScreen(
                 navController = navController,
@@ -101,20 +112,7 @@ fun NavigationGraph(
             )
         }
 
-        composable<RegistrationRoute> (
-            enterTransition = {
-                slideIntoContainer(
-                    animationSpec = tween(300, easing = EaseIn),
-                    towards = AnimatedContentTransitionScope.SlideDirection.Start
-                )
-            },
-            exitTransition = {
-                slideOutOfContainer(
-                    animationSpec = tween(300, easing = EaseOut),
-                    towards = AnimatedContentTransitionScope.SlideDirection.End
-                )
-            }
-        ) {
+        composable<RegistrationRoute> {
             val viewModel: RegistrationViewModel = viewModel(factory = viewModelFactory)
             RegistrationScreen(
                 navController =  navController,
@@ -122,37 +120,11 @@ fun NavigationGraph(
             )
         }
 
-        composable<AccountRoute> (
-            enterTransition = {
-                slideIntoContainer(
-                    animationSpec = tween(300, easing = EaseIn),
-                    towards = AnimatedContentTransitionScope.SlideDirection.Start
-                )
-            },
-            exitTransition = {
-                slideOutOfContainer(
-                    animationSpec = tween(300, easing = EaseOut),
-                    towards = AnimatedContentTransitionScope.SlideDirection.End
-                )
-            }
-        ) {
+        composable<AccountRoute> {
             ProfileScreen(navController)
         }
 
-        composable<MovieListRoute> (
-            enterTransition = {
-                slideIntoContainer(
-                    animationSpec = tween(300, easing = EaseIn),
-                    towards = AnimatedContentTransitionScope.SlideDirection.Start
-                )
-            },
-            exitTransition = {
-                slideOutOfContainer(
-                    animationSpec = tween(300, easing = EaseOut),
-                    towards = AnimatedContentTransitionScope.SlideDirection.End
-                )
-            }
-        ) {
+        composable<MovieListRoute> {
             val movieListRoute = it.toRoute<MovieListRoute>()
             val viewModel: MovieListViewModel = viewModel(factory = viewModelFactory)
 
@@ -164,20 +136,7 @@ fun NavigationGraph(
             )
         }
 
-        composable<EventListRoute> (
-            enterTransition = {
-                slideIntoContainer(
-                    animationSpec = tween(300, easing = EaseIn),
-                    towards = AnimatedContentTransitionScope.SlideDirection.Start
-                )
-            },
-            exitTransition = {
-                slideOutOfContainer(
-                    animationSpec = tween(300, easing = EaseOut),
-                    towards = AnimatedContentTransitionScope.SlideDirection.End
-                )
-            }
-        ) {
+        composable<EventListRoute> {
             val eventListRoute = it.toRoute<EventListRoute>()
             val viewModel: EventListViewModel = viewModel(factory = viewModelFactory)
 
@@ -190,20 +149,7 @@ fun NavigationGraph(
             )
         }
 
-        composable<EventRoute> (
-            enterTransition = {
-                slideIntoContainer(
-                    animationSpec = tween(300, easing = EaseIn),
-                    towards = AnimatedContentTransitionScope.SlideDirection.Start
-                )
-            },
-            exitTransition = {
-                slideOutOfContainer(
-                    animationSpec = tween(300, easing = EaseOut),
-                    towards = AnimatedContentTransitionScope.SlideDirection.End
-                )
-            }
-        ) {
+        composable<EventRoute> {
             val eventRoute = it.toRoute<EventRoute>()
             val viewModel: EventViewModel = viewModel(factory = viewModelFactory)
 
@@ -214,20 +160,7 @@ fun NavigationGraph(
             )
         }
 
-        composable<CommentListRoute> (
-            enterTransition = {
-                slideIntoContainer(
-                    animationSpec = tween(300, easing = EaseIn),
-                    towards = AnimatedContentTransitionScope.SlideDirection.Start
-                )
-            },
-            exitTransition = {
-                slideOutOfContainer(
-                    animationSpec = tween(300, easing = EaseOut),
-                    towards = AnimatedContentTransitionScope.SlideDirection.End
-                )
-            }
-        ) {
+        composable<CommentListRoute> {
             val commentListRoute = it.toRoute<CommentListRoute>()
             val viewModel: CommentListViewModel = viewModel(factory = viewModelFactory)
 
@@ -240,20 +173,7 @@ fun NavigationGraph(
             )
         }
 
-        composable<MovieRoute> (
-            enterTransition = {
-                slideIntoContainer(
-                    animationSpec = tween(300, easing = EaseIn),
-                    towards = AnimatedContentTransitionScope.SlideDirection.Start
-                )
-            },
-            exitTransition = {
-                slideOutOfContainer(
-                    animationSpec = tween(300, easing = EaseOut),
-                    towards = AnimatedContentTransitionScope.SlideDirection.End
-                )
-            }
-        ) {
+        composable<MovieRoute> {
             val movieRoute = it.toRoute<MovieRoute>()
             val viewModel: MovieViewModel = viewModel(factory = viewModelFactory)
 
@@ -265,20 +185,7 @@ fun NavigationGraph(
             )
         }
 
-        composable<AboutEventRoute> (
-            enterTransition = {
-                slideIntoContainer(
-                    animationSpec = tween(300, easing = EaseIn),
-                    towards = AnimatedContentTransitionScope.SlideDirection.Start
-                )
-            },
-            exitTransition = {
-                slideOutOfContainer(
-                    animationSpec = tween(300, easing = EaseOut),
-                    towards = AnimatedContentTransitionScope.SlideDirection.End
-                )
-            }
-        ) {
+        composable<AboutEventRoute> {
             val route = it.toRoute<AboutEventRoute>()
             val viewModel: AboutEventViewModel = viewModel(factory = viewModelFactory)
 
@@ -289,20 +196,7 @@ fun NavigationGraph(
             )
         }
 
-        composable<AboutMovieRoute> (
-            enterTransition = {
-                slideIntoContainer(
-                    animationSpec = tween(300, easing = EaseIn),
-                    towards = AnimatedContentTransitionScope.SlideDirection.Start
-                )
-            },
-            exitTransition = {
-                slideOutOfContainer(
-                    animationSpec = tween(300, easing = EaseOut),
-                    towards = AnimatedContentTransitionScope.SlideDirection.End
-                )
-            }
-        ) {
+        composable<AboutMovieRoute> {
             val route = it.toRoute<AboutMovieRoute>()
             val viewModel: AboutMovieViewModel = viewModel(factory = viewModelFactory)
 
@@ -313,37 +207,11 @@ fun NavigationGraph(
             )
         }
 
-        composable<AboutAppRoute> (
-            enterTransition = {
-                slideIntoContainer(
-                    animationSpec = tween(300, easing = EaseIn),
-                    towards = AnimatedContentTransitionScope.SlideDirection.Start
-                )
-            },
-            exitTransition = {
-                slideOutOfContainer(
-                    animationSpec = tween(300, easing = EaseOut),
-                    towards = AnimatedContentTransitionScope.SlideDirection.End
-                )
-            }
-        ) {
+        composable<AboutAppRoute> {
             AboutAppScreen(navController)
         }
 
-        composable<MapRoute> (
-            enterTransition = {
-                slideIntoContainer(
-                    animationSpec = tween(300, easing = EaseIn),
-                    towards = AnimatedContentTransitionScope.SlideDirection.Start
-                )
-            },
-            exitTransition = {
-                slideOutOfContainer(
-                    animationSpec = tween(300, easing = EaseOut),
-                    towards = AnimatedContentTransitionScope.SlideDirection.End
-                )
-            }
-        ) {
+        composable<MapRoute> {
             val route = it.toRoute<MapRoute>()
             val viewModel: MapViewModel = viewModel(factory = viewModelFactory)
 
@@ -356,20 +224,7 @@ fun NavigationGraph(
             )
         }
 
-        composable<PlaceRoute> (
-            enterTransition = {
-                slideIntoContainer(
-                    animationSpec = tween(300, easing = EaseIn),
-                    towards = AnimatedContentTransitionScope.SlideDirection.Start
-                )
-            },
-            exitTransition = {
-                slideOutOfContainer(
-                    animationSpec = tween(300, easing = EaseOut),
-                    towards = AnimatedContentTransitionScope.SlideDirection.End
-                )
-            }
-        ) {
+        composable<PlaceRoute> {
             val route = it.toRoute<PlaceRoute>()
 
             PlaceScreen(

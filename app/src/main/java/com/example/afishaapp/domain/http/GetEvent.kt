@@ -10,6 +10,10 @@ class GetEvent @Inject constructor(
     private val eventRepository: EventRepository
 ) {
     suspend fun getEvents(queryParameters: QueryParameters): EventResponse? {
+        if (queryParameters.locationSlug.isEmpty()) {
+            return null
+        }
+
         val currentTime = System.currentTimeMillis() / 1000
 
         val newQueryParameters = QueryParameters(
