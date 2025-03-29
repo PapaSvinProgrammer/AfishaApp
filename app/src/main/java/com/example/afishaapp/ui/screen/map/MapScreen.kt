@@ -6,6 +6,13 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.view.View
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.snapping.SnapPosition
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
@@ -41,6 +48,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -94,6 +102,11 @@ fun MapScreen(
     context = LocalContext.current
     val segmentedButtonsList = stringArrayResource(R.array.map_info_segmented_button)
     var selectedIndex by remember { mutableIntStateOf(0) }
+    val derivedIndex by remember {
+        derivedStateOf {
+            selectedIndex
+        }
+    }
 
     LaunchedEffect(Unit) {
         viewModel.getPlaceInfo(placeId)
@@ -133,16 +146,41 @@ fun MapScreen(
                             onClick = { selectedIndex = index },
                             icon = { },
                             label = { Text(text = s) },
-                            selected = index == selectedIndex
+                            selected = index == derivedIndex
                         )
                     }
                 }
 
-                when (selectedIndex) {
-                    0 -> InformationSheetContent(navController, viewModel.place)
-                    1 -> SettingAreaSheetContent(viewModel.place)
+                AnimatedContent(
+                    targetState = selectedIndex,
+                    transitionSpec = {
+                        if (selectedIndex == 1) {
+                            slideIntoContainer(
+                                towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                                animationSpec = tween(300)
+                            ) + fadeIn() togetherWith
+                                    slideOutOfContainer(
+                                        towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                                        animationSpec = tween(300)
+                                    ) + fadeOut()
+                        }
+                        else {
+                            slideIntoContainer(
+                                towards = AnimatedContentTransitionScope.SlideDirection.End,
+                                animationSpec = tween(300)
+                            ) + fadeIn() togetherWith
+                                    slideOutOfContainer(
+                                        towards = AnimatedContentTransitionScope.SlideDirection.End,
+                                        animationSpec = tween(300)
+                                    ) + fadeOut()
+                        }
+                    }
+                ) { index ->
+                    when (index) {
+                        0 -> InformationSheetContent(navController, viewModel.place)
+                        1 -> SettingAreaSheetContent(viewModel.place)
+                    }
                 }
-
             }
         }
     ) { innerPadding ->
@@ -191,43 +229,45 @@ fun MapScreen(
 @Composable
 private fun InformationSheetContent(navController: NavController, place: Place?) {
     place?.let {
-        Spacer(modifier = Modifier.height(20.dp))
+        Column {
+            Spacer(modifier = Modifier.height(20.dp))
 
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = DefaultPadding),
-            text = ConvertInfo.convertTitle(place.title),
-            textAlign = TextAlign.Start,
-            fontSize = 17.sp,
-            fontWeight = FontWeight.Bold
-        )
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = DefaultPadding),
+                text = ConvertInfo.convertTitle(place.title),
+                textAlign = TextAlign.Start,
+                fontSize = 17.sp,
+                fontWeight = FontWeight.Bold
+            )
 
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    top = 10.dp,
-                    start = DefaultPadding,
-                    end = DefaultPadding
-                ),
-            text = stringResource(R.string.address_param, place.address),
-            textAlign = TextAlign.Start,
-            fontSize = 15.sp
-        )
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        top = 10.dp,
+                        start = DefaultPadding,
+                        end = DefaultPadding
+                    ),
+                text = stringResource(R.string.address_param, place.address),
+                textAlign = TextAlign.Start,
+                fontSize = 15.sp
+            )
 
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = DefaultPadding),
-            text = stringResource(R.string.number_param, place.phone),
-            textAlign = TextAlign.Start,
-            fontSize = 15.sp
-        )
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = DefaultPadding),
+                text = stringResource(R.string.number_param, place.phone),
+                textAlign = TextAlign.Start,
+                fontSize = 15.sp
+            )
 
-        MetroRow(place)
-        ImagesRow(place.images)
-        ControlButtonsRow(navController, place)
+            MetroRow(place)
+            ImagesRow(place.images)
+            ControlButtonsRow(navController, place)
+        }
     }
 }
 
@@ -304,7 +344,9 @@ private fun ImagesRow(images: List<ImageItem>?) {
 
 @Composable
 private fun SettingAreaSheetContent(place: Place?) {
-
+    Box(
+        modifier = Modifier.size(400.dp).background(Color.Red)
+    )
 }
 
 private fun moveToStartLocation(point: Point) {

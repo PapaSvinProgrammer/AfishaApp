@@ -3,8 +3,6 @@ package com.example.afishaapp.app.navigation
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.core.EaseIn
-import androidx.compose.animation.core.EaseOut
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
@@ -55,7 +53,7 @@ fun NavigationGraph(
 
     NavHost(
         navController = navController,
-        startDestination = HomeRoute,
+        startDestination = MapRoute(lat = 59.926251, lon = 30.280609, placeId = 12271),
         enterTransition = {
             slideIntoContainer(
                 towards = AnimatedContentTransitionScope.SlideDirection.Start,
