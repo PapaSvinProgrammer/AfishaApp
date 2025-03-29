@@ -53,7 +53,7 @@ fun NavigationGraph(
 
     NavHost(
         navController = navController,
-        startDestination = MapRoute(lat = 59.926251, lon = 30.280609, placeId = 12271),
+        startDestination = HomeRoute,
         enterTransition = {
             slideIntoContainer(
                 towards = AnimatedContentTransitionScope.SlideDirection.Start,

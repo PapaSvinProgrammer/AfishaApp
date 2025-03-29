@@ -8,6 +8,7 @@ import android.graphics.Canvas
 import android.view.View
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -155,24 +156,28 @@ fun MapScreen(
                     targetState = selectedIndex,
                     transitionSpec = {
                         if (selectedIndex == 1) {
-                            slideIntoContainer(
-                                towards = AnimatedContentTransitionScope.SlideDirection.Start,
-                                animationSpec = tween(300)
-                            ) + fadeIn() togetherWith
-                                    slideOutOfContainer(
-                                        towards = AnimatedContentTransitionScope.SlideDirection.Start,
-                                        animationSpec = tween(300)
-                                    ) + fadeOut()
+                            ContentTransform(
+                                targetContentEnter = slideIntoContainer(
+                                    towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                                    animationSpec = tween(300)
+                                ) + fadeIn(),
+                                initialContentExit = slideOutOfContainer(
+                                    towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                                    animationSpec = tween(300)
+                                ) + fadeOut()
+                            )
                         }
                         else {
-                            slideIntoContainer(
-                                towards = AnimatedContentTransitionScope.SlideDirection.End,
-                                animationSpec = tween(300)
-                            ) + fadeIn() togetherWith
-                                    slideOutOfContainer(
-                                        towards = AnimatedContentTransitionScope.SlideDirection.End,
-                                        animationSpec = tween(300)
-                                    ) + fadeOut()
+                            ContentTransform(
+                                targetContentEnter = slideIntoContainer(
+                                    towards = AnimatedContentTransitionScope.SlideDirection.End,
+                                    animationSpec = tween(300)
+                                ) + fadeIn(),
+                                initialContentExit = slideOutOfContainer(
+                                    towards = AnimatedContentTransitionScope.SlideDirection.End,
+                                    animationSpec = tween(300)
+                                ) + fadeOut()
+                            )
                         }
                     }
                 ) { index ->

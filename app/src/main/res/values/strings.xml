@@ -81,6 +81,7 @@
     <string name="number_param">Номер: %1$s</string>
     <string name="route">Маршрут</string>
     <string name="more_detail">Подробнее</string>
+    <string name="terms_of_use">Условия использования</string>
 
     <string-array name="ticket_segmented_button">
         <item>"События"</item>
