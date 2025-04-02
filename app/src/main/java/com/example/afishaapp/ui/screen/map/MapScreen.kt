@@ -12,8 +12,6 @@ import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.snapping.SnapPosition
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
@@ -29,6 +27,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -51,9 +50,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -74,7 +71,6 @@ import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.mapview.MapView
-import com.yandex.runtime.image.ImageProvider
 import androidx.core.graphics.createBitmap
 import androidx.core.net.toUri
 import com.example.afishaapp.app.navigation.PlaceRoute
@@ -83,7 +79,10 @@ import com.example.afishaapp.data.module.Coordinate
 import com.example.afishaapp.data.module.image.ImageItem
 import com.example.afishaapp.data.module.place.Place
 import com.example.afishaapp.ui.widget.card.ImageCard
+import com.example.afishaapp.ui.widget.material.AnimatedOutlineBox
+import com.example.afishaapp.ui.widget.material.SquareSlider
 import com.example.afishaapp.ui.widget.row.MetroRow
+import com.example.afishaapp.ui.widget.text.TitleBottomSheet
 
 @SuppressLint("StaticFieldLeak")
 private lateinit var context: Context
@@ -102,10 +101,30 @@ fun MapScreen(
 ) {
     context = LocalContext.current
     val segmentedButtonsList = stringArrayResource(R.array.map_info_segmented_button)
-    var selectedIndex by remember { mutableIntStateOf(0) }
     val derivedIndex by remember {
         derivedStateOf {
-            selectedIndex
+            viewModel.selectedIndex
+        }
+    }
+
+    LaunchedEffect(viewModel.selectedIndex) {
+        when (viewModel.selectedIndex) {
+            0 -> viewModel.deleteCircleArea()
+            1 -> addCircleArea(
+                point = Point(lat, lon),
+                radius = viewModel.radius,
+                viewModel = viewModel
+            )
+        }
+    }
+
+    LaunchedEffect(viewModel.radius) {
+        if (viewModel.selectedIndex == 1) {
+            addCircleArea(
+                radius = viewModel.radius,
+                point = Point(lat, lon),
+                viewModel = viewModel
+            )
         }
     }
 
@@ -115,8 +134,13 @@ fun MapScreen(
         mapView.onStart()
         MapKitFactory.getInstance().onStart()
 
+        viewModel.mapCollection = mapView.mapWindow.map.mapObjects
+
         moveToStartLocation(Point(lat, lon))
-        setMarkerInStartLocation(Point(lat, lon))
+        viewModel.addPlacemark(
+            point = Point(lat, lon),
+            bitmap = createBitmapFromVector(R.drawable.ic_pin)
+        )
     }
 
     DisposableEffect(Unit) {
@@ -144,7 +168,7 @@ fun MapScreen(
                                 count = segmentedButtonsList.size,
                                 baseShape = RoundedCornerShape(8.dp)
                             ),
-                            onClick = { selectedIndex = index },
+                            onClick = { viewModel.updateSelectedIndex(index) },
                             icon = { },
                             label = { Text(text = s) },
                             selected = index == derivedIndex
@@ -153,9 +177,9 @@ fun MapScreen(
                 }
 
                 AnimatedContent(
-                    targetState = selectedIndex,
+                    targetState = viewModel.selectedIndex,
                     transitionSpec = {
-                        if (selectedIndex == 1) {
+                        if (viewModel.selectedIndex == 1) {
                             ContentTransform(
                                 targetContentEnter = slideIntoContainer(
                                     towards = AnimatedContentTransitionScope.SlideDirection.Start,
@@ -183,7 +207,7 @@ fun MapScreen(
                 ) { index ->
                     when (index) {
                         0 -> InformationSheetContent(navController, viewModel.place)
-                        1 -> SettingAreaSheetContent(viewModel.place)
+                        1 -> SettingAreaSheetContent(viewModel)
                     }
                 }
             }
@@ -348,9 +372,38 @@ private fun ImagesRow(images: List<ImageItem>?) {
 }
 
 @Composable
-private fun SettingAreaSheetContent(place: Place?) {
-    Box(
-        modifier = Modifier.size(400.dp).background(Color.Red)
+private fun SettingAreaSheetContent(viewModel: MapViewModel) {
+    Column(
+        modifier = Modifier
+            .padding(horizontal = DefaultPadding)
+            .fillMaxWidth()
+            .wrapContentHeight()
+    ) {
+        Spacer(modifier = Modifier.height(20.dp))
+        TitleBottomSheet("Настройка области")
+
+        SquareSlider(
+            value = viewModel.radius,
+            onValueChange = { viewModel.updateRadius(it) },
+            steps = 10,
+            valueRange = 100f..1000f
+        )
+
+        Text(text = "${viewModel.radius / 100} км.")
+        Spacer(modifier = Modifier.height(10.dp))
+
+        AnimatedOutlineBox("Фильтрация") {
+
+        }
+    }
+}
+
+private fun addCircleArea(point: Point, radius: Float, viewModel: MapViewModel) {
+    viewModel.addCircleArea(
+        point = point,
+        radius = radius,
+        strokeColor = ContextCompat.getColor(context, R.color.red),
+        fillColor = ContextCompat.getColor(context, R.color.red_alpha)
     )
 }
 
@@ -360,16 +413,6 @@ private fun moveToStartLocation(point: Point) {
         Animation(Animation.Type.SMOOTH, 3f),
         null
     )
-}
-
-private fun setMarkerInStartLocation(point: Point) {
-    val bitMap = createBitmapFromVector(R.drawable.ic_pin)
-    val mapObjectCollection = mapView.mapWindow.map.mapObjects
-
-    mapObjectCollection.addPlacemark().apply {
-        geometry = point
-        setIcon(ImageProvider.fromBitmap(bitMap))
-    }
 }
 
 private fun createBitmapFromVector(id: Int): Bitmap? {
