@@ -82,6 +82,8 @@
     <string name="route">Маршрут</string>
     <string name="more_detail">Подробнее</string>
     <string name="terms_of_use">Условия использования</string>
+    <string name="setting_area">Настройка области</string>
+    <string name="filtering">Фильтрация</string>
 
     <string-array name="ticket_segmented_button">
         <item>"События"</item>

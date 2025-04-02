@@ -8,5 +8,8 @@ data class QueryParameters(
     val page: Int = 1,
     val searchText: String = "",
     val category: String = "",
-    val categories: List<String> = listOf()
+    val categories: List<String> = listOf(),
+    val lat: Double = 0.0,
+    val lon: Double = 0.0,
+    val radius: Int = 0
 )

@@ -8,4 +8,5 @@ interface PlaceRepository {
     suspend fun getPlaces(queryParameters: QueryParameters): PlaceResponse?
     suspend fun getPlaceInfo(placeId: Int): Place?
     suspend fun getPlaceShortInfo(placeId: Int): Place?
+    suspend fun getPlacesWithRadius(queryParameters: QueryParameters): PlaceResponse?
 }

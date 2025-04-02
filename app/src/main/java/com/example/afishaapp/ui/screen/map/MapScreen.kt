@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.view.View
+import android.widget.Toast
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.ContentTransform
@@ -83,10 +84,12 @@ import com.example.afishaapp.ui.widget.material.AnimatedOutlineBox
 import com.example.afishaapp.ui.widget.material.SquareSlider
 import com.example.afishaapp.ui.widget.row.MetroRow
 import com.example.afishaapp.ui.widget.text.TitleBottomSheet
+import com.yandex.mapkit.map.MapObjectTapListener
 
 @SuppressLint("StaticFieldLeak")
 private lateinit var context: Context
 private lateinit var mapView: MapView
+private lateinit var viewModel: MapViewModel
 
 private const val ZOOM = 16.5f
 
@@ -94,27 +97,36 @@ private const val ZOOM = 16.5f
 @Composable
 fun MapScreen(
     navController: NavController,
-    viewModel: MapViewModel,
+    mapViewModel: MapViewModel,
     placeId: Int,
     lat: Double,
     lon: Double
 ) {
     context = LocalContext.current
+    viewModel = mapViewModel
+
     val segmentedButtonsList = stringArrayResource(R.array.map_info_segmented_button)
     val derivedIndex by remember {
         derivedStateOf {
             viewModel.selectedIndex
         }
     }
+    val mainPoint = Point(lat, lon)
+
+    LaunchedEffect(viewModel.placesNearby) {
+        if (viewModel.placesNearby.isNotEmpty()) {
+            viewModel.addPlacemarkList(
+                list = viewModel.placesNearby,
+                bitmap = createBitmapFromVector(R.drawable.ic_pin),
+                listener = placemarkListener
+            )
+        }
+    }
 
     LaunchedEffect(viewModel.selectedIndex) {
         when (viewModel.selectedIndex) {
-            0 -> viewModel.deleteCircleArea()
-            1 -> addCircleArea(
-                point = Point(lat, lon),
-                radius = viewModel.radius,
-                viewModel = viewModel
-            )
+            0 -> prepareMapForInformationSheetContent(mainPoint)
+            1 -> prepareMapForSettingsAreaSheetContent(mainPoint)
         }
     }
 
@@ -122,8 +134,13 @@ fun MapScreen(
         if (viewModel.selectedIndex == 1) {
             addCircleArea(
                 radius = viewModel.radius,
-                point = Point(lat, lon),
-                viewModel = viewModel
+                point = mainPoint
+            )
+
+            viewModel.getPlacesWithRadius(
+                lat = lat,
+                lon = lon,
+                radius = viewModel.radius.toInt()
             )
         }
     }
@@ -136,9 +153,9 @@ fun MapScreen(
 
         viewModel.mapCollection = mapView.mapWindow.map.mapObjects
 
-        moveToStartLocation(Point(lat, lon))
+        moveToStartLocation(mainPoint)
         viewModel.addPlacemark(
-            point = Point(lat, lon),
+            point = mainPoint,
             bitmap = createBitmapFromVector(R.drawable.ic_pin)
         )
     }
@@ -207,7 +224,7 @@ fun MapScreen(
                 ) { index ->
                     when (index) {
                         0 -> InformationSheetContent(navController, viewModel.place)
-                        1 -> SettingAreaSheetContent(viewModel)
+                        1 -> SettingAreaSheetContent()
                     }
                 }
             }
@@ -253,6 +270,16 @@ fun MapScreen(
             }
         }
     }
+}
+
+private val placemarkListener = MapObjectTapListener { mapObject, _ ->
+    val place = viewModel.placemarkMap[mapObject]
+
+    place?.let {
+        Toast.makeText(context, place.title, Toast.LENGTH_LONG).show()
+    }
+
+    true
 }
 
 @Composable
@@ -372,7 +399,7 @@ private fun ImagesRow(images: List<ImageItem>?) {
 }
 
 @Composable
-private fun SettingAreaSheetContent(viewModel: MapViewModel) {
+private fun SettingAreaSheetContent() {
     Column(
         modifier = Modifier
             .padding(horizontal = DefaultPadding)
@@ -380,7 +407,7 @@ private fun SettingAreaSheetContent(viewModel: MapViewModel) {
             .wrapContentHeight()
     ) {
         Spacer(modifier = Modifier.height(20.dp))
-        TitleBottomSheet("Настройка области")
+        TitleBottomSheet(stringResource(R.string.setting_area))
 
         SquareSlider(
             value = viewModel.radius,
@@ -392,13 +419,34 @@ private fun SettingAreaSheetContent(viewModel: MapViewModel) {
         Text(text = "${viewModel.radius / 100} км.")
         Spacer(modifier = Modifier.height(10.dp))
 
-        AnimatedOutlineBox("Фильтрация") {
+        AnimatedOutlineBox(stringResource(R.string.filtering)) {
 
         }
     }
 }
 
-private fun addCircleArea(point: Point, radius: Float, viewModel: MapViewModel) {
+private fun prepareMapForInformationSheetContent(point: Point) {
+    viewModel.deleteCircleArea()
+    viewModel.deleteAllPlacemark()
+    viewModel.addPlacemark(point, createBitmapFromVector(R.drawable.ic_pin))
+}
+
+private fun prepareMapForSettingsAreaSheetContent(point: Point) {
+    addCircleArea(
+        point = point,
+        radius = viewModel.radius
+    )
+
+    viewModel.getPlacesWithRadius(
+        lat = point.latitude,
+        lon = point.longitude,
+        radius = viewModel.radius.toInt()
+    )
+
+    viewModel.deleteMainPlaceMark()
+}
+
+private fun addCircleArea(point: Point, radius: Float) {
     viewModel.addCircleArea(
         point = point,
         radius = radius,

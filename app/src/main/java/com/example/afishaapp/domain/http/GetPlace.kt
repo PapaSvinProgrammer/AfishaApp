@@ -5,6 +5,7 @@ import com.example.afishaapp.data.module.place.Place
 import com.example.afishaapp.data.module.place.PlaceResponse
 import com.example.afishaapp.domain.repository.http.PlaceRepository
 import javax.inject.Inject
+import kotlin.math.abs
 
 class GetPlace @Inject constructor(
     private val placeRepository: PlaceRepository
@@ -15,6 +16,18 @@ class GetPlace @Inject constructor(
         }
 
         return placeRepository.getPlaces(queryParameters)
+    }
+
+    suspend fun getPlacesWithRadius(queryParameters: QueryParameters): PlaceResponse? {
+        val lat: Double = queryParameters.lat
+        val lon: Double = queryParameters.lon
+        val radius: Int = queryParameters.radius
+
+        if (radius <= 0 || abs(lat.toInt()) > 90 || abs(lon.toInt()) > 180) {
+            return null
+        }
+
+        return placeRepository.getPlacesWithRadius(queryParameters)
     }
 
     suspend fun getPlaceInfo(placeId: Int): Place? {

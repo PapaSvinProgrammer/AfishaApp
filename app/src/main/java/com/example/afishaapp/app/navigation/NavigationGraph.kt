@@ -215,7 +215,7 @@ fun NavigationGraph(
 
             MapScreen(
                 navController = navController,
-                viewModel = viewModel,
+                mapViewModel = viewModel,
                 lat = route.lat,
                 lon = route.lon,
                 placeId = route.placeId

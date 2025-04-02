@@ -8,12 +8,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.afishaapp.data.module.QueryParameters
 import com.example.afishaapp.data.module.place.Place
 import com.example.afishaapp.domain.http.GetPlace
 import com.yandex.mapkit.geometry.Circle
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CircleMapObject
 import com.yandex.mapkit.map.MapObjectCollection
+import com.yandex.mapkit.map.MapObjectTapListener
 import com.yandex.mapkit.map.PlacemarkMapObject
 import com.yandex.runtime.image.ImageProvider
 import kotlinx.coroutines.Dispatchers
@@ -23,10 +25,15 @@ import javax.inject.Inject
 class MapViewModel @Inject constructor(
     private val getPlace: GetPlace
 ): ViewModel() {
-    lateinit var mapCollection: MapObjectCollection
+    var mapCollection: MapObjectCollection? = null
     private var circleMapObject: CircleMapObject? = null
-    private val placemarkList = mutableListOf<PlacemarkMapObject>()
+    private var mainPlacemark: PlacemarkMapObject? = null
 
+    private val _placemarkMap = mutableMapOf<PlacemarkMapObject, Place>()
+    val placemarkMap: Map<PlacemarkMapObject, Place> = _placemarkMap
+
+    var placesNearby by mutableStateOf<List<Place>>(listOf())
+        private set
     var place by mutableStateOf<Place?>(null)
         private set
     var selectedIndex by mutableIntStateOf(0)
@@ -34,6 +41,22 @@ class MapViewModel @Inject constructor(
 
     var radius by mutableFloatStateOf(100f)
         private set
+
+    fun getPlacesWithRadius(lat: Double, lon: Double, radius: Int) {
+        val queryParameters = QueryParameters(
+            lat = lat,
+            lon = lon,
+            radius = radius
+        )
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val placesNearbyResponse = getPlace.getPlacesWithRadius(queryParameters)
+
+            placesNearbyResponse?.let {
+                placesNearby = it.results
+            }
+        }
+    }
 
     fun getPlaceInfo(placeId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -61,7 +84,7 @@ class MapViewModel @Inject constructor(
         )
 
         if (circleMapObject == null) {
-            circleMapObject = mapCollection.addCircle(circle).apply {
+            circleMapObject = mapCollection?.addCircle(circle)?.apply {
                 this.strokeWidth = 2f
                 this.strokeColor = strokeColor
                 this.fillColor = fillColor
@@ -74,32 +97,51 @@ class MapViewModel @Inject constructor(
 
     fun deleteCircleArea() {
         circleMapObject?.let {
-            mapCollection.remove(it)
+            mapCollection?.remove(it)
         }
 
         circleMapObject = null
     }
 
-    fun addPlacemarkList(list: List<Point>, bitmap: Bitmap?) {
-        placemarkList.forEach {
-            mapCollection.remove(it)
-        }
-
-        placemarkList.clear()
-
-        list.forEach {
-            val placemark = mapCollection.addPlacemark()
-            placemark.geometry = it
-            placemark.setIcon(ImageProvider.fromBitmap(bitmap))
-
-            placemarkList.add(placemark)
-        }
-    }
-
     fun addPlacemark(point: Point, bitmap: Bitmap?) {
-        mapCollection.addPlacemark().apply {
+        mainPlacemark = mapCollection?.addPlacemark()?.apply {
             geometry = point
             setIcon(ImageProvider.fromBitmap(bitmap))
         }
+    }
+
+    fun addPlacemarkList(
+        list: List<Place>,
+        bitmap: Bitmap?,
+        listener: MapObjectTapListener
+    ) {
+        mapCollection?.let { collection ->
+            deleteAllPlacemark()
+
+            list.forEach { place ->
+                val point = Point(place.coordinates.lat, place.coordinates.lon)
+                val placemark = collection.addPlacemark().apply {
+                    geometry = point
+                    setIcon(ImageProvider.fromBitmap(bitmap))
+                    addTapListener(listener)
+                }
+
+                _placemarkMap[placemark] = place
+            }
+        }
+    }
+
+    fun deleteMainPlaceMark() {
+        mainPlacemark?.let {
+            mapCollection?.remove(it)
+        }
+    }
+
+    fun deleteAllPlacemark() {
+        placemarkMap.keys.forEach {
+            mapCollection?.remove(it)
+        }
+
+        _placemarkMap.clear()
     }
 }

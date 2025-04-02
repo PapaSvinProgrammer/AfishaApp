@@ -27,4 +27,16 @@ interface PlaceService {
         @Query("fields") fields: String = "id,title,address,phone,subway,location,images,coords",
         @Query("expand") expand: String = "images"
     ): Place?
+
+    @GET("public-api/v1.4/places/")
+    suspend fun getPlacesWithRadius(
+        @Query("fields") fields: String = "id,title,address,coords,images,subway,location",
+        @Query("text_format") textFormat: String = "text",
+        @Query("categories") categories: String = "",
+        @Query("page") page: Int = 1,
+        @Query("page_size") pageSize: Int = 100,
+        @Query("lat") lat: Double,
+        @Query("lon") lon: Double,
+        @Query("radius") radius: Int
+    ): PlaceResponse?
 }

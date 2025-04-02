@@ -42,4 +42,19 @@ class PlaceRepositoryImpl @Inject constructor(
             null
         }
     }
+
+    override suspend fun getPlacesWithRadius(queryParameters: QueryParameters): PlaceResponse? {
+        return try {
+            retrofit.create<PlaceService>().getPlacesWithRadius(
+                categories = queryParameters.categories.joinToString(","),
+                page = queryParameters.page,
+                lat = queryParameters.lat,
+                lon = queryParameters.lon,
+                radius = queryParameters.radius
+            )
+        }
+        catch(e: Exception) {
+            null
+        }
+    }
 }
