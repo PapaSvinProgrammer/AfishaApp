@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
@@ -40,13 +41,12 @@ import com.yandex.mapkit.geometry.Point
 
 @Composable
 fun PlaceInformationSheetContent(
+    pagerState: PagerState,
     list: List<Place>,
     mapButtonClick: (Place) -> Unit,
     moreButtonClick: (Place) -> Unit,
     moveToPoint: (Point) -> Unit
 ) {
-    val pagerState = rememberPagerState(pageCount = { list.size })
-
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

@@ -6,7 +6,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.view.View
-import android.widget.Toast
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.ContentTransform
@@ -27,11 +26,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.BottomSheetScaffold
+import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -42,7 +44,6 @@ import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
-import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -78,6 +79,7 @@ import com.example.afishaapp.ui.widget.material.PlaceInformationSheetContent
 import com.example.afishaapp.ui.widget.material.SquareSlider
 import com.example.afishaapp.ui.widget.text.TitleBottomSheet
 import com.yandex.mapkit.map.MapObjectTapListener
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.util.Locale
 
@@ -86,6 +88,11 @@ private lateinit var context: Context
 private lateinit var mapView: MapView
 private lateinit var viewModel: MapViewModel
 private lateinit var mainPoint: Point
+
+@OptIn(ExperimentalMaterial3Api::class)
+private lateinit var bottomSheetState: BottomSheetScaffoldState
+private lateinit var scope: CoroutineScope
+private lateinit var pagerState: PagerState
 
 private const val ZOOM = 16.5f
 
@@ -108,10 +115,10 @@ fun MapScreen(
             viewModel.selectedIndex
         }
     }
-    val bottomSheetState = rememberBottomSheetScaffoldState(
-        bottomSheetState = rememberStandardBottomSheetState()
-    )
-    val scope = rememberCoroutineScope()
+
+    pagerState = rememberPagerState(pageCount = { viewModel.places.size })
+    bottomSheetState = rememberBottomSheetScaffoldState()
+    scope = rememberCoroutineScope()
 
     LaunchedEffect(viewModel.places) {
         if (viewModel.places.isNotEmpty()) {
@@ -221,6 +228,7 @@ fun MapScreen(
                     when (index) {
                         0 ->
                             PlaceInformationSheetContent(
+                                pagerState = pagerState,
                                 list = viewModel.places,
                                 mapButtonClick = { navigateToYandexMaps(it.coordinates) },
                                 moreButtonClick = { navController.navigate(PlaceRoute(it.id)) },
@@ -230,7 +238,7 @@ fun MapScreen(
                                     }
                                     moveToStartLocation(it)
                                 }
-                        )
+                            )
                         1 -> SettingAreaSheetContent()
                     }
                 }
@@ -279,11 +287,16 @@ fun MapScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 private val placemarkListener = MapObjectTapListener { mapObject, _ ->
     val place = viewModel.placemarkMap[mapObject]
 
-    place?.let {
-        Toast.makeText(context, place.title, Toast.LENGTH_LONG).show()
+    scope.launch { bottomSheetState.bottomSheetState.expand() }
+    viewModel.updateSelectedIndex(0)
+
+    scope.launch {
+        val index = viewModel.places.indexOf(place)
+        pagerState.animateScrollToPage(index)
     }
 
     true
@@ -343,16 +356,18 @@ private fun resetSettings() {
 }
 
 private fun prepareMapForSettingsAreaSheetContent(point: Point) {
-    addCircleArea(
-        point = point,
-        radius = 100f
-    )
+    if (viewModel.radius <= 100) {
+        addCircleArea(
+            point = point,
+            radius = 100f
+        )
 
-    viewModel.getPlacesWithRadius(
-        lat = point.latitude,
-        lon = point.longitude,
-        radius = 100
-    )
+        viewModel.getPlacesWithRadius(
+            lat = point.latitude,
+            lon = point.longitude,
+            radius = 100
+        )
+    }
 }
 
 private fun addCircleArea(point: Point, radius: Float) {
