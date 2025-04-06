@@ -13,8 +13,6 @@ import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.gestures.snapping.SnapPosition
-import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,19 +27,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.BottomSheetScaffold
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
@@ -59,7 +54,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -75,21 +69,19 @@ import com.yandex.mapkit.mapview.MapView
 import androidx.core.graphics.createBitmap
 import androidx.core.net.toUri
 import com.example.afishaapp.app.navigation.PlaceRoute
-import com.example.afishaapp.app.support.ConvertInfo
 import com.example.afishaapp.data.module.Coordinate
-import com.example.afishaapp.data.module.image.ImageItem
-import com.example.afishaapp.data.module.place.Place
-import com.example.afishaapp.ui.widget.card.ImageCard
 import com.example.afishaapp.ui.widget.material.AnimatedOutlineBox
+import com.example.afishaapp.ui.widget.material.PlaceInformationSheetContent
 import com.example.afishaapp.ui.widget.material.SquareSlider
-import com.example.afishaapp.ui.widget.row.MetroRow
 import com.example.afishaapp.ui.widget.text.TitleBottomSheet
 import com.yandex.mapkit.map.MapObjectTapListener
+import java.util.Locale
 
 @SuppressLint("StaticFieldLeak")
 private lateinit var context: Context
 private lateinit var mapView: MapView
 private lateinit var viewModel: MapViewModel
+private lateinit var mainPoint: Point
 
 private const val ZOOM = 16.5f
 
@@ -111,12 +103,12 @@ fun MapScreen(
             viewModel.selectedIndex
         }
     }
-    val mainPoint = Point(lat, lon)
+    mainPoint = Point(lat, lon)
 
-    LaunchedEffect(viewModel.placesNearby) {
-        if (viewModel.placesNearby.isNotEmpty()) {
+    LaunchedEffect(viewModel.places) {
+        if (viewModel.places.isNotEmpty()) {
             viewModel.addPlacemarkList(
-                list = viewModel.placesNearby,
+                list = viewModel.places,
                 bitmap = createBitmapFromVector(R.drawable.ic_pin),
                 listener = placemarkListener
             )
@@ -125,7 +117,6 @@ fun MapScreen(
 
     LaunchedEffect(viewModel.selectedIndex) {
         when (viewModel.selectedIndex) {
-            0 -> prepareMapForInformationSheetContent(mainPoint)
             1 -> prepareMapForSettingsAreaSheetContent(mainPoint)
         }
     }
@@ -154,10 +145,6 @@ fun MapScreen(
         viewModel.mapCollection = mapView.mapWindow.map.mapObjects
 
         moveToStartLocation(mainPoint)
-        viewModel.addPlacemark(
-            point = mainPoint,
-            bitmap = createBitmapFromVector(R.drawable.ic_pin)
-        )
     }
 
     DisposableEffect(Unit) {
@@ -223,7 +210,11 @@ fun MapScreen(
                     }
                 ) { index ->
                     when (index) {
-                        0 -> InformationSheetContent(navController, viewModel.place)
+                        0 -> PlaceInformationSheetContent(
+                            list = viewModel.places,
+                            mapButtonClick = { navigateToYandexMaps(it.coordinates) },
+                            moreButtonClick = { navController.navigate(PlaceRoute(it.id)) }
+                        )
                         1 -> SettingAreaSheetContent()
                     }
                 }
@@ -283,122 +274,6 @@ private val placemarkListener = MapObjectTapListener { mapObject, _ ->
 }
 
 @Composable
-private fun InformationSheetContent(navController: NavController, place: Place?) {
-    place?.let {
-        Column {
-            Spacer(modifier = Modifier.height(20.dp))
-
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = DefaultPadding),
-                text = ConvertInfo.convertTitle(place.title),
-                textAlign = TextAlign.Start,
-                fontSize = 17.sp,
-                fontWeight = FontWeight.Bold
-            )
-
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        top = 10.dp,
-                        start = DefaultPadding,
-                        end = DefaultPadding
-                    ),
-                text = stringResource(R.string.address_param, place.address),
-                textAlign = TextAlign.Start,
-                fontSize = 15.sp
-            )
-
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = DefaultPadding),
-                text = stringResource(R.string.number_param, place.phone),
-                textAlign = TextAlign.Start,
-                fontSize = 15.sp
-            )
-
-            MetroRow(place)
-            ImagesRow(place.images)
-            ControlButtonsRow(navController, place)
-        }
-    }
-}
-
-@Composable
-private fun ControlButtonsRow(navController: NavController, place: Place) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(
-                top = 20.dp,
-                start = DefaultPadding,
-                end = DefaultPadding
-            ),
-        horizontalArrangement = Arrangement.spacedBy(10.dp)
-    ) {
-        Button(
-            onClick = {
-                navigateToYandexMaps(place.coordinates)
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
-            shape = RoundedCornerShape(10.dp)
-        ) {
-            Text(text = stringResource(R.string.route))
-        }
-
-        Button(
-            onClick = {
-                navigateToPlaceScreen(navController, place.id)
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
-            shape = RoundedCornerShape(10.dp)
-        ) {
-            Text(text = stringResource(R.string.more_detail))
-        }
-    }
-}
-
-@Composable
-private fun ImagesRow(images: List<ImageItem>?) {
-    val listState = rememberLazyListState()
-    val flingBehavior = rememberSnapFlingBehavior(listState, SnapPosition.Start)
-
-    if (!images.isNullOrEmpty()) {
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    vertical = 20.dp,
-                    horizontal = DefaultPadding
-                ),
-            text = stringResource(R.string.images),
-            textAlign = TextAlign.Start,
-            fontWeight = FontWeight.Bold,
-            fontSize = 17.sp
-        )
-
-        LazyRow(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
-            contentPadding = PaddingValues(horizontal = DefaultPadding),
-            state = listState,
-            flingBehavior = flingBehavior
-        ) {
-            items(images) {
-                ImageCard(it.thumbnails.highImage)
-            }
-        }
-    }
-}
-
-@Composable
 private fun SettingAreaSheetContent() {
     Column(
         modifier = Modifier
@@ -416,34 +291,52 @@ private fun SettingAreaSheetContent() {
             valueRange = 100f..1000f
         )
 
-        Text(text = "${viewModel.radius / 100} км.")
-        Spacer(modifier = Modifier.height(10.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            val formattedNum = "%.1f".format(Locale.ENGLISH, viewModel.radius / 100)
 
-        AnimatedOutlineBox(stringResource(R.string.filtering)) {
+            Text(
+                text = "$formattedNum км.",
+                fontSize = 15.sp,
+                fontWeight = FontWeight.Medium
+            )
 
+            OutlinedButton(
+                onClick = { resetSettings() }
+            ) {
+                Text(
+                    text = stringResource(R.string.reset_settings),
+                    color = Color.Black
+                )
+            }
         }
+
+        Spacer(modifier = Modifier.height(10.dp))
+        AnimatedOutlineBox(stringResource(R.string.filtering)) { }
     }
 }
 
-private fun prepareMapForInformationSheetContent(point: Point) {
+private fun resetSettings() {
     viewModel.deleteCircleArea()
     viewModel.deleteAllPlacemark()
-    viewModel.addPlacemark(point, createBitmapFromVector(R.drawable.ic_pin))
+    viewModel.updateRadius(0f)
+    viewModel.resetToDefaultPlace()
 }
 
 private fun prepareMapForSettingsAreaSheetContent(point: Point) {
     addCircleArea(
         point = point,
-        radius = viewModel.radius
+        radius = 100f
     )
 
     viewModel.getPlacesWithRadius(
         lat = point.latitude,
         lon = point.longitude,
-        radius = viewModel.radius.toInt()
+        radius = 100
     )
-
-    viewModel.deleteMainPlaceMark()
 }
 
 private fun addCircleArea(point: Point, radius: Float) {
@@ -493,12 +386,4 @@ private fun generateUrl(coordinate: Coordinate): String {
     url += "?rtext=${coordinate.lat},${coordinate.lon}"
 
     return url
-}
-
-private fun navigateToPlaceScreen(navController: NavController, id: Int) {
-    navController.navigate(
-        PlaceRoute(
-            placeId = id
-        )
-    )
 }

@@ -26,15 +26,14 @@ class MapViewModel @Inject constructor(
     private val getPlace: GetPlace
 ): ViewModel() {
     var mapCollection: MapObjectCollection? = null
+
     private var circleMapObject: CircleMapObject? = null
-    private var mainPlacemark: PlacemarkMapObject? = null
+    private var defaultPlace: Place? = null
 
     private val _placemarkMap = mutableMapOf<PlacemarkMapObject, Place>()
     val placemarkMap: Map<PlacemarkMapObject, Place> = _placemarkMap
 
-    var placesNearby by mutableStateOf<List<Place>>(listOf())
-        private set
-    var place by mutableStateOf<Place?>(null)
+    var places by mutableStateOf<List<Place>>(listOf())
         private set
     var selectedIndex by mutableIntStateOf(0)
         private set
@@ -53,14 +52,18 @@ class MapViewModel @Inject constructor(
             val placesNearbyResponse = getPlace.getPlacesWithRadius(queryParameters)
 
             placesNearbyResponse?.let {
-                placesNearby = it.results
+                places = it.results
             }
         }
     }
 
     fun getPlaceInfo(placeId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            place = getPlace.getPlaceShortInfo(placeId)
+            defaultPlace = getPlace.getPlaceShortInfo(placeId)
+
+            defaultPlace?.let {
+                places = listOf(it)
+            }
         }
     }
 
@@ -103,10 +106,9 @@ class MapViewModel @Inject constructor(
         circleMapObject = null
     }
 
-    fun addPlacemark(point: Point, bitmap: Bitmap?) {
-        mainPlacemark = mapCollection?.addPlacemark()?.apply {
-            geometry = point
-            setIcon(ImageProvider.fromBitmap(bitmap))
+    fun resetToDefaultPlace() {
+        defaultPlace?.let {
+            places = listOf(it)
         }
     }
 
@@ -128,12 +130,6 @@ class MapViewModel @Inject constructor(
 
                 _placemarkMap[placemark] = place
             }
-        }
-    }
-
-    fun deleteMainPlaceMark() {
-        mainPlacemark?.let {
-            mapCollection?.remove(it)
         }
     }
 
