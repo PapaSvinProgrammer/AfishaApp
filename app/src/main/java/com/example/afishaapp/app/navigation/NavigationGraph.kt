@@ -53,7 +53,7 @@ fun NavigationGraph(
 
     NavHost(
         navController = navController,
-        startDestination = MapRoute(lat = 59.926251, lon = 30.280609, placeId = 12271),
+        startDestination = StartRoute,
         enterTransition = {
             slideIntoContainer(
                 towards = AnimatedContentTransitionScope.SlideDirection.Start,
@@ -95,12 +95,7 @@ fun NavigationGraph(
 
         composable<SearchRoute> { SearchScreen() }
 
-        composable<StartRoute> {
-            StartScreen(
-                navController = navController,
-                padding = padding
-            )
-        }
+        composable<StartRoute> { StartScreen(navController) }
 
         composable<EntryRoute>  {
             val viewModel: EntryViewModel = viewModel(factory = viewModelFactory)

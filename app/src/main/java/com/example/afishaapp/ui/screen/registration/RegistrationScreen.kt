@@ -3,11 +3,14 @@ package com.example.afishaapp.ui.screen.registration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -18,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -43,8 +47,7 @@ fun RegistrationScreen(
 
     Box {
         Column(
-            modifier = Modifier
-                .fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             CenterAlignedTopAppBar(
@@ -63,6 +66,7 @@ fun RegistrationScreen(
 
             OutlinedTextField(
                 value = viewModel.email,
+                shape = RoundedCornerShape(10.dp),
                 onValueChange = { viewModel.updateEmail(it) },
                 label = { Text(stringResource(R.string.input_email_text)) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
@@ -87,6 +91,7 @@ fun RegistrationScreen(
 
             OutlinedTextField(
                 value = viewModel.password,
+                shape = RoundedCornerShape(10.dp),
                 onValueChange = { viewModel.updatePassword(it) },
                 label = { Text(text = stringResource(R.string.input_password_text)) },
                 visualTransformation = if (viewModel.visibilityPassword)
@@ -132,6 +137,7 @@ fun RegistrationScreen(
 
             OutlinedTextField(
                 value = viewModel.checkPassword,
+                shape = RoundedCornerShape(10.dp),
                 onValueChange = { viewModel.updateCheckPassword(it) },
                 label = { Text(text = stringResource(R.string.check_password_text)) },
                 visualTransformation = if (viewModel.visibilityCheckPassword)
@@ -176,13 +182,18 @@ fun RegistrationScreen(
             )
 
             Button(
-                onClick = {
-                    viewModel.registration()
-                },
-                modifier = Modifier.padding(top = 10.dp),
-                enabled = !viewModel.visibilityProgressBar
+                onClick = { viewModel.registration() },
+                modifier = Modifier
+                    .padding(vertical = 10.dp, horizontal = 40.dp)
+                    .fillMaxWidth(),
+                enabled = !viewModel.visibilityProgressBar,
+                shape = RoundedCornerShape(10.dp),
+                colors = ButtonDefaults.buttonColors(Color.Black)
             ) {
-                Text(stringResource(R.string.registration_button_text))
+                Text(
+                    text = stringResource(R.string.registration_button_text),
+                    color = Color.White
+                )
             }
         }
 
