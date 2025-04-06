@@ -15,10 +15,14 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -32,12 +36,14 @@ import com.example.afishaapp.ui.theme.DefaultPadding
 import com.example.afishaapp.ui.widget.card.ImageCard
 import com.example.afishaapp.ui.widget.row.ControlButtonsRow
 import com.example.afishaapp.ui.widget.row.MetroRow
+import com.yandex.mapkit.geometry.Point
 
 @Composable
 fun PlaceInformationSheetContent(
     list: List<Place>,
     mapButtonClick: (Place) -> Unit,
-    moreButtonClick: (Place) -> Unit
+    moreButtonClick: (Place) -> Unit,
+    moveToPoint: (Point) -> Unit
 ) {
     val pagerState = rememberPagerState(pageCount = { list.size })
 
@@ -57,7 +63,10 @@ fun PlaceInformationSheetContent(
             state = pagerState,
             modifier = Modifier.fillMaxWidth()
         ) { page ->
-            PlaceInformationPagerContent(list[page])
+            PlaceInformationPagerContent(
+                place = list[page],
+                moveToPoint = { moveToPoint.invoke(it) }
+            )
         }
 
         ControlButtonsRow(
@@ -68,7 +77,10 @@ fun PlaceInformationSheetContent(
 }
 
 @Composable
-fun PlaceInformationPagerContent(place: Place) {
+fun PlaceInformationPagerContent(
+    place: Place,
+    moveToPoint: (Point) -> Unit
+) {
     Column {
         Spacer(modifier = Modifier.height(10.dp))
 
@@ -106,6 +118,29 @@ fun PlaceInformationPagerContent(place: Place) {
 
         MetroRow(place)
         ImagesRow(place.images)
+
+        OutlinedButton(
+            modifier = Modifier.padding(
+                start = DefaultPadding,
+                top = 10.dp
+            ),
+            onClick = {
+                val point = Point(place.coordinates.lat, place.coordinates.lon)
+                moveToPoint.invoke(point)
+            }
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_pin_into_circle),
+                contentDescription = null,
+                tint = Color.Black
+            )
+
+            Text(
+                text = "Показать на карте",
+                color = Color.Black,
+                modifier = Modifier.padding(start = 10.dp)
+            )
+        }
     }
 }
 

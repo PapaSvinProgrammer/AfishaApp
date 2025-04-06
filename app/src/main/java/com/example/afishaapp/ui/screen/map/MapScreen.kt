@@ -41,12 +41,15 @@ import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberBottomSheetScaffoldState
+import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -75,6 +78,7 @@ import com.example.afishaapp.ui.widget.material.PlaceInformationSheetContent
 import com.example.afishaapp.ui.widget.material.SquareSlider
 import com.example.afishaapp.ui.widget.text.TitleBottomSheet
 import com.yandex.mapkit.map.MapObjectTapListener
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 @SuppressLint("StaticFieldLeak")
@@ -96,6 +100,7 @@ fun MapScreen(
 ) {
     context = LocalContext.current
     viewModel = mapViewModel
+    mainPoint = Point(lat, lon)
 
     val segmentedButtonsList = stringArrayResource(R.array.map_info_segmented_button)
     val derivedIndex by remember {
@@ -103,7 +108,10 @@ fun MapScreen(
             viewModel.selectedIndex
         }
     }
-    mainPoint = Point(lat, lon)
+    val bottomSheetState = rememberBottomSheetScaffoldState(
+        bottomSheetState = rememberStandardBottomSheetState()
+    )
+    val scope = rememberCoroutineScope()
 
     LaunchedEffect(viewModel.places) {
         if (viewModel.places.isNotEmpty()) {
@@ -156,6 +164,7 @@ fun MapScreen(
 
     BottomSheetScaffold(
         modifier = Modifier.fillMaxSize(),
+        scaffoldState = bottomSheetState,
         sheetPeekHeight = 100.dp,
         sheetContent = {
             Column(
@@ -210,10 +219,17 @@ fun MapScreen(
                     }
                 ) { index ->
                     when (index) {
-                        0 -> PlaceInformationSheetContent(
-                            list = viewModel.places,
-                            mapButtonClick = { navigateToYandexMaps(it.coordinates) },
-                            moreButtonClick = { navController.navigate(PlaceRoute(it.id)) }
+                        0 ->
+                            PlaceInformationSheetContent(
+                                list = viewModel.places,
+                                mapButtonClick = { navigateToYandexMaps(it.coordinates) },
+                                moreButtonClick = { navController.navigate(PlaceRoute(it.id)) },
+                                moveToPoint = {
+                                    scope.launch {
+                                        bottomSheetState.bottomSheetState.partialExpand()
+                                    }
+                                    moveToStartLocation(it)
+                                }
                         )
                         1 -> SettingAreaSheetContent()
                     }

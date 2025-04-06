@@ -41,7 +41,7 @@ fun HorizontalCirclePagerIndicator(
                     .padding(2.dp)
                     .clip(CircleShape)
                     .background(color)
-                    .size(14.dp)
+                    .size(10.dp)
             )
         }
     }
