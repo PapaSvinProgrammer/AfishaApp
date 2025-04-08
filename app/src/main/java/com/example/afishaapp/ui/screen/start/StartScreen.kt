@@ -1,6 +1,7 @@
 package com.example.afishaapp.ui.screen.start
 
 import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -20,12 +21,17 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -35,21 +41,35 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.afishaapp.R
 import com.example.afishaapp.app.navigation.EntryRoute
+import com.example.afishaapp.app.navigation.HomeRoute
 import com.example.afishaapp.app.navigation.RegistrationRoute
 import com.example.afishaapp.ui.theme.acidFontFamily
-import com.vk.id.AccessToken
-import com.vk.id.VKID
-import com.vk.id.VKIDAuthFail
-import com.vk.id.auth.VKIDAuthCallback
 import com.vk.id.onetap.compose.onetap.sheet.OneTapBottomSheet
 import com.vk.id.onetap.compose.onetap.sheet.rememberOneTapBottomSheetState
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import com.yandex.authsdk.YandexAuthLoginOptions
+import com.yandex.authsdk.YandexAuthOptions
+import com.yandex.authsdk.YandexAuthResult
+import com.yandex.authsdk.YandexAuthSdk
 import kotlinx.coroutines.launch
 
+
 @Composable
-fun StartScreen(navController: NavController) {
-    Scaffold { innerPadding ->
+fun StartScreen(
+    navController: NavController,
+    viewModel: StartViewModel
+) {
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    if (viewModel.authSuccess) {
+        navController.navigate(HomeRoute)
+    }
+
+    Scaffold(
+        snackbarHost = {
+            SnackbarHost(snackbarHostState)
+        }
+    ) { innerPadding ->
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
@@ -129,15 +149,39 @@ fun StartScreen(navController: NavController) {
                     )
                 }
 
-                SupportRegistrationRow(innerPadding)
+                SupportRegistrationRow(
+                    padding = innerPadding,
+                    onSuccess = { token ->
+                        viewModel.updateAuthStatus(true)
+                    },
+                    onFail = {
+                        scope.launch {
+                            snackbarHostState.showSnackbar("Вход не выполнен")
+                        }
+                    }
+                )
             }
         }
     }
 }
 
 @Composable
-private fun SupportRegistrationRow(padding: PaddingValues) {
+private fun SupportRegistrationRow(
+    padding: PaddingValues,
+    onSuccess: (String) -> Unit,
+    onFail: () -> Unit
+) {
+    val context = LocalContext.current
     val vkBottomSheetState = rememberOneTapBottomSheetState()
+
+    val sdk = remember { YandexAuthSdk.create(YandexAuthOptions(context)) }
+    val launcher = rememberLauncherForActivityResult(sdk.contract) {
+        handleYandexResult(
+            yandexResult = it,
+            onSuccess = onSuccess,
+            onFail = onFail
+        )
+    }
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -145,9 +189,7 @@ private fun SupportRegistrationRow(padding: PaddingValues) {
         modifier = Modifier.padding(bottom = padding.calculateBottomPadding() + 35.dp)
     ) {
         IconButton(
-            onClick = {
-                vkBottomSheetState.show()
-            },
+            onClick = { vkBottomSheetState.show() },
             modifier = Modifier.padding(vertical = 10.dp).size(45.dp)
         ) {
             Icon(
@@ -168,12 +210,12 @@ private fun SupportRegistrationRow(padding: PaddingValues) {
                 painter = painterResource(R.drawable.ic_google),
                 contentDescription = null,
                 tint = Color.Unspecified,
-                modifier = Modifier.size(34.dp)
+                modifier = Modifier.size(32.dp)
             )
         }
 
         IconButton(
-            onClick = {  },
+            onClick = { launcher.launch(YandexAuthLoginOptions()) },
             modifier = Modifier
                 .clip(shape = RoundedCornerShape(8.dp))
                 .background(Color.White)
@@ -198,4 +240,16 @@ private fun SupportRegistrationRow(padding: PaddingValues) {
             Log.d("RRRR", "FAIL")
         }
     )
+}
+
+private fun handleYandexResult(
+    yandexResult: YandexAuthResult,
+    onSuccess: (String) -> Unit,
+    onFail: () -> Unit
+) {
+    when (yandexResult) {
+        YandexAuthResult.Cancelled -> { }
+        is YandexAuthResult.Failure -> onFail.invoke()
+        is YandexAuthResult.Success -> onSuccess.invoke(yandexResult.token.value)
+    }
 }

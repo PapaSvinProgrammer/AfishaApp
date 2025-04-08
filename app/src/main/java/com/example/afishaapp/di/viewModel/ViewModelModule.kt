@@ -13,6 +13,7 @@ import com.example.afishaapp.ui.screen.map.MapViewModel
 import com.example.afishaapp.ui.screen.movie.MovieViewModel
 import com.example.afishaapp.ui.screen.movieList.MovieListViewModel
 import com.example.afishaapp.ui.screen.registration.RegistrationViewModel
+import com.example.afishaapp.ui.screen.start.StartViewModel
 import dagger.Binds
 import dagger.MapKey
 import dagger.Module
@@ -89,4 +90,9 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(MapViewModel::class)
     fun binMapViewModel(viewmodel: MapViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(StartViewModel::class)
+    fun bindStartViewModel(viewModel: StartViewModel): ViewModel
 }

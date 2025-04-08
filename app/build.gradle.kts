@@ -24,6 +24,8 @@ android {
 
         buildConfigField("String", "MAPKIT_API_KEY", "\"${rootProject.extra["mapKitKey"]}\"")
         buildConfigField("String", "STATIC_API_KEY", "\"${rootProject.extra["staticKey"]}\"")
+
+        manifestPlaceholders["YANDEX_CLIENT_ID"] = "697b67603304455ea5013a56a8e0d386"
     }
 
     buildTypes {
@@ -50,6 +52,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.authsdk)
     implementation(libs.onetap.compose)
     implementation(libs.vkid)
     implementation(libs.maps.mobile)

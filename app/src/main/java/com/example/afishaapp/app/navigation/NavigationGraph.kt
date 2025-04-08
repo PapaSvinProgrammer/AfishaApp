@@ -40,6 +40,7 @@ import com.example.afishaapp.ui.screen.registration.RegistrationScreen
 import com.example.afishaapp.ui.screen.registration.RegistrationViewModel
 import com.example.afishaapp.ui.screen.search.SearchScreen
 import com.example.afishaapp.ui.screen.start.StartScreen
+import com.example.afishaapp.ui.screen.start.StartViewModel
 import com.example.afishaapp.ui.screen.ticket.TicketScreen
 
 @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
@@ -95,7 +96,13 @@ fun NavigationGraph(
 
         composable<SearchRoute> { SearchScreen() }
 
-        composable<StartRoute> { StartScreen(navController) }
+        composable<StartRoute> {
+            val viewModel: StartViewModel = viewModel(factory = viewModelFactory)
+            StartScreen(
+                navController = navController,
+                viewModel = viewModel
+            )
+        }
 
         composable<EntryRoute>  {
             val viewModel: EntryViewModel = viewModel(factory = viewModelFactory)

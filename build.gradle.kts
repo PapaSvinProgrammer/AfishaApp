@@ -10,10 +10,10 @@ plugins {
 }
 
 vkidManifestPlaceholders {
-    vkidRedirectHost = "vk.com"
-    vkidRedirectScheme = "vk53405674"
-    vkidClientId = "53405674"
-    vkidClientSecret = "ZbVWny2MQpZ94tXTzaYz"
+    init(
+        clientSecret = "ZbVWny2MQpZ94tXTzaYz",
+        clientId = "53405674"
+    )
 }
 
 extra.apply {
