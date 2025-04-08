@@ -1,5 +1,6 @@
 package com.example.afishaapp.ui.screen.start
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -35,6 +36,16 @@ import androidx.navigation.NavController
 import com.example.afishaapp.R
 import com.example.afishaapp.app.navigation.EntryRoute
 import com.example.afishaapp.app.navigation.RegistrationRoute
+import com.example.afishaapp.ui.theme.acidFontFamily
+import com.vk.id.AccessToken
+import com.vk.id.VKID
+import com.vk.id.VKIDAuthFail
+import com.vk.id.auth.VKIDAuthCallback
+import com.vk.id.onetap.compose.onetap.sheet.OneTapBottomSheet
+import com.vk.id.onetap.compose.onetap.sheet.rememberOneTapBottomSheetState
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun StartScreen(navController: NavController) {
@@ -42,11 +53,23 @@ fun StartScreen(navController: NavController) {
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
-            Image(
-                painter = painterResource(R.drawable.start_poster),
-                contentDescription = null,
-                modifier = Modifier.fillMaxWidth().height(400.dp)
-            )
+            Column {
+                Image(
+                    painter = painterResource(R.drawable.start_poster),
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxWidth().height(400.dp)
+                )
+
+                Text(
+                    text = "Найдется и кино, и музыка, и театр",
+                    fontFamily = acidFontFamily,
+                    fontSize = 32.sp,
+                    lineHeight = 30.sp,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 40.dp)
+                )
+            }
 
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -114,13 +137,17 @@ fun StartScreen(navController: NavController) {
 
 @Composable
 private fun SupportRegistrationRow(padding: PaddingValues) {
+    val vkBottomSheetState = rememberOneTapBottomSheetState()
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(15.dp),
         modifier = Modifier.padding(bottom = padding.calculateBottomPadding() + 35.dp)
     ) {
         IconButton(
-            onClick = {  },
+            onClick = {
+                vkBottomSheetState.show()
+            },
             modifier = Modifier.padding(vertical = 10.dp).size(45.dp)
         ) {
             Icon(
@@ -160,4 +187,15 @@ private fun SupportRegistrationRow(padding: PaddingValues) {
             )
         }
     }
+
+    OneTapBottomSheet(
+        state = vkBottomSheetState,
+        serviceName = "HUi",
+        onAuth = { oAuth, accessToken ->
+            Log.d("RRRR", accessToken.userData.toString())
+        },
+        onFail = { _, _ ->
+            Log.d("RRRR", "FAIL")
+        }
+    )
 }

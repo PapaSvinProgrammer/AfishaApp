@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     id("kotlin-kapt")
     id("kotlin-parcelize")
+    id("vkid.manifest.placeholders")
 }
 
 android {
@@ -37,6 +38,7 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+        isCoreLibraryDesugaringEnabled = true
     }
     kotlinOptions {
         jvmTarget = "11"
@@ -48,6 +50,8 @@ android {
 }
 
 dependencies {
+    implementation(libs.onetap.compose)
+    implementation(libs.vkid)
     implementation(libs.maps.mobile)
     implementation(libs.jsoup)
     implementation(libs.coil.compose)
@@ -68,6 +72,8 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.kotlinx.serialization.json)
+
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

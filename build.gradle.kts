@@ -6,6 +6,14 @@ plugins {
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.kotlin.compose) apply false
     alias(libs.plugins.google.gms.google.services) apply false
+    id("vkid.manifest.placeholders") version "1.1.0" apply true
+}
+
+vkidManifestPlaceholders {
+    vkidRedirectHost = "vk.com"
+    vkidRedirectScheme = "vk53405674"
+    vkidClientId = "53405674"
+    vkidClientSecret = "ZbVWny2MQpZ94tXTzaYz"
 }
 
 extra.apply {
