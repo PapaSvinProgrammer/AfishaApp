@@ -24,8 +24,9 @@ android {
 
         buildConfigField("String", "MAPKIT_API_KEY", "\"${rootProject.extra["mapKitKey"]}\"")
         buildConfigField("String", "STATIC_API_KEY", "\"${rootProject.extra["staticKey"]}\"")
+        buildConfigField("String", "GOOGLE_CLIENT_ID", "\"${rootProject.extra["googleClientId"]}\"")
 
-        manifestPlaceholders["YANDEX_CLIENT_ID"] = "697b67603304455ea5013a56a8e0d386"
+        manifestPlaceholders["YANDEX_CLIENT_ID"] = rootProject.extra["yandexClientId"].toString()
     }
 
     buildTypes {
@@ -52,6 +53,9 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.googleid)
     implementation(libs.authsdk)
     implementation(libs.onetap.compose)
     implementation(libs.vkid)

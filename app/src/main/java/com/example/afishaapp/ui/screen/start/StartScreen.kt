@@ -52,7 +52,6 @@ import com.yandex.authsdk.YandexAuthResult
 import com.yandex.authsdk.YandexAuthSdk
 import kotlinx.coroutines.launch
 
-
 @Composable
 fun StartScreen(
     navController: NavController,
@@ -172,6 +171,9 @@ private fun SupportRegistrationRow(
     onFail: () -> Unit
 ) {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+
+    val googleAuthClient = GoogleAuthClient(LocalContext.current)
     val vkBottomSheetState = rememberOneTapBottomSheetState()
 
     val sdk = remember { YandexAuthSdk.create(YandexAuthOptions(context)) }
@@ -201,10 +203,22 @@ private fun SupportRegistrationRow(
         }
 
         IconButton(
-            onClick = {  },
+            onClick = {
+                scope.launch {
+                    val res = googleAuthClient.signIn()
+
+                    if (res == null) {
+                        onFail.invoke()
+                    }
+                    else if (res.isNotEmpty()) {
+                        onSuccess.invoke(res)
+                    }
+                }
+            },
             modifier = Modifier
                 .clip(shape = RoundedCornerShape(8.dp))
                 .background(Color.White)
+
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_google),
@@ -225,7 +239,7 @@ private fun SupportRegistrationRow(
                 painter = painterResource(R.drawable.ic_yandex),
                 contentDescription = null,
                 tint = Color.Unspecified,
-                modifier = Modifier.size(37.dp)
+                modifier = Modifier.size(38.dp)
             )
         }
     }

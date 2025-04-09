@@ -3,9 +3,12 @@ agp = "8.8.2"
 authsdk = "3.1.3"
 coilNetworkOkhttp = "3.1.0"
 converterGson = "2.11.0"
+credentials = "1.5.0"
+credentialsPlayServicesAuth = "1.5.0"
 dagger = "2.55"
 datastorePreferences = "1.1.3"
 desugar_jdk_libs = "2.1.5"
+googleid = "1.1.1"
 jsoup = "1.19.1"
 kotlin = "2.1.0"
 coreKtx = "1.15.0"
@@ -26,6 +29,8 @@ vkid = "2.3.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentialsPlayServicesAuth" }
+androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 authsdk = { module = "com.yandex.android:authsdk", version.ref = "authsdk" }
@@ -35,6 +40,7 @@ converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
 desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
+googleid = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleid" }
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

@@ -13,5 +13,4 @@ class StartViewModel @Inject constructor(): ViewModel() {
     fun updateAuthStatus(status: Boolean) {
         authSuccess = status
     }
-
 }
