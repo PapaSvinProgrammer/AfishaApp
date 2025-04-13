@@ -2,7 +2,5 @@ package com.example.afishaapp.domain.module
 
 enum class EventCategory(val slug: String) {
     CONCERT("concert"),
-    EXHIBITION("exhibition"),
-    EVENT("event"),
-    MOVIE("movie")
+    EXHIBITION("exhibition")
 }

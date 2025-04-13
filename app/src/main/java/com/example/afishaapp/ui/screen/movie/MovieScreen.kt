@@ -2,8 +2,6 @@ package com.example.afishaapp.ui.screen.movie
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.gestures.snapping.SnapPosition
-import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -58,12 +56,11 @@ import com.example.afishaapp.app.support.ConvertDate
 import com.example.afishaapp.di.viewModel.ViewModelFactory
 import com.example.afishaapp.ui.screen.movieShowBottomSheet.MovieShowBottomSheet
 import com.example.afishaapp.ui.theme.DefaultPadding
-import com.example.afishaapp.ui.widget.card.ImageCard
 import com.example.afishaapp.ui.widget.chip.ChipInfo
 import com.example.afishaapp.ui.widget.chip.ChipRating
 import com.example.afishaapp.ui.widget.collapsingTopBar.CollapsedTopBar
 import com.example.afishaapp.ui.widget.collapsingTopBar.ExpandedTopBar
-import com.example.afishaapp.ui.widget.row.SelectRow
+import com.example.afishaapp.ui.widget.row.ImagesRow
 import com.example.afishaapp.ui.widget.shimmer.screen.ShimmerEvent
 import com.example.afishaapp.ui.widget.shimmer.screen.ShimmerExpandedToolbar
 import com.example.afishaapp.ui.widget.text.DefaultDetailDescription
@@ -80,12 +77,6 @@ fun MovieScreen(
 ) {
     viewModel.getMovie(movieId)
     viewModel.parseInfo()
-
-    val imageListState = rememberLazyListState()
-    val imageFlingBehavior = rememberSnapFlingBehavior(
-        lazyListState = imageListState,
-        snapPosition = SnapPosition.Start
-    )
 
     val collapsedListState = rememberLazyListState()
     val isCollapsed: Boolean by remember {
@@ -221,9 +212,7 @@ fun MovieScreen(
 
                 viewModel.movie?.let {
                     InfoRow(viewModel)
-
                     GenresRow(viewModel)
-
                     EventDescriptionText(
                         title = viewModel.parseMovieDescription,
                         bodyText = viewModel.parseMovieBodyText
@@ -233,25 +222,7 @@ fun MovieScreen(
                         )
                     }
 
-                    SelectRow(
-                        text = stringResource(R.string.images),
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp
-                    ) {
-
-                    }
-
-                    LazyRow(
-                        contentPadding = PaddingValues(horizontal = DefaultPadding),
-                        horizontalArrangement = Arrangement.spacedBy(10.dp),
-                        state = imageListState,
-                        flingBehavior = imageFlingBehavior
-                    ) {
-                        items(it.images) { image ->
-                            ImageCard(image.thumbnails.highImage)
-                        }
-                    }
-
+                    ImagesRow(it.images)
                     FilmCrew(viewModel)
 
                     Column(

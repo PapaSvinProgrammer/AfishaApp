@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.afishaapp.R
-import com.example.afishaapp.app.navigation.AccountRoute
+import com.example.afishaapp.app.navigation.ProfileRoute
 import com.example.afishaapp.app.navigation.EventListRoute
 import com.example.afishaapp.app.navigation.EventRoute
 import com.example.afishaapp.app.navigation.MovieListRoute
@@ -74,7 +74,7 @@ fun HomeScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = { navController.navigate(AccountRoute) }) {
+                    IconButton(onClick = { navController.navigate(ProfileRoute) }) {
                         Icon(
                             painter = painterResource(R.drawable.ic_account),
                             contentDescription = stringResource(R.string.ic_account_content_description)

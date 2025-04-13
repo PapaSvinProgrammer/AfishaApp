@@ -65,6 +65,7 @@ fun CollapsedTopBar(
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End,
                 modifier = Modifier.weight(1f)
             ) {
                 actions()

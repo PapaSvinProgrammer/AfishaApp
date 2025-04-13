@@ -4,7 +4,8 @@ import androidx.lifecycle.ViewModel
 import com.example.afishaapp.ui.screen.aboutEvent.AboutEventViewModel
 import com.example.afishaapp.ui.screen.aboutMovie.AboutMovieViewModel
 import com.example.afishaapp.ui.screen.movieShowBottomSheet.MovieShowViewModel
-import com.example.afishaapp.ui.screen.commentList.CommentListViewModel
+import com.example.afishaapp.ui.screen.commentListEvent.CommentListEventViewModel
+import com.example.afishaapp.ui.screen.commentListPlace.CommentListPlaceViewModel
 import com.example.afishaapp.ui.screen.entry.EntryViewModel
 import com.example.afishaapp.ui.screen.event.EventViewModel
 import com.example.afishaapp.ui.screen.eventList.EventListViewModel
@@ -12,6 +13,7 @@ import com.example.afishaapp.ui.screen.home.HomeViewModel
 import com.example.afishaapp.ui.screen.map.MapViewModel
 import com.example.afishaapp.ui.screen.movie.MovieViewModel
 import com.example.afishaapp.ui.screen.movieList.MovieListViewModel
+import com.example.afishaapp.ui.screen.place.PlaceViewModel
 import com.example.afishaapp.ui.screen.registration.RegistrationViewModel
 import com.example.afishaapp.ui.screen.start.StartViewModel
 import dagger.Binds
@@ -63,8 +65,8 @@ interface ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(CommentListViewModel::class)
-    fun bindCommentLIstViewModel(viewModel: CommentListViewModel): ViewModel
+    @ViewModelKey(CommentListEventViewModel::class)
+    fun bindCommentLIstViewModel(viewModel: CommentListEventViewModel): ViewModel
     
     @Binds
     @IntoMap
@@ -95,4 +97,14 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(StartViewModel::class)
     fun bindStartViewModel(viewModel: StartViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(PlaceViewModel::class)
+    fun bindPlaceViewModel(viewModel: PlaceViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CommentListPlaceViewModel::class)
+    fun bindCommentListPlaceViewModel(viewModel: CommentListPlaceViewModel): ViewModel
 }

@@ -11,28 +11,6 @@ import javax.inject.Inject
 class CommentRepositoryImpl @Inject constructor(
     private val retrofit: Retrofit
 ): CommentRepository {
-    override suspend fun getMovieCommentAsc(queryParameters: QueryParameters): CommentResponse? {
-        return try {
-            retrofit.create<CommentService>().getMovieCommentAsc(
-                movieId = queryParameters.id,
-                page = queryParameters.page
-            )
-        } catch (e: Exception) {
-            null
-        }
-    }
-
-    override suspend fun getMovieCommentDesc(queryParameters: QueryParameters): CommentResponse? {
-        return try {
-            retrofit.create<CommentService>().getMovieCommentDesc(
-                movieId = queryParameters.id,
-                page = queryParameters.page
-            )
-        } catch (e: Exception) {
-            null
-        }
-    }
-
     override suspend fun getEventCommentAsc(queryParameters: QueryParameters): CommentResponse? {
         return try {
             retrofit.create<CommentService>().getEventCommentAsc(
@@ -56,10 +34,26 @@ class CommentRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getPlaceCommentAsc(queryParameters: QueryParameters): CommentResponse? {
-        TODO("Not yet implemented")
+        return try {
+            retrofit.create<CommentService>().getPlaceCommentAsc(
+                placeId = queryParameters.id,
+                page = queryParameters.page
+            )
+        }
+        catch (e: Exception) {
+            null
+        }
     }
 
     override suspend fun getPlaceCommentDesc(queryParameters: QueryParameters): CommentResponse? {
-        TODO("Not yet implemented")
+        return try {
+            retrofit.create<CommentService>().getPlaceCommentDesc(
+                placeId = queryParameters.id,
+                page = queryParameters.page
+            )
+        }
+        catch (e: Exception) {
+            null
+        }
     }
 }

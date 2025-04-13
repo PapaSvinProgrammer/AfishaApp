@@ -1,8 +1,7 @@
-package com.example.afishaapp.ui.screen.commentList
+package com.example.afishaapp.ui.screen.commentListPlace
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -18,27 +17,22 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.example.afishaapp.R
-import com.example.afishaapp.domain.module.EventCategory
 import com.example.afishaapp.ui.screen.bottomSheet.DirectedFilterBottomSheet
 import com.example.afishaapp.ui.widget.card.CommentCardFill
 import com.example.afishaapp.ui.widget.endlessLazy.EndlessLazyColumn
-import com.example.afishaapp.ui.widget.shimmer.card.ShimmerCommentCard
+import com.example.afishaapp.ui.widget.shimmer.ShimmerCommentList
 import com.example.afishaapp.ui.widget.text.SubtitleTopBar
 import com.example.afishaapp.ui.widget.text.TitleTopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CommentListScreen(
+fun CommentListPlaceScreen(
     navController: NavController,
-    viewModel: CommentListViewModel,
-    objectId: Int,
-    objectName: String,
-    type: EventCategory
+    viewModel: CommentListPlaceViewModel,
+    placeId: Int,
+    placeName: String
 ) {
-    viewModel.getComments(
-        id = objectId,
-        type = type
-    )
+    viewModel.getComments(placeId)
 
     Scaffold(
         topBar = {
@@ -49,7 +43,7 @@ fun CommentListScreen(
                         verticalArrangement = Arrangement.Center
                     ) {
                         TitleTopBar(stringResource(R.string.reviews_on))
-                        SubtitleTopBar(objectName)
+                        SubtitleTopBar(placeName)
                     }
                 },
                 navigationIcon = {
@@ -65,7 +59,7 @@ fun CommentListScreen(
                 actions = {
                     IconButton(
                         onClick = {
-                            viewModel.updateDirectedFilterState(true)
+
                         }
                     ) {
                         Icon(
@@ -85,10 +79,7 @@ fun CommentListScreen(
                 modifier = Modifier.padding(innerPadding),
                 items = viewModel.comments,
                 loadMore = {
-                    viewModel.loadMoreComments(
-                        id = objectId,
-                        type = type
-                    )
+                    viewModel.loadMoreComments(placeId)
                 }
             ) { comment ->
                 CommentCardFill(comment)
@@ -103,17 +94,6 @@ fun CommentListScreen(
                 viewModel.updateFilter(it)
                 viewModel.updateDirectedFilterState(false)
             }
-        }
-    }
-}
-
-@Composable
-private fun ShimmerCommentList(padding: PaddingValues) {
-    Column(
-        modifier = Modifier.padding(padding)
-    ) {
-        repeat(4) {
-            ShimmerCommentCard()
         }
     }
 }

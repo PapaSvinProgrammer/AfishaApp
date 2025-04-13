@@ -1,8 +1,6 @@
 package com.example.afishaapp.ui.screen.event
 
 import  androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.snapping.SnapPosition
-import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -48,23 +46,21 @@ import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import com.example.afishaapp.R
 import com.example.afishaapp.app.navigation.AboutEventRoute
-import com.example.afishaapp.app.navigation.CommentListRoute
+import com.example.afishaapp.app.navigation.CommentListEventRoute
 import com.example.afishaapp.app.navigation.MapRoute
 import com.example.afishaapp.app.support.ConvertCountTitle
 import com.example.afishaapp.app.support.ConvertInfo
 import com.example.afishaapp.app.support.ConvertDate
-import com.example.afishaapp.data.module.comment.Comment
 import com.example.afishaapp.data.module.event.Event
 import com.example.afishaapp.data.module.place.Place
-import com.example.afishaapp.domain.module.EventCategory
 import com.example.afishaapp.ui.theme.DefaultPadding
 import com.example.afishaapp.ui.widget.chip.ChipInfo
 import com.example.afishaapp.ui.widget.row.SelectRow
-import com.example.afishaapp.ui.widget.card.CommentCard
-import com.example.afishaapp.ui.widget.card.ImageCard
 import com.example.afishaapp.ui.widget.card.MapImageCard
 import com.example.afishaapp.ui.widget.collapsingTopBar.CollapsedTopBar
 import com.example.afishaapp.ui.widget.collapsingTopBar.ExpandedTopBar
+import com.example.afishaapp.ui.widget.row.CommentsRow
+import com.example.afishaapp.ui.widget.row.ImagesRow
 import com.example.afishaapp.ui.widget.row.MetroRow
 import com.example.afishaapp.ui.widget.shimmer.screen.ShimmerEvent
 import com.example.afishaapp.ui.widget.shimmer.screen.ShimmerExpandedToolbar
@@ -92,9 +88,6 @@ fun EventScreen(
             listState.firstVisibleItemIndex > 0
         }
     }
-
-    val imageListState = rememberLazyListState()
-    val imageSnapBehavior = rememberSnapFlingBehavior(imageListState, SnapPosition.Start)
 
     Box {
         val color = if (isCollapsed)
@@ -171,8 +164,8 @@ fun EventScreen(
                         ) {
                             Text(
                                 text = viewModel.event?.shortTitle.toString(),
-                                fontWeight = FontWeight.Medium,
-                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 19.sp,
                                 color = Color.White
                             )
 
@@ -200,9 +193,19 @@ fun EventScreen(
                 }
 
                 viewModel.event?.let { event ->
-                    InfoRow(viewModel, navController)
+                    InfoRow(
+                        event = event,
+                        onClick = {
+                            navController.navigate(
+                                CommentListEventRoute(
+                                    name = viewModel.event?.shortTitle.toString(),
+                                    id = viewModel.event?.id ?: -1
+                                )
+                            )
+                        }
+                    )
 
-                    TagsRow(viewModel)
+                    TagsRow(event.tags)
 
                     EventDescriptionText(
                         title = viewModel.parseEventDescription,
@@ -213,10 +216,16 @@ fun EventScreen(
                         )
                     }
 
-                    CommentRow(
-                        event = event,
-                        navController = navController,
-                        comments = viewModel.comments
+                    CommentsRow(
+                        comments = viewModel.comments,
+                        onClick = {
+                            navController.navigate(
+                                CommentListEventRoute(
+                                    name = event.shortTitle,
+                                    id = event.id
+                                )
+                            )
+                        }
                     )
 
                     Spacer(modifier = Modifier.height(10.dp))
@@ -229,59 +238,8 @@ fun EventScreen(
 
                     Spacer(modifier = Modifier.height(10.dp))
 
-                    SelectRow(
-                        text = stringResource(R.string.images),
-                        icon = null,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
-                    ) {
-
-                    }
-
-                    LazyRow(
-                        contentPadding = PaddingValues(horizontal = DefaultPadding),
-                        horizontalArrangement = Arrangement.spacedBy(10.dp),
-                        state = imageListState,
-                        flingBehavior = imageSnapBehavior
-                    ) {
-                        items(event.images) { imageItem ->
-                            ImageCard(imageItem.thumbnails.highImage)
-                        }
-                    }
+                    ImagesRow(event.images)
                 }
-            }
-        }
-    }
-}
-
-@Composable
-private fun CommentRow(event: Event, navController: NavController, comments: List<Comment>) {
-    val commentLazyState = rememberLazyListState()
-    val commentSnapBehavior = rememberSnapFlingBehavior(commentLazyState,SnapPosition.Start)
-
-    if (event.commentsCount > 0) {
-        SelectRow(
-            text = ConvertCountTitle.convertCommentsCount(event.commentsCount),
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold
-        ) {
-            navController.navigate(
-                CommentListRoute(
-                    name = event.shortTitle,
-                    type = EventCategory.EVENT,
-                    id = event.id
-                )
-            )
-        }
-
-        LazyRow(
-            contentPadding = PaddingValues(horizontal = DefaultPadding),
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
-            state = commentLazyState,
-            flingBehavior = commentSnapBehavior
-        ) {
-            items(comments) { comment ->
-                CommentCard(comment)
             }
         }
     }
@@ -335,7 +293,10 @@ private fun PlaceRow(place: Place?, navController: NavController, imageMap: Stri
 }
 
 @Composable
-private fun InfoRow(viewModel: EventViewModel, navController: NavController) {
+private fun InfoRow(
+    event: Event,
+    onClick: () -> Unit
+) {
     Row(
         modifier = Modifier
             .horizontalScroll(rememberScrollState())
@@ -347,16 +308,10 @@ private fun InfoRow(viewModel: EventViewModel, navController: NavController) {
                 .padding(start = DefaultPadding)
                 .clip(RoundedCornerShape(10.dp))
                 .clickable {
-                    navController.navigate(
-                        CommentListRoute(
-                            name = viewModel.event?.shortTitle.toString(),
-                            type = EventCategory.EVENT,
-                            id = viewModel.event?.id ?: -1
-                        )
-                    )
+                    onClick.invoke()
                 },
-            title = ConvertCountTitle.convertCommentsCount(viewModel.event?.commentsCount ?: 0),
-            subtitle = ConvertCountTitle.convertLikeCount(viewModel.event?.favoritesCount ?: 0),
+            title = ConvertCountTitle.convertCommentsCount(event.commentsCount),
+            subtitle = ConvertCountTitle.convertLikeCount(event.favoritesCount),
             icon = {
                 Icon(
                     painter = painterResource(R.drawable.ic_comment),
@@ -371,34 +326,32 @@ private fun InfoRow(viewModel: EventViewModel, navController: NavController) {
 
         ChipInfo(
             title = stringResource(R.string.age),
-            subtitle = ConvertInfo.convertAgeRestriction(viewModel.event?.ageRestriction.toString())
+            subtitle = ConvertInfo.convertAgeRestriction(event.ageRestriction)
         )
 
         ChipInfo(
             modifier = Modifier.padding(end = DefaultPadding),
             title = stringResource(R.string.duration),
-            subtitle = ConvertDate.convertListDateRange(viewModel.event?.dates ?: listOf())
+            subtitle = ConvertDate.convertListDateRange(event.dates)
         )
     }
 }
 
 @Composable
-private fun TagsRow(viewModel: EventViewModel) {
+private fun TagsRow(tags: List<String>) {
     LazyRow(
         contentPadding = PaddingValues(DefaultPadding, 8.dp, DefaultPadding, 15.dp),
         horizontalArrangement = Arrangement.spacedBy(5.dp)
     ) {
-        viewModel.event?.let {
-            items(it.tags) { tag ->
-                SuggestionChip(
-                    label = {
-                        Text(
-                            text = ConvertInfo.convertTitle(tag)
-                        )
-                    },
-                    onClick = {  }
-                )
-            }
+        items(tags) { tag ->
+            SuggestionChip(
+                label = {
+                    Text(
+                        text = ConvertInfo.convertTitle(tag)
+                    )
+                },
+                onClick = {  }
+            )
         }
     }
 }

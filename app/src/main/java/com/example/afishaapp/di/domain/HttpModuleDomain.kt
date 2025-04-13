@@ -2,7 +2,6 @@ package com.example.afishaapp.di.domain
 
 import com.example.afishaapp.domain.http.GetAgent
 import com.example.afishaapp.domain.http.GetCommentEvent
-import com.example.afishaapp.domain.http.GetCommentMovie
 import com.example.afishaapp.domain.http.GetEvent
 import com.example.afishaapp.domain.http.Search
 import com.example.afishaapp.domain.repository.http.AgentRepository
@@ -33,11 +32,6 @@ interface HttpModuleDomain {
         @Provides
         fun provideGetCommentEvent(repository: CommentRepository): GetCommentEvent {
             return GetCommentEvent(repository)
-        }
-
-        @Provides
-        fun provideGetCommentMovie(repository: CommentRepository): GetCommentMovie {
-            return GetCommentMovie(repository)
         }
     }
 }

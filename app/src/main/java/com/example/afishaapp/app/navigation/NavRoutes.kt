@@ -1,6 +1,5 @@
 package com.example.afishaapp.app.navigation
 
-import com.example.afishaapp.domain.module.EventCategory
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -25,7 +24,7 @@ object FavoriteRoute
 object SearchRoute
 
 @Serializable
-object AccountRoute
+object ProfileRoute
 
 @Serializable
 data class MovieListRoute(
@@ -44,10 +43,15 @@ data class EventListRoute(
 data class EventRoute(val eventId: Int)
 
 @Serializable
-data class CommentListRoute(
+data class CommentListEventRoute(
     val id: Int,
-    val name: String,
-    val type: EventCategory
+    val name: String
+)
+
+@Serializable
+data class CommentListPlaceRoute(
+    val id: Int,
+    val name: String
 )
 
 @Serializable

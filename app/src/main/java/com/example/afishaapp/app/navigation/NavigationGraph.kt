@@ -17,8 +17,10 @@ import com.example.afishaapp.ui.screen.aboutEvent.AboutEventScreen
 import com.example.afishaapp.ui.screen.aboutEvent.AboutEventViewModel
 import com.example.afishaapp.ui.screen.aboutMovie.AboutMovieScreen
 import com.example.afishaapp.ui.screen.aboutMovie.AboutMovieViewModel
-import com.example.afishaapp.ui.screen.commentList.CommentListScreen
-import com.example.afishaapp.ui.screen.commentList.CommentListViewModel
+import com.example.afishaapp.ui.screen.commentListEvent.CommentListEventScreen
+import com.example.afishaapp.ui.screen.commentListEvent.CommentListEventViewModel
+import com.example.afishaapp.ui.screen.commentListPlace.CommentListPlaceScreen
+import com.example.afishaapp.ui.screen.commentListPlace.CommentListPlaceViewModel
 import com.example.afishaapp.ui.screen.entry.EntryScreen
 import com.example.afishaapp.ui.screen.entry.EntryViewModel
 import com.example.afishaapp.ui.screen.event.EventScreen
@@ -35,6 +37,7 @@ import com.example.afishaapp.ui.screen.movie.MovieViewModel
 import com.example.afishaapp.ui.screen.movieList.MovieListScreen
 import com.example.afishaapp.ui.screen.movieList.MovieListViewModel
 import com.example.afishaapp.ui.screen.place.PlaceScreen
+import com.example.afishaapp.ui.screen.place.PlaceViewModel
 import com.example.afishaapp.ui.screen.profile.ProfileScreen
 import com.example.afishaapp.ui.screen.registration.RegistrationScreen
 import com.example.afishaapp.ui.screen.registration.RegistrationViewModel
@@ -51,10 +54,11 @@ fun NavigationGraph(
     viewModelFactory: ViewModelFactory
 ) {
     //MapRoute(lat = 59.926251, lon = 30.280609, placeId = 12271)
+    //PlaceRoute(12271)
 
     NavHost(
         navController = navController,
-        startDestination = StartRoute,
+        startDestination = HomeRoute,
         enterTransition = {
             slideIntoContainer(
                 towards = AnimatedContentTransitionScope.SlideDirection.Start,
@@ -120,7 +124,7 @@ fun NavigationGraph(
             )
         }
 
-        composable<AccountRoute> {
+        composable<ProfileRoute> {
             ProfileScreen(navController)
         }
 
@@ -160,16 +164,27 @@ fun NavigationGraph(
             )
         }
 
-        composable<CommentListRoute> {
-            val commentListRoute = it.toRoute<CommentListRoute>()
-            val viewModel: CommentListViewModel = viewModel(factory = viewModelFactory)
+        composable<CommentListEventRoute> {
+            val commentListEventRoute = it.toRoute<CommentListEventRoute>()
+            val viewModel: CommentListEventViewModel = viewModel(factory = viewModelFactory)
 
-            CommentListScreen(
+            CommentListEventScreen(
                 navController = navController,
                 viewModel = viewModel,
-                objectId = commentListRoute.id,
-                objectName = commentListRoute.name,
-                type = commentListRoute.type
+                eventId = commentListEventRoute.id,
+                eventName = commentListEventRoute.name
+            )
+        }
+
+        composable<CommentListPlaceRoute> {
+            val route = it.toRoute<CommentListPlaceRoute>()
+            val viewModel: CommentListPlaceViewModel = viewModel(factory = viewModelFactory)
+
+            CommentListPlaceScreen(
+                navController = navController,
+                viewModel = viewModel,
+                placeName = route.name,
+                placeId = route.id
             )
         }
 
@@ -207,9 +222,7 @@ fun NavigationGraph(
             )
         }
 
-        composable<AboutAppRoute> {
-            AboutAppScreen(navController)
-        }
+        composable<AboutAppRoute> { AboutAppScreen(navController) }
 
         composable<MapRoute> {
             val route = it.toRoute<MapRoute>()
@@ -226,9 +239,11 @@ fun NavigationGraph(
 
         composable<PlaceRoute> {
             val route = it.toRoute<PlaceRoute>()
+            val viewModel: PlaceViewModel = viewModel(factory = viewModelFactory)
 
             PlaceScreen(
                 navController = navController,
+                viewModel = viewModel,
                 placeId = route.placeId
             )
         }

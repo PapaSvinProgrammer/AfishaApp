@@ -85,6 +85,10 @@
     <string name="setting_area">Настройка области</string>
     <string name="filtering">Фильтрация</string>
     <string name="reset_settings">Сбросить настройки</string>
+    <string name="exit_text">Вы уверены, что хотите выйти из приложения?</string>
+    <string name="exiting">Выйти</string>
+    <string name="cancel">Отмена</string>
+    <string name="phone">Номер</string>
 
     <string-array name="ticket_segmented_button">
         <item>"События"</item>
