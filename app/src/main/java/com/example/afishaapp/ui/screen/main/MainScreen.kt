@@ -16,7 +16,7 @@ import com.example.afishaapp.app.navigation.SearchRoute
 import com.example.afishaapp.app.navigation.TicketsRoute
 import com.example.afishaapp.di.viewModel.ViewModelFactory
 
-private val visibilityState = mutableStateOf(false)
+var bottomBarVisibilityState = mutableStateOf(false)
 
 @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
 @Composable
@@ -32,7 +32,7 @@ fun MainScreen(
         bottomBar = {
             BottomNavigationBar(
                 navController = navController,
-                visibilityState = visibilityState
+                visibilityState = bottomBarVisibilityState
             )
         }
     ) { innerPadding ->
@@ -46,10 +46,10 @@ fun MainScreen(
 
 private fun bottomBarIsVisibility(route: String?) {
     when (route) {
-        HomeRoute::class.java.canonicalName -> visibilityState.value = true
-        TicketsRoute::class.java.canonicalName -> visibilityState.value = true
-        FavoriteRoute::class.java.canonicalName -> visibilityState.value = true
-        SearchRoute::class.java.canonicalName -> visibilityState.value = true
-        else -> visibilityState.value = false
+        HomeRoute::class.java.canonicalName -> bottomBarVisibilityState.value = true
+        TicketsRoute::class.java.canonicalName -> bottomBarVisibilityState.value = true
+        FavoriteRoute::class.java.canonicalName -> bottomBarVisibilityState.value = true
+        SearchRoute::class.java.canonicalName -> bottomBarVisibilityState.value = true
+        else -> bottomBarVisibilityState.value = false
     }
 }
