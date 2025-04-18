@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -22,16 +23,39 @@ import com.example.afishaapp.ui.theme.DefaultPadding
 @Composable
 fun MetroRow(place: Place) {
     if (place.subway.isEmpty()) {
-        return
+        SpareContent()
     }
+    else {
+        MainContent(place)
+    }
+}
 
+@Composable
+private fun SpareContent() {
     Row(
-        modifier = Modifier
-            .padding(
-                top = 5.dp,
-                start = DefaultPadding,
-                end = DefaultPadding
-            ),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        val icon = R.drawable.ic_error
+
+        Icon(
+            painter = painterResource(icon),
+            contentDescription = null,
+            tint = Color.Unspecified,
+            modifier = Modifier.size(20.dp)
+        )
+
+        Text(
+            modifier = Modifier.fillMaxWidth().padding(start = 10.dp),
+            text = stringResource(R.string.no_subway_nearby),
+            textAlign = TextAlign.Start,
+            fontSize = 15.sp
+        )
+    }
+}
+
+@Composable
+private fun MainContent(place: Place) {
+    Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
         val icon = metro[place.location] ?: R.drawable.ic_error
@@ -44,7 +68,9 @@ fun MetroRow(place: Place) {
         )
 
         Text(
-            modifier = Modifier.fillMaxWidth().padding(start = 10.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 10.dp),
             text = place.subway,
             textAlign = TextAlign.Start,
             fontSize = 15.sp

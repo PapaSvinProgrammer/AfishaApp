@@ -1,76 +1,74 @@
 package com.example.afishaapp.ui.screen.ticket
 
-import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.afishaapp.R
 import com.example.afishaapp.ui.theme.DefaultPadding
+import com.example.afishaapp.ui.widget.card.TicketCard
 import com.example.afishaapp.ui.widget.text.TitleTopBar
 
+@Preview(showSystemUi = true)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TicketScreen() {
-    var expanded by remember { mutableStateOf(false) }
-
+fun TicketScreen(
+    paddingValues: PaddingValues = PaddingValues(0.dp)
+) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 title = { TitleTopBar(stringResource(R.string.my_ticket_text)) },
+                actions = {
+                    IconButton(onClick = { }) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_sort),
+                            contentDescription = stringResource(R.string.search_title_text)
+                        )
+                    }
+
+                    IconButton(onClick = { }) {
+                        Icon(
+                            imageVector = Icons.Rounded.Search,
+                            contentDescription = stringResource(R.string.search_title_text)
+                        )
+                    }
+                }
             )
         }
     ) { innerPadding ->
         Column(
-            modifier = Modifier
-                .padding(
+            modifier = Modifier.padding(
                     top = innerPadding.calculateTopPadding(),
+                    bottom = paddingValues.calculateBottomPadding(),
                     start = DefaultPadding,
                     end = DefaultPadding
                 )
-                .verticalScroll(rememberScrollState())
         ) {
-            Box(
-                modifier = Modifier
-                    .background(Color.Blue)
-                    .animateContentSize()
-                    .height(if (expanded) 400.dp else 100.dp)
-                    .fillMaxWidth()
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null
-                    ) {
-                        expanded = !expanded
-                    }
-            )
+            OutlinedButton(onClick = {  }) {
+                Text(text = "Фильтр")
+            }
 
-            Spacer(modifier = Modifier.height(20.dp))
-
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(300.dp)
-                    .background(Color.Green)
-            )
+            LazyColumn {
+                items(10) {
+                    TicketCard()
+                }
+            }
         }
     }
 }

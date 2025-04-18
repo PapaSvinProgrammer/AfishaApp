@@ -66,7 +66,7 @@ fun MovieListScreen(
                         onClick = { viewModel.updateFilterStateBottomSheet(true) }
                     ) {
                         Icon(
-                            painter = painterResource(R.drawable.ic_filter),
+                            painter = painterResource(R.drawable.ic_sort),
                             contentDescription = stringResource(R.string.ic_arrow_back_content_description)
                         )
                     }

@@ -94,7 +94,11 @@ fun NavigationGraph(
             )
         }
 
-        composable<TicketsRoute> { TicketScreen() }
+        composable<TicketsRoute> {
+            TicketScreen(
+                paddingValues = padding
+            )
+        }
 
         composable<FavoriteRoute> { FavoriteScreen() }
 

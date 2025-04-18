@@ -63,7 +63,7 @@ fun CommentListPlaceScreen(
                         }
                     ) {
                         Icon(
-                            painter = painterResource(R.drawable.ic_filter),
+                            painter = painterResource(R.drawable.ic_sort),
                             contentDescription = stringResource(R.string.filter)
                         )
                     }

@@ -89,6 +89,7 @@
     <string name="exiting">Выйти</string>
     <string name="cancel">Отмена</string>
     <string name="phone">Номер</string>
+    <string name="no_subway_nearby">Метро рядом нет</string>
 
     <string-array name="ticket_segmented_button">
         <item>"События"</item>
