@@ -8,6 +8,7 @@ import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -36,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import com.example.afishaapp.R
 import com.example.afishaapp.ui.screen.main.bottomBarVisibilityState
 import com.example.afishaapp.ui.theme.DefaultPadding
+import com.example.afishaapp.ui.widget.card.DetailTicketCard
 import com.example.afishaapp.ui.widget.card.TicketCard
 import com.example.afishaapp.ui.widget.text.TitleTopBar
 
@@ -118,17 +120,16 @@ private fun MainContent(
 ) {
     with(sharedTransitionScope) {
         LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(5.dp),
              modifier = Modifier
                  .sharedElement(
                      state = rememberSharedContentState(key = "key"),
                      animatedVisibilityScope = animatedVisibilityScope
                  )
-                 .padding(horizontal = DefaultPadding)
+                 .padding(horizontal = 10.dp)
         ) {
             items(10) {
-                TicketCard(
-                    onClick = onShowDetail
-                )
+                TicketCard(onClick = onShowDetail)
             }
         }
     }
@@ -142,16 +143,8 @@ private fun DetailContent(
     sharedTransitionScope: SharedTransitionScope
 ) {
     with(sharedTransitionScope) {
-        ElevatedCard(
-            onClick = onBack,
-            modifier = Modifier
-                .sharedElement(
-                    state = rememberSharedContentState(key = "detail card"),
-                    animatedVisibilityScope = animatedVisibilityScope
-                )
-                .fillMaxSize()
-        ) {
-
-        }
+       DetailTicketCard(
+           onBack = onBack
+       )
     }
 }

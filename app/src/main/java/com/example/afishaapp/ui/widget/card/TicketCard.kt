@@ -32,6 +32,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.afishaapp.R
@@ -65,33 +66,17 @@ fun TicketCard(
                         this@onDrawWithContent.drawContent()
                     }
 
-                    drawCircle(
-                        color = Color.Blue,
-                        radius = dotSize,
-                        center = Offset(
-                            x = dotSize / 2,
-                            y = size.height / 2
-                        ),
-                        blendMode = BlendMode.Clear
-                    )
-
-                    drawCircle(
-                        color = Color.Blue,
-                        radius = dotSize,
-                        center = Offset(
-                            x = size.width - dotSize / 2,
-                            y = size.height / 2
-                        ),
-                        blendMode = BlendMode.Clear
+                    drawTicketView(
+                        scope = this,
+                        dotSize = dotSize,
+                        k = 1f / 2f
                     )
                 }
             }
     ) {
         ElevatedCard(
             onClick = onClick,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(8.dp)
+            modifier = Modifier.fillMaxSize().padding(5.dp)
         ) {
             Box(
                 modifier = Modifier.padding(10.dp).fillMaxSize()
@@ -190,13 +175,13 @@ private fun BottomContent() {
                 .padding(start = 10.dp),
             text = "Метро 1, метро 2, Метро 1, метро 2",
             textAlign = TextAlign.Start,
-            fontSize = 15.sp
+            fontSize = 14.sp
         )
     }
 }
 
 @Composable
-private fun HatchHorizontalDivider() {
+fun HatchHorizontalDivider() {
     Row(
         horizontalArrangement = Arrangement.spacedBy(5.dp)
     ) {
