@@ -49,6 +49,7 @@ import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import com.example.afishaapp.R
 import com.example.afishaapp.app.navigation.CommentListPlaceRoute
+import com.example.afishaapp.app.navigation.MapRoute
 import com.example.afishaapp.app.support.ConvertCountTitle
 import com.example.afishaapp.app.support.ConvertInfo
 import com.example.afishaapp.app.support.ParseHtml
@@ -100,6 +101,26 @@ fun PlaceScreen(
                     Icons.Default.Favorite
                 else
                     Icons.Default.FavoriteBorder
+
+                IconButton(
+                    onClick = {
+                        viewModel.place?.let {
+                            navController.navigate(
+                                MapRoute(
+                                    placeId = placeId,
+                                    lat = it.coordinates.lat,
+                                    lon = it.coordinates.lon
+                                )
+                            )
+                        }
+                    }
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_map),
+                        tint = color,
+                        contentDescription = stringResource(R.string.favorite_text)
+                    )
+                }
 
                 IconButton(
                     onClick = {
