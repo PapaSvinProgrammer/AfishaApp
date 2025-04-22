@@ -10,10 +10,12 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -24,6 +26,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -47,6 +50,7 @@ import coil3.compose.AsyncImage
 import com.example.afishaapp.R
 import com.example.afishaapp.app.navigation.AboutEventRoute
 import com.example.afishaapp.app.navigation.CommentListEventRoute
+import com.example.afishaapp.app.navigation.FormPaymentRoute
 import com.example.afishaapp.app.navigation.MapRoute
 import com.example.afishaapp.app.support.ConvertCountTitle
 import com.example.afishaapp.app.support.ConvertInfo
@@ -182,6 +186,17 @@ fun EventScreen(
                                 fontSize = 15.sp,
                                 color = Color.White
                             )
+
+                            Spacer(modifier = Modifier.height(10.dp))
+
+                            Button(
+                                modifier = Modifier.fillMaxWidth(),
+                                onClick = {
+                                    navController.navigate(FormPaymentRoute(eventId))
+                                }
+                            ) {
+                                Text(text = "Записаться")
+                            }
                         }
                     }
                 }
@@ -289,7 +304,10 @@ private fun PlaceRow(place: Place?, navController: NavController, imageMap: Stri
             )
     )
 
-    MetroRow(place)
+    Row {
+        Spacer(modifier = Modifier.width(DefaultPadding))
+        MetroRow(place)
+    }
 }
 
 @Composable

@@ -85,4 +85,6 @@ data class PlaceRoute(
 )
 
 @Serializable
-object FormPaymentRoute
+data class FormPaymentRoute(
+    val eventId: Int
+)

@@ -1,6 +1,5 @@
 package com.example.afishaapp.ui.screen.formPaymentScreen
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,45 +12,48 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import coil3.compose.AsyncImage
 import com.example.afishaapp.R
+import com.example.afishaapp.data.module.event.Event
 import com.example.afishaapp.ui.theme.DefaultPadding
 import com.example.afishaapp.ui.widget.text.SubtitleTopBar
 import com.example.afishaapp.ui.widget.text.TitleTopBar
 
-var permission by mutableStateOf(false)
-
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview
 @Composable
-fun FormPaymentScreen() {
+fun FormPaymentScreen(
+    navController: NavController,
+    viewModel: FormPaymentViewModel,
+    eventId: Int
+) {
+    viewModel.getEvent(eventId)
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -60,12 +62,12 @@ fun FormPaymentScreen() {
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        TitleTopBar(text = "Оформление заказа")
-                        SubtitleTopBar(text = "220 руб.")
+                        TitleTopBar(text = stringResource(R.string.placing_order))
+                        SubtitleTopBar(text = viewModel.event?.price ?: "")
                     }
                 },
                 navigationIcon = {
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Default.ArrowBack,
                             contentDescription = stringResource(R.string.ic_arrow_back_content_description)
@@ -75,47 +77,54 @@ fun FormPaymentScreen() {
             )
         }
     ) { innerPadding ->
-        Box(
-            modifier = Modifier
-                .padding(
-                    top = innerPadding.calculateTopPadding(),
-                    bottom = innerPadding.calculateBottomPadding(),
-                    start = DefaultPadding,
-                    end = DefaultPadding
-                )
-        ) {
-            Column(
+        viewModel.event?.let { event ->
+            Box(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
+                    .padding(
+                        top = innerPadding.calculateTopPadding(),
+                        bottom = innerPadding.calculateBottomPadding(),
+                        start = DefaultPadding,
+                        end = DefaultPadding
+                    )
             ) {
-                Spacer(modifier = Modifier.height(10.dp))
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    Spacer(modifier = Modifier.height(10.dp))
 
-                HeadContent()
-                MainContent()
-                AgreementsContent()
-            }
+                    HeadContent(event)
+                    MainContent(event)
+                    PaymentsMethods()
+                    AgreementsContent(viewModel)
+                }
 
-            Button(
-                modifier = Modifier.fillMaxWidth().align(Alignment.BottomCenter),
-                enabled = permission,
-                onClick = {}
-            ) {
-                Text(text = "Оформить заказ")
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.BottomCenter),
+                    enabled = viewModel.permission,
+                    onClick = {}
+                ) {
+                    Text(
+                        text = stringResource(R.string.place_order)
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-fun AgreementsContent() {
+fun AgreementsContent(viewModel: FormPaymentViewModel) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         RadioButton(
-            selected = permission,
-            onClick = { permission = !permission}
+            selected = viewModel.permission,
+            onClick = { viewModel.updatePermission(!viewModel.permission)}
         )
 
         Text(
@@ -126,74 +135,95 @@ fun AgreementsContent() {
 }
 
 @Composable
-private fun MainContent() {
-    Spacer(modifier = Modifier.height(15.dp))
-    InfoRow(
-        title = "Номер события",
-        subtitle = "2133123"
-    )
-
-    Spacer(modifier = Modifier.height(10.dp))
-    InfoRow(
-        title = "Стоимость",
-        subtitle = "220 руб."
-    )
-
-    Spacer(modifier = Modifier.height(10.dp))
-    InfoRow(
-        title = "Дата покупки",
-        subtitle = "1 марта 2025"
-    )
-
+private fun PaymentsMethods() {
     Spacer(modifier = Modifier.height(20.dp))
-    InfoRow(
-        title = "Товары",
-        subtitle = "Общая сумма",
-        fontSize = 17.sp,
+
+    Text(
+        text = stringResource(R.string.payment_method),
+        fontSize = 16.sp,
         fontWeight = FontWeight.Bold
     )
 
-    HorizontalDivider(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 5.dp)
-    )
+    Spacer(modifier = Modifier.height(10.dp))
 
+    OutlinedButton(
+        modifier = Modifier.width(210.dp),
+        onClick = {}
+    ) {
+        Icon(
+            painter = painterResource(R.drawable.ic_sbp),
+            contentDescription = null,
+            tint = Color.Unspecified,
+            modifier = Modifier.size(24.dp)
+        )
+
+        Text(
+            text = stringResource(R.string.with_sbp),
+            color = Color.Black,
+            modifier = Modifier.padding(start = 10.dp, end = 10.dp)
+        )
+    }
+
+    OutlinedButton(
+        modifier = Modifier.width(210.dp),
+        onClick = {}
+    ) {
+        Icon(
+            painter = painterResource(R.drawable.ic_mir),
+            contentDescription = null,
+            tint = Color.Unspecified,
+            modifier = Modifier.size(24.dp)
+        )
+
+        Text(
+            text = stringResource(R.string.with_card),
+            color = Color.Black,
+            modifier = Modifier.padding(start = 10.dp, end = 10.dp)
+        )
+    }
+}
+
+@Composable
+private fun MainContent(event: Event) {
+    Spacer(modifier = Modifier.height(15.dp))
     InfoRow(
-        title = "Событие №123213 x1",
-        subtitle = "220 руб.",
-        fontSize = 14.sp,
-        fontWeight = FontWeight.Normal
+        title = stringResource(R.string.event_number),
+        subtitle = event.id.toString()
     )
 
-    HorizontalDivider(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 5.dp)
-    )
-
+    Spacer(modifier = Modifier.height(10.dp))
     InfoRow(
-        title = "Итого",
-        subtitle = "220 руб.",
-        fontSize = 14.sp,
-        fontWeight = FontWeight.Normal
+        title = stringResource(R.string.price),
+        subtitle = event.price
+    )
+
+    Spacer(modifier = Modifier.height(10.dp))
+    InfoRow(
+        title = stringResource(R.string.date_of_buy),
+        subtitle = "1 марта 2025"
     )
 }
 
 @Composable
-private fun HeadContent() {
+private fun HeadContent(event: Event) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth()
     ) {
-        Image(
-            painter = painterResource(R.drawable.ic_launcher_background),
+        AsyncImage(
+            model = event.images.first().image,
             contentDescription = null,
             contentScale = ContentScale.Crop,
-            modifier = Modifier.size(100.dp).clip(CircleShape)
+            modifier = Modifier
+                .clip(RoundedCornerShape(10.dp))
+                .size(150.dp)
         )
 
         Spacer(modifier = Modifier.width(10.dp))
 
         Column {
             Text(
-                text = "Название события",
+                text = event.shortTitle,
                 fontSize = 17.sp,
                 fontWeight = FontWeight.Bold
             )

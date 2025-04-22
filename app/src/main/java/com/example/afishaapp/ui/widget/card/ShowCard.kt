@@ -1,6 +1,7 @@
 package com.example.afishaapp.ui.widget.card
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,12 +27,14 @@ import androidx.compose.ui.unit.sp
 import com.example.afishaapp.R
 import com.example.afishaapp.app.support.ConvertDate
 import com.example.afishaapp.app.support.ConvertInfo
+import com.example.afishaapp.data.module.movieShow.PriceTime
 import com.example.afishaapp.data.module.movieShow.Show
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ShowCard(
-    show: Show
+    show: Show,
+    onClick: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -57,32 +60,44 @@ fun ShowCard(
             verticalArrangement = Arrangement.spacedBy(5.dp)
         ) {
             show.priceTime.forEach {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(20.dp))
-                            .background(MaterialTheme.colorScheme.primary)
-                    ) {
-                        Text(
-                            text = ConvertDate.convertShowTime(it.time.toLong()),
-                            fontSize = 15.sp,
-                            color = Color.White,
-                            fontWeight = FontWeight.Medium,
-                            modifier = Modifier
-                                .padding(20.dp, 5.dp)
-                                .align(Alignment.Center)
-                        )
-                    }
-
-                    Text(
-                        text = it.price,
-                        fontSize = 13.sp
-                    )
-                }
+                TimeAndPriceCard(
+                    priceTime = it,
+                    onClick = onClick
+                )
             }
         }
+    }
+}
+
+@Composable
+private fun TimeAndPriceCard(
+    priceTime: PriceTime,
+    onClick: () -> Unit
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.clickable(onClick = onClick)
+    ) {
+        Box(
+            modifier = Modifier
+                .clip(RoundedCornerShape(20.dp))
+                .background(MaterialTheme.colorScheme.primary)
+        ) {
+            Text(
+                text = ConvertDate.convertShowTime(priceTime.time.toLong()),
+                fontSize = 15.sp,
+                color = Color.White,
+                fontWeight = FontWeight.Medium,
+                modifier = Modifier
+                    .padding(20.dp, 5.dp)
+                    .align(Alignment.Center)
+            )
+        }
+
+        Text(
+            text = priceTime.price,
+            fontSize = 13.sp
+        )
     }
 }
 

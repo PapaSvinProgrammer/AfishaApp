@@ -241,6 +241,7 @@ fun MovieScreen(
     if (viewModel.showsBottomState) {
         MovieShowBottomSheet(
             onDismiss = { viewModel.updateShowsBottomState(false) },
+            onClick = {  },
             viewModelFactory = viewModelFactory,
             movieId = movieId
         )

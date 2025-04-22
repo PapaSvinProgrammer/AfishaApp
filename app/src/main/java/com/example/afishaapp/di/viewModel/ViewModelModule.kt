@@ -9,6 +9,7 @@ import com.example.afishaapp.ui.screen.commentListPlace.CommentListPlaceViewMode
 import com.example.afishaapp.ui.screen.entry.EntryViewModel
 import com.example.afishaapp.ui.screen.event.EventViewModel
 import com.example.afishaapp.ui.screen.eventList.EventListViewModel
+import com.example.afishaapp.ui.screen.formPaymentScreen.FormPaymentViewModel
 import com.example.afishaapp.ui.screen.home.HomeViewModel
 import com.example.afishaapp.ui.screen.map.MapViewModel
 import com.example.afishaapp.ui.screen.movie.MovieViewModel
@@ -107,4 +108,9 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(CommentListPlaceViewModel::class)
     fun bindCommentListPlaceViewModel(viewModel: CommentListPlaceViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(FormPaymentViewModel::class)
+    fun bindFormPaymentViewModel(viewModel: FormPaymentViewModel): ViewModel
 }

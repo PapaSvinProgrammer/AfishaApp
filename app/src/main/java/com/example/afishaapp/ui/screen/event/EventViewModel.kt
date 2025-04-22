@@ -3,6 +3,7 @@ package com.example.afishaapp.ui.screen.event
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.afishaapp.app.support.ParseHtml
@@ -12,6 +13,7 @@ import com.example.afishaapp.data.module.event.Event
 import com.example.afishaapp.domain.http.GetCommentEvent
 import com.example.afishaapp.domain.http.GetEvent
 import com.example.afishaapp.domain.repository.http.MapImageRepository
+import dagger.assisted.Assisted
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject

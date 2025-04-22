@@ -21,10 +21,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.afishaapp.R
+import com.example.afishaapp.app.navigation.FormPaymentRoute
 import com.example.afishaapp.app.support.ConvertDate
 import com.example.afishaapp.di.viewModel.ViewModelFactory
 import com.example.afishaapp.ui.screen.bottomSheet.DateBottomSheet
+import com.example.afishaapp.ui.screen.formPaymentScreen.FormPaymentScreen
 import com.example.afishaapp.ui.theme.DefaultPadding
 import com.example.afishaapp.ui.widget.card.ShowCard
 import com.example.afishaapp.ui.widget.chip.SelectDropDown
@@ -36,6 +39,7 @@ fun MovieShowBottomSheet(
     viewModelFactory: ViewModelFactory,
     movieId: Int,
     onDismiss: () -> Unit,
+    onClick: (Int) -> Unit
 ) {
     val viewModel: MovieShowViewModel = viewModel(factory = viewModelFactory)
 
@@ -73,7 +77,10 @@ fun MovieShowBottomSheet(
                 verticalArrangement = Arrangement.spacedBy(30.dp)
             ) {
                 items(viewModel.shows) { show ->
-                    ShowCard(show)
+                    ShowCard(
+                        show = show,
+                        onClick = { onClick.invoke(show.id) }
+                    )
                 }
             }
         }
