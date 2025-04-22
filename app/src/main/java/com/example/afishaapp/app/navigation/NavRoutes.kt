@@ -83,3 +83,6 @@ data class MapRoute(
 data class PlaceRoute(
     val placeId: Int
 )
+
+@Serializable
+object FormPaymentRoute

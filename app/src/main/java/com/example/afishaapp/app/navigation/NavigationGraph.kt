@@ -28,6 +28,7 @@ import com.example.afishaapp.ui.screen.event.EventViewModel
 import com.example.afishaapp.ui.screen.eventList.EventListScreen
 import com.example.afishaapp.ui.screen.eventList.EventListViewModel
 import com.example.afishaapp.ui.screen.favorite.FavoriteScreen
+import com.example.afishaapp.ui.screen.formPaymentScreen.FormPaymentScreen
 import com.example.afishaapp.ui.screen.home.HomeScreen
 import com.example.afishaapp.ui.screen.home.HomeViewModel
 import com.example.afishaapp.ui.screen.map.MapScreen
@@ -58,7 +59,7 @@ fun NavigationGraph(
 
     NavHost(
         navController = navController,
-        startDestination = HomeRoute,
+        startDestination = FormPaymentRoute,
         enterTransition = {
             slideIntoContainer(
                 towards = AnimatedContentTransitionScope.SlideDirection.Start,
@@ -250,6 +251,10 @@ fun NavigationGraph(
                 viewModel = viewModel,
                 placeId = route.placeId
             )
+        }
+
+        composable<FormPaymentRoute> {
+            FormPaymentScreen()
         }
     }
 }
