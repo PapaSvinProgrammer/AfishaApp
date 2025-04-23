@@ -3,7 +3,6 @@ package com.example.afishaapp.ui.widget.card
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,15 +10,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ElevatedButton
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -45,8 +44,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.afishaapp.R
-import com.example.afishaapp.ui.theme.DefaultPadding
+import com.example.afishaapp.ui.widget.text.TitleTopBar
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 fun DetailTicketCard(
@@ -54,28 +54,27 @@ fun DetailTicketCard(
 ) {
     Scaffold (
         topBar = {
-            Box(
-                modifier = Modifier.padding(
-                    horizontal = DefaultPadding,
-                    vertical = 10.dp
-                )
-            ) {
-                ElevatedButton(
-                    onClick = onBack,
-                    shape = CircleShape,
-                    contentPadding = PaddingValues(0.dp),
-                    modifier = Modifier.size(48.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.White,
-                        contentColor = Color.Black
-                    )
-                ) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                        contentDescription = stringResource(R.string.ic_arrow_back_content_description)
-                    )
+            CenterAlignedTopAppBar(
+                title = {
+                    TitleTopBar(text = "RRRR")
+                },
+                navigationIcon = {
+                    IconButton(onClick = onBack) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                            contentDescription = stringResource(R.string.ic_arrow_back_content_description)
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(onClick = {}) {
+                        Icon(
+                            imageVector = Icons.Default.MoreVert,
+                            contentDescription = stringResource(R.string.settings)
+                        )
+                    }
                 }
-            }
+            )
         }
     ) { innerPadding ->
         Box(
@@ -117,7 +116,9 @@ fun DetailTicketCard(
                 }
         ) {
             ElevatedCard(
-                modifier = Modifier.fillMaxSize().padding(5.dp)
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(5.dp)
             ) {
                 Column {
                     Column(
@@ -200,17 +201,6 @@ private fun TopContent() {
                 fontSize = 14.sp
             )
         }
-
-        Spacer(modifier = Modifier.height(10.dp))
-
-        OutlinedButton(onClick = {}) {
-            Text(text = "Подробнее о месте")
-        }
-
-        OutlinedButton(onClick = {}) {
-            Text(text = "Подробнее о событиии")
-        }
-
     }
 }
 
@@ -223,11 +213,15 @@ private fun HeadTicket() {
             painter = painterResource(R.drawable.ic_launcher_background),
             contentDescription = null,
             contentScale = ContentScale.Crop,
-            modifier = Modifier.size(190.dp).clip(RoundedCornerShape(10.dp))
+            modifier = Modifier
+                .size(190.dp)
+                .clip(RoundedCornerShape(10.dp))
         )
 
         Column(
-            modifier = Modifier.fillMaxWidth().padding(start = 10.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 10.dp)
         ) {
             Text(
                 text = "18+",
@@ -286,7 +280,9 @@ private fun BottomContent() {
         painter = painterResource(R.drawable.images),
         contentScale = ContentScale.Crop,
         contentDescription = null,
-        modifier = Modifier.fillMaxSize().clip(RoundedCornerShape(10.dp))
+        modifier = Modifier
+            .fillMaxSize()
+            .clip(RoundedCornerShape(10.dp))
     )
 }
 

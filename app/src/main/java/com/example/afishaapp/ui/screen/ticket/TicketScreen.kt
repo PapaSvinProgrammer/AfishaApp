@@ -38,11 +38,11 @@ import com.example.afishaapp.ui.widget.card.DetailTicketCard
 import com.example.afishaapp.ui.widget.card.TicketCard
 import com.example.afishaapp.ui.widget.text.TitleTopBar
 
-@Preview(showSystemUi = true)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
 fun TicketScreen(
-    paddingValues: PaddingValues = PaddingValues(0.dp)
+    paddingValues: PaddingValues = PaddingValues(0.dp),
+    viewModel: TicketViewModel
 ) {
     var showDetail by remember { mutableStateOf(false) }
     var topBarVisibilityState by remember { mutableStateOf(true) }
@@ -57,7 +57,7 @@ fun TicketScreen(
                 CenterAlignedTopAppBar(
                     title = { TitleTopBar(stringResource(R.string.my_ticket_text)) },
                     actions = {
-                        IconButton(onClick = { }) {
+                        IconButton(onClick = { viewModel.add() }) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_sort),
                                 contentDescription = stringResource(R.string.search_title_text)

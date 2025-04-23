@@ -19,6 +19,8 @@ class FormPaymentViewModel @Inject constructor(
 
     var permission by mutableStateOf(false)
         private set
+    var isSuccess by mutableStateOf(false)
+        private set
 
     fun updatePermission(state: Boolean) {
         permission = state
@@ -28,5 +30,9 @@ class FormPaymentViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             event = getEvent.getEventInfo(eventId)
         }
+    }
+
+    fun updateSuccessState(state: Boolean) {
+        isSuccess = state
     }
 }

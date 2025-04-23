@@ -26,6 +26,8 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,8 +39,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.afishaapp.R
 import com.example.afishaapp.data.module.event.Event
 import com.example.afishaapp.ui.theme.DefaultPadding
@@ -53,6 +60,15 @@ fun FormPaymentScreen(
     eventId: Int
 ) {
     viewModel.getEvent(eventId)
+
+    if (viewModel.isSuccess) {
+        SuccessDialog(
+            onDismiss = {
+                viewModel.updateSuccessState(false)
+                navController.popBackStack()
+            }
+        )
+    }
 
     Scaffold(
         topBar = {
@@ -105,13 +121,34 @@ fun FormPaymentScreen(
                         .fillMaxWidth()
                         .align(Alignment.BottomCenter),
                     enabled = viewModel.permission,
-                    onClick = {}
+                    onClick = { viewModel.updateSuccessState(true) }
                 ) {
                     Text(
                         text = stringResource(R.string.place_order)
                     )
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun SuccessDialog(onDismiss: () -> Unit) {
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.anim_success))
+    val progress by animateLottieCompositionAsState(composition)
+
+    Dialog(onDismissRequest = {}) {
+        Box {
+            LottieAnimation(
+                composition = composition,
+                progress = { progress }
+            )
+        }
+    }
+
+    LaunchedEffect(progress) {
+        if (progress == 1f) {
+            onDismiss.invoke()
         }
     }
 }

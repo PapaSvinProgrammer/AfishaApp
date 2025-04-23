@@ -47,6 +47,7 @@ import com.example.afishaapp.ui.screen.search.SearchScreen
 import com.example.afishaapp.ui.screen.start.StartScreen
 import com.example.afishaapp.ui.screen.start.StartViewModel
 import com.example.afishaapp.ui.screen.ticket.TicketScreen
+import com.example.afishaapp.ui.screen.ticket.TicketViewModel
 
 @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
 @Composable
@@ -97,8 +98,11 @@ fun NavigationGraph(
         }
 
         composable<TicketsRoute> {
+            val viewModel: TicketViewModel = viewModel(factory = viewModelFactory)
+
             TicketScreen(
-                paddingValues = padding
+                paddingValues = padding,
+                viewModel = viewModel
             )
         }
 

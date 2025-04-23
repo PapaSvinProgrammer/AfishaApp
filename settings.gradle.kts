@@ -13,6 +13,7 @@ pluginManagement {
         gradlePluginPortal()
         maven(url = "https://artifactory-external.vkpartner.ru/artifactory/vkid-sdk-android/")
         maven(url = "https://artifactory-external.vkpartner.ru/artifactory/maven/")
+        maven(url = "https://oss.sonatype.org/content/repositories/snapshots/")
     }
 }
 dependencyResolutionManagement {

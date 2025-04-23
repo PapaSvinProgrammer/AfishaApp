@@ -4,6 +4,7 @@ import android.content.Context
 import com.example.afishaapp.di.data.AuthModuleData
 import com.example.afishaapp.di.data.HttpModuleData
 import com.example.afishaapp.di.data.PreferencesModuleData
+import com.example.afishaapp.di.data.RoomDatabaseModule
 import com.example.afishaapp.di.domain.AuthModuleDomain
 import com.example.afishaapp.di.domain.HttpModuleDomain
 import com.example.afishaapp.di.domain.PreferencesModuleDomain
@@ -29,7 +30,8 @@ import javax.inject.Singleton
 
         NetworkModule::class,
         ViewModelModule::class,
-        ViewModelFactoryModule::class
+        ViewModelFactoryModule::class,
+        RoomDatabaseModule::class
     ]
 )
 interface AppComponent {

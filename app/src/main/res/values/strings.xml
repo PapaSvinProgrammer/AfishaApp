@@ -97,6 +97,7 @@
     <string name="payment_method">Способы оплаты</string>
     <string name="with_sbp">Через СБП</string>
     <string name="with_card">Привязать карту</string>
+    <string name="map">Карта</string>
 
     <string-array name="ticket_segmented_button">
         <item>"События"</item>

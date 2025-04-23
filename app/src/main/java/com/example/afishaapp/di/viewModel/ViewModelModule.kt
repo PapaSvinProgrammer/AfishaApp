@@ -17,6 +17,7 @@ import com.example.afishaapp.ui.screen.movieList.MovieListViewModel
 import com.example.afishaapp.ui.screen.place.PlaceViewModel
 import com.example.afishaapp.ui.screen.registration.RegistrationViewModel
 import com.example.afishaapp.ui.screen.start.StartViewModel
+import com.example.afishaapp.ui.screen.ticket.TicketViewModel
 import dagger.Binds
 import dagger.MapKey
 import dagger.Module
@@ -113,4 +114,9 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(FormPaymentViewModel::class)
     fun bindFormPaymentViewModel(viewModel: FormPaymentViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(TicketViewModel::class)
+    fun bindTicketViewModel(viewModel: TicketViewModel): ViewModel
 }
