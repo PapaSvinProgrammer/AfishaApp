@@ -1,31 +1,51 @@
 package com.example.afishaapp.ui.screen.ticket
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.afishaapp.data.room.TicketEntity
 import com.example.afishaapp.domain.repository.TicketRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class TicketViewModel @Inject constructor(
     private val ticketRepository: TicketRepository
 ): ViewModel() {
-    var count = 0
+    var showDetail by mutableStateOf<TicketEntity?>(null)
+        private set
+    var topBarVisibilityState by mutableStateOf(true)
+        private set
 
-    fun add() {
-        viewModelScope.launch {
-            val ticketEntity = TicketEntity(
-                name = "name$count",
-                eventId = 1,
-                age = "18+",
-                address = "asdasd",
-                subway = "asdsad, asdas, asd",
-                dateStart = 4L,
-                dateBuy = 4L,
-                duration = 1
-            )
+    var tickets by mutableStateOf<List<TicketEntity>>(listOf())
+        private set
 
-            ticketRepository.insert(ticketEntity)
+    fun updateShowDetail(state: TicketEntity?) {
+        showDetail = state
+    }
+
+    fun updateTopBarVisibilityState(state: Boolean) {
+        topBarVisibilityState = state
+    }
+
+    fun getTicketsByName() {
+        viewModelScope.launch(Dispatchers.IO) {
+            tickets = ticketRepository.getAllByName()
+        }
+    }
+
+    fun getTicketsByBuyDate() {
+        viewModelScope.launch(Dispatchers.IO) {
+            tickets = ticketRepository.getAllByBuyDate()
+        }
+    }
+
+    fun getTicketsByStartDate() {
+        viewModelScope.launch(Dispatchers.IO) {
+            tickets = ticketRepository.getAllByStartDate()
         }
     }
 }

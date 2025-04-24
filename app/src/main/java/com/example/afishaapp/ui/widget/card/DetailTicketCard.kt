@@ -1,6 +1,7 @@
 package com.example.afishaapp.ui.widget.card
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -40,23 +41,31 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
 import com.example.afishaapp.R
+import com.example.afishaapp.data.room.TicketEntity
+import com.example.afishaapp.ui.widget.text.SubtitleTopBar
 import com.example.afishaapp.ui.widget.text.TitleTopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview
 @Composable
 fun DetailTicketCard(
+    ticket: TicketEntity,
     onBack: () -> Unit = { }
 ) {
     Scaffold (
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
-                    TitleTopBar(text = "RRRR")
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        TitleTopBar(text = "Билет на")
+                        SubtitleTopBar(text = ticket.name)
+                    }
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
@@ -126,7 +135,7 @@ fun DetailTicketCard(
                             .weight(3f)
                             .padding(10.dp)
                     ) {
-                        TopContent()
+                        TopContent(ticket)
                     }
 
                     HatchHorizontalDivider()
@@ -150,14 +159,14 @@ fun DetailTicketCard(
 }
 
 @Composable
-private fun TopContent() {
+private fun TopContent(ticket: TicketEntity) {
     Column {
-        HeadTicket()
+        HeadTicket(ticket)
 
         Spacer(modifier = Modifier.height(15.dp))
 
         Text(
-            text = "Название мероприятия",
+            text = ticket.name,
             fontWeight = FontWeight.Bold,
             fontSize = 19.sp
         )
@@ -165,7 +174,7 @@ private fun TopContent() {
         Spacer(modifier = Modifier.height(10.dp))
 
         Text(
-            text = "Адрес: ул. Пушкина дом Калатушкина",
+            text = ticket.address,
             fontWeight = FontWeight.Normal,
             fontSize = 14.sp
         )
@@ -173,7 +182,7 @@ private fun TopContent() {
         Spacer(modifier = Modifier.height(5.dp))
 
         Text(
-            text = "Номер: 127398127, 2189123",
+            text = ticket.phone,
             fontWeight = FontWeight.Normal,
             fontSize = 14.sp
         )
@@ -193,10 +202,8 @@ private fun TopContent() {
             )
 
             Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 10.dp),
-                text = "Метро 1, метро 2, Метро 1, метро 2",
+                modifier = Modifier.fillMaxWidth().padding(start = 10.dp),
+                text = ticket.subway,
                 textAlign = TextAlign.Start,
                 fontSize = 14.sp
             )
@@ -205,17 +212,15 @@ private fun TopContent() {
 }
 
 @Composable
-private fun HeadTicket() {
+private fun HeadTicket(ticket: TicketEntity) {
     Row(
         modifier = Modifier.fillMaxWidth()
     ) {
-        Image(
-            painter = painterResource(R.drawable.ic_launcher_background),
+        AsyncImage(
+            model = ticket.image,
             contentDescription = null,
             contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .size(190.dp)
-                .clip(RoundedCornerShape(10.dp))
+            modifier = Modifier.size(190.dp).clip(RoundedCornerShape(10.dp))
         )
 
         Column(
@@ -224,7 +229,7 @@ private fun HeadTicket() {
                 .padding(start = 10.dp)
         ) {
             Text(
-                text = "18+",
+                text = ticket.age,
                 fontWeight = FontWeight.Medium,
                 fontSize = 15.sp
             )
@@ -266,7 +271,7 @@ private fun HeadTicket() {
             )
 
             Text(
-                text = "200 руб.",
+                text = ticket.price,
                 fontWeight = FontWeight.Normal,
                 fontSize = 14.sp
             )
@@ -280,9 +285,7 @@ private fun BottomContent() {
         painter = painterResource(R.drawable.images),
         contentScale = ContentScale.Crop,
         contentDescription = null,
-        modifier = Modifier
-            .fillMaxSize()
-            .clip(RoundedCornerShape(10.dp))
+        modifier = Modifier.fillMaxSize().clip(RoundedCornerShape(10.dp))
     )
 }
 

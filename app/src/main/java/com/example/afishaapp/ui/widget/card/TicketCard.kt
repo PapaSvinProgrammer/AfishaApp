@@ -31,13 +31,16 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.afishaapp.R
+import com.example.afishaapp.data.room.TicketEntity
 
 @Composable
 fun TicketCard(
-    onClick: () -> Unit
+    ticket: TicketEntity,
+    onClick: (TicketEntity) -> Unit
 ) {
     Box(
         contentAlignment = Alignment.Center,
@@ -73,22 +76,27 @@ fun TicketCard(
             }
     ) {
         ElevatedCard(
-            onClick = onClick,
-            modifier = Modifier.fillMaxSize().padding(5.dp)
+            onClick = { onClick.invoke(ticket) },
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(5.dp)
         ) {
-            Box(
-                modifier = Modifier.padding(10.dp).fillMaxSize()
+            Column(
+                modifier = Modifier
+                    .padding(10.dp)
+                    .fillMaxSize()
             ) {
                 Column(
-                    modifier = Modifier.align(Alignment.TopStart)
+                    modifier = Modifier.weight(1f)
                 ) {
-                    TopContent()
+                    TopContent(ticket)
                 }
 
                 Column(
-                    modifier = Modifier.align(Alignment.BottomStart)
+                    modifier = Modifier.weight(1f)
                 ) {
-                    BottomContent()
+                    Spacer(modifier = Modifier.height(20.dp))
+                    BottomContent(ticket)
                 }
             }
         }
@@ -98,22 +106,27 @@ fun TicketCard(
 }
 
 @Composable
-private fun TopContent() {
+private fun TopContent(ticket: TicketEntity) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth()
     ) {
         Text(
-            text = "Name Event",
+            text = ticket.name,
             fontSize = 17.sp,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.weight(4f)
         )
 
         Text(
-            text = "18+",
+            text = ticket.age,
             fontSize = 17.sp,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.End,
+            modifier = Modifier.weight(1f)
         )
     }
 
@@ -146,35 +159,37 @@ private fun TopContent() {
 }
 
 @Composable
-private fun BottomContent() {
+private fun BottomContent(ticket: TicketEntity) {
     Text(
-        text = "ул. Пушкина дом Калатушкина",
+        text = ticket.address,
         fontSize = 14.sp,
         fontWeight = FontWeight.Medium
     )
 
     Spacer(modifier = Modifier.height(10.dp))
 
-    Row(
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        val icon = R.drawable.ic_metro_msk
+    if (ticket.subway.isNotEmpty()) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            val icon = R.drawable.ic_metro_msk
 
-        Icon(
-            painter = painterResource(icon),
-            contentDescription = null,
-            tint = Color.Unspecified,
-            modifier = Modifier.size(20.dp)
-        )
+            Icon(
+                painter = painterResource(icon),
+                contentDescription = null,
+                tint = Color.Unspecified,
+                modifier = Modifier.size(20.dp)
+            )
 
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 10.dp),
-            text = "Метро 1, метро 2, Метро 1, метро 2",
-            textAlign = TextAlign.Start,
-            fontSize = 14.sp
-        )
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 10.dp),
+                text = ticket.subway,
+                textAlign = TextAlign.Start,
+                fontSize = 14.sp
+            )
+        }
     }
 }
 

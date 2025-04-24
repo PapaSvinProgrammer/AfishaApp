@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -23,16 +24,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.afishaapp.R
+import com.example.afishaapp.data.room.TicketEntity
 import com.example.afishaapp.ui.screen.main.bottomBarVisibilityState
 import com.example.afishaapp.ui.widget.card.DetailTicketCard
 import com.example.afishaapp.ui.widget.card.TicketCard
@@ -44,20 +41,19 @@ fun TicketScreen(
     paddingValues: PaddingValues = PaddingValues(0.dp),
     viewModel: TicketViewModel
 ) {
-    var showDetail by remember { mutableStateOf(false) }
-    var topBarVisibilityState by remember { mutableStateOf(true) }
+    viewModel.getTicketsByStartDate()
 
     Scaffold(
         topBar = {
             AnimatedVisibility(
-                visible = topBarVisibilityState,
+                visible = viewModel.topBarVisibilityState,
                 enter = slideInVertically(),
                 exit = slideOutVertically()
             ) {
                 CenterAlignedTopAppBar(
                     title = { TitleTopBar(stringResource(R.string.my_ticket_text)) },
                     actions = {
-                        IconButton(onClick = { viewModel.add() }) {
+                        IconButton(onClick = { }) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_sort),
                                 contentDescription = stringResource(R.string.search_title_text)
@@ -76,26 +72,32 @@ fun TicketScreen(
         }
     ) { innerPadding ->
         SharedTransitionLayout {
-            Column {
+            Column(
+                modifier = Modifier.padding(
+                    bottom = paddingValues.calculateBottomPadding()
+                )
+            ) {
                 Spacer(modifier = Modifier.height(innerPadding.calculateTopPadding()))
 
                 AnimatedContent(
-                    targetState = showDetail
+                    targetState = viewModel.showDetail
                 ) { targetState ->
-                    if (targetState) {
+                    if (targetState != null) {
                         bottomBarVisibilityState.value = false
-                        topBarVisibilityState = false
+                        viewModel.updateTopBarVisibilityState(false)
 
                         DetailTicketCard(
-                            onBack = { showDetail = false }
+                            ticket = targetState,
+                            onBack = { viewModel.updateShowDetail(null) }
                         )
                     }
                     else {
                         bottomBarVisibilityState.value = true
-                        topBarVisibilityState = true
+                        viewModel.updateTopBarVisibilityState(true)
 
                         MainContent(
-                            onShowDetail = { showDetail = true },
+                            tickets = viewModel.tickets,
+                            onShowDetail = { viewModel.updateShowDetail(it)},
                             animatedVisibilityScope = this@AnimatedContent,
                             sharedTransitionScope = this@SharedTransitionLayout
                         )
@@ -109,7 +111,8 @@ fun TicketScreen(
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun MainContent(
-    onShowDetail: () -> Unit,
+    tickets: List<TicketEntity>,
+    onShowDetail: (TicketEntity) -> Unit,
     animatedVisibilityScope: AnimatedVisibilityScope,
     sharedTransitionScope: SharedTransitionScope
 ) {
@@ -123,8 +126,11 @@ private fun MainContent(
                  )
                  .padding(horizontal = 10.dp)
         ) {
-            items(10) {
-                TicketCard(onClick = onShowDetail)
+            items(tickets) {
+                TicketCard(
+                    ticket = it,
+                    onClick = onShowDetail
+                )
             }
         }
     }

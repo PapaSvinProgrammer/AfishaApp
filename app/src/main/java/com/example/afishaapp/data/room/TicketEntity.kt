@@ -14,5 +14,9 @@ data class TicketEntity(
     @ColumnInfo(name = "subway") val subway: String,
     @ColumnInfo(name = "date_buy") val dateBuy: Long,
     @ColumnInfo(name = "date_start") val dateStart: Long,
-    @ColumnInfo(name = "duration") val duration: Int
+    @ColumnInfo(name = "duration") val duration: Long,
+    @ColumnInfo(name = "price") val price: String,
+    @ColumnInfo(name = "location") val location: String,
+    @ColumnInfo(name = "image") val image: String,
+    @ColumnInfo(name = "phone") val phone: String
 )

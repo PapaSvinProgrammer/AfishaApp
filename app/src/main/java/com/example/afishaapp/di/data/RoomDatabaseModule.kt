@@ -2,7 +2,6 @@ package com.example.afishaapp.di.data
 
 import android.content.Context
 import androidx.room.Room
-import androidx.room.RoomDatabase
 import com.example.afishaapp.data.repository.TicketRepositoryRoom
 import com.example.afishaapp.data.room.TicketDao
 import com.example.afishaapp.data.room.TicketDatabase
@@ -12,7 +11,7 @@ import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
-private const val NAME_DATABASE = "TicketDatabase"
+private const val NAME_DATABASE = "AfishaDatebase"
 
 @Module
 interface RoomDatabaseModule {

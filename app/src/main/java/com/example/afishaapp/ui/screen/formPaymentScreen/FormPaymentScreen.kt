@@ -64,6 +64,7 @@ fun FormPaymentScreen(
     if (viewModel.isSuccess) {
         SuccessDialog(
             onDismiss = {
+                viewModel.insertTicket()
                 viewModel.updateSuccessState(false)
                 navController.popBackStack()
             }
