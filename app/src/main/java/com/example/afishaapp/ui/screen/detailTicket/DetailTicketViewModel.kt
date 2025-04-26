@@ -17,9 +17,30 @@ class DetailTicketViewModel @Inject constructor(
     var ticket by mutableStateOf<TicketEntity?>(null)
         private set
 
+    var settingsBottomSheetState by mutableStateOf(false)
+        private set
+    var deleteDialogState by mutableStateOf(false)
+        private set
+
+    fun updateSettingsBottomSheetState(state: Boolean) {
+        settingsBottomSheetState = state
+    }
+
+    fun updateDeleteDialogState(state: Boolean) {
+        deleteDialogState = state
+    }
+
     fun getTicketDetail(eventId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             ticket = ticketRepository.getById(eventId)
+        }
+    }
+
+    fun deleteTicket() {
+        ticket?.let {
+            viewModelScope.launch(Dispatchers.IO) {
+                ticketRepository.delete(it.eventId)
+            }
         }
     }
 }

@@ -23,6 +23,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,10 +45,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.afishaapp.R
+import com.example.afishaapp.app.navigation.EventRoute
+import com.example.afishaapp.app.navigation.PlaceRoute
 import com.example.afishaapp.data.room.TicketEntity
+import com.example.afishaapp.domain.module.SettingsType
+import com.example.afishaapp.ui.screen.bottomSheet.TicketSettingsBottomSheet
 import com.example.afishaapp.ui.widget.card.HatchHorizontalDivider
 import com.example.afishaapp.ui.widget.text.SubtitleTopBar
 import com.example.afishaapp.ui.widget.text.TitleTopBar
@@ -59,6 +70,15 @@ fun DetailTicketScreen(
     eventId: Int
 ) {
     viewModel.getTicketDetail(eventId)
+
+    if (viewModel.deleteDialogState) {
+        DeleteDialog(
+            onDismiss = {
+                viewModel.updateDeleteDialogState(false)
+                navController.popBackStack()
+            }
+        )
+    }
 
     Scaffold (
         topBar = {
@@ -81,7 +101,9 @@ fun DetailTicketScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = {}) {
+                    IconButton(
+                        onClick = { viewModel.updateSettingsBottomSheetState(true) }
+                    ) {
                         Icon(
                             imageVector = Icons.Default.MoreVert,
                             contentDescription = stringResource(R.string.settings)
@@ -162,6 +184,13 @@ fun DetailTicketScreen(
                 }
             }
         }
+
+        if (viewModel.settingsBottomSheetState) {
+            TicketSettingsBottomSheet(
+                onDismissRequest = { viewModel.updateSettingsBottomSheetState(false) },
+                onClick = { settingsHandle(it, navController, viewModel) }
+            )
+        }
     }
 }
 
@@ -209,7 +238,9 @@ private fun TopContent(ticket: TicketEntity) {
             )
 
             Text(
-                modifier = Modifier.fillMaxWidth().padding(start = 10.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 10.dp),
                 text = ticket.subway,
                 textAlign = TextAlign.Start,
                 fontSize = 14.sp
@@ -227,7 +258,9 @@ private fun HeadTicket(ticket: TicketEntity) {
             model = ticket.image,
             contentDescription = null,
             contentScale = ContentScale.Crop,
-            modifier = Modifier.size(190.dp).clip(RoundedCornerShape(10.dp))
+            modifier = Modifier
+                .size(190.dp)
+                .clip(RoundedCornerShape(10.dp))
         )
 
         Column(
@@ -292,8 +325,60 @@ private fun BottomContent() {
         painter = painterResource(R.drawable.images),
         contentScale = ContentScale.Crop,
         contentDescription = null,
-        modifier = Modifier.fillMaxSize().clip(RoundedCornerShape(10.dp))
+        modifier = Modifier
+            .fillMaxSize()
+            .clip(RoundedCornerShape(10.dp))
     )
+}
+
+@Composable
+private fun DeleteDialog(
+    onDismiss: () -> Unit
+) {
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.anim_remove))
+    val progress by animateLottieCompositionAsState(composition)
+
+    Dialog(onDismissRequest = {}) {
+        Box {
+            LottieAnimation(
+                composition = composition,
+                progress = { progress }
+            )
+        }
+    }
+
+    LaunchedEffect(progress) {
+        if (progress == 1f) {
+            onDismiss.invoke()
+        }
+    }
+}
+
+private fun settingsHandle(
+    type: SettingsType,
+    navController: NavController,
+    viewModel: DetailTicketViewModel
+) {
+    viewModel.ticket?.let {
+        when (type) {
+            SettingsType.DETAIL_PLACE -> {
+                navController.navigate(
+                    PlaceRoute(0)
+                )
+            }
+
+            SettingsType.DETAIL_EVENT -> {
+                navController.navigate(
+                    EventRoute(it.eventId)
+                )
+            }
+
+            SettingsType.DELETE -> {
+                viewModel.updateDeleteDialogState(true)
+                viewModel.deleteTicket()
+            }
+        }
+    }
 }
 
 fun drawTicketView(
