@@ -1,4 +1,4 @@
-package com.example.afishaapp.app.support
+package com.example.afishaapp.app.utils
 
 object ConvertCountTitle {
     fun convertLikeCount(count: Int): String {

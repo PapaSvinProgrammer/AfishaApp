@@ -1,4 +1,4 @@
-package com.example.afishaapp.app.support
+package com.example.afishaapp.app.utils
 
 import android.os.Build
 import androidx.annotation.RequiresApi

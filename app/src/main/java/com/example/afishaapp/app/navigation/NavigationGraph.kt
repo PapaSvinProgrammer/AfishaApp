@@ -4,6 +4,9 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -21,6 +24,8 @@ import com.example.afishaapp.ui.screen.commentListEvent.CommentListEventScreen
 import com.example.afishaapp.ui.screen.commentListEvent.CommentListEventViewModel
 import com.example.afishaapp.ui.screen.commentListPlace.CommentListPlaceScreen
 import com.example.afishaapp.ui.screen.commentListPlace.CommentListPlaceViewModel
+import com.example.afishaapp.ui.screen.detailTicket.DetailTicketScreen
+import com.example.afishaapp.ui.screen.detailTicket.DetailTicketViewModel
 import com.example.afishaapp.ui.screen.entry.EntryScreen
 import com.example.afishaapp.ui.screen.entry.EntryViewModel
 import com.example.afishaapp.ui.screen.event.EventScreen
@@ -57,7 +62,6 @@ fun NavigationGraph(
     viewModelFactory: ViewModelFactory
 ) {
     //MapRoute(lat = 59.926251, lon = 30.280609, placeId = 12271)
-    //PlaceRoute(12271)
 
     NavHost(
         navController = navController,
@@ -101,6 +105,7 @@ fun NavigationGraph(
             val viewModel: TicketViewModel = viewModel(factory = viewModelFactory)
 
             TicketScreen(
+                navController = navController,
                 paddingValues = padding,
                 viewModel = viewModel
             )
@@ -263,6 +268,22 @@ fun NavigationGraph(
             val route = it.toRoute<FormPaymentRoute>()
 
             FormPaymentScreen(
+                navController = navController,
+                viewModel = viewModel,
+                eventId = route.eventId
+            )
+        }
+
+        composable<DetailTicketRoute>(
+            enterTransition = { scaleIn(tween(300)) },
+            exitTransition = { scaleOut(tween(300)) },
+            popEnterTransition = { scaleIn(tween(300)) },
+            popExitTransition = { scaleOut(tween(300)) + fadeOut(tween(300)) }
+        ) {
+            val viewModel: DetailTicketViewModel = viewModel(factory = viewModelFactory)
+            val route = it.toRoute<DetailTicketRoute>()
+
+            DetailTicketScreen(
                 navController = navController,
                 viewModel = viewModel,
                 eventId = route.eventId

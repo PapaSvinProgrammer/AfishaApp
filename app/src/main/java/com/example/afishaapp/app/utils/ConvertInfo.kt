@@ -1,4 +1,4 @@
-package com.example.afishaapp.app.support
+package com.example.afishaapp.app.utils
 
 object ConvertInfo {
     fun convertTitle(title: String): String {

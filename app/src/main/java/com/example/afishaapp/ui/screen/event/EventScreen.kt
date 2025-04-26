@@ -52,9 +52,9 @@ import com.example.afishaapp.app.navigation.AboutEventRoute
 import com.example.afishaapp.app.navigation.CommentListEventRoute
 import com.example.afishaapp.app.navigation.FormPaymentRoute
 import com.example.afishaapp.app.navigation.MapRoute
-import com.example.afishaapp.app.support.ConvertCountTitle
-import com.example.afishaapp.app.support.ConvertInfo
-import com.example.afishaapp.app.support.ConvertDate
+import com.example.afishaapp.app.utils.ConvertCountTitle
+import com.example.afishaapp.app.utils.ConvertInfo
+import com.example.afishaapp.app.utils.ConvertDate
 import com.example.afishaapp.data.module.event.Event
 import com.example.afishaapp.data.module.place.Place
 import com.example.afishaapp.ui.theme.DefaultPadding

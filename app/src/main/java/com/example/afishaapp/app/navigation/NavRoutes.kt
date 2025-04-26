@@ -88,3 +88,7 @@ data class PlaceRoute(
 data class FormPaymentRoute(
     val eventId: Int
 )
+@Serializable
+data class DetailTicketRoute(
+    val eventId: Int
+)

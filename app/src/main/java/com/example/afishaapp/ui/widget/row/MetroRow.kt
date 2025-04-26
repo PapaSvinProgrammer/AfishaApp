@@ -16,9 +16,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.afishaapp.R
-import com.example.afishaapp.app.support.metro
+import com.example.afishaapp.app.utils.metro
 import com.example.afishaapp.data.module.place.Place
-import com.example.afishaapp.ui.theme.DefaultPadding
 
 @Composable
 fun MetroRow(place: Place) {

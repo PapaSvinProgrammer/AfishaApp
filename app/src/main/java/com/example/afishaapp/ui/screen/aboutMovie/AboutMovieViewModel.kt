@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.afishaapp.app.support.ParseHtml
+import com.example.afishaapp.app.utils.ParseHtml
 import com.example.afishaapp.data.module.movie.Movie
 import com.example.afishaapp.domain.http.GetMovie
 import kotlinx.coroutines.Dispatchers

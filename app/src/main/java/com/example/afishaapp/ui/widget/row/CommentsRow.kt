@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.afishaapp.app.support.ConvertCountTitle
+import com.example.afishaapp.app.utils.ConvertCountTitle
 import com.example.afishaapp.data.module.comment.Comment
 import com.example.afishaapp.ui.theme.DefaultPadding
 import com.example.afishaapp.ui.widget.card.CommentCard

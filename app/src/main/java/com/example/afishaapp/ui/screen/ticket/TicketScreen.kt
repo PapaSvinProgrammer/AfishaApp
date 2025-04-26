@@ -1,11 +1,6 @@
 package com.example.afishaapp.ui.screen.ticket
 
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.AnimatedVisibilityScope
-import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionLayout
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
@@ -28,16 +23,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.afishaapp.R
-import com.example.afishaapp.data.room.TicketEntity
-import com.example.afishaapp.ui.screen.main.bottomBarVisibilityState
-import com.example.afishaapp.ui.widget.card.DetailTicketCard
+import com.example.afishaapp.app.navigation.DetailTicketRoute
 import com.example.afishaapp.ui.widget.card.TicketCard
 import com.example.afishaapp.ui.widget.text.TitleTopBar
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TicketScreen(
+    navController: NavController,
     paddingValues: PaddingValues = PaddingValues(0.dp),
     viewModel: TicketViewModel
 ) {
@@ -71,66 +66,23 @@ fun TicketScreen(
             }
         }
     ) { innerPadding ->
-        SharedTransitionLayout {
-            Column(
-                modifier = Modifier.padding(
-                    bottom = paddingValues.calculateBottomPadding()
-                )
-            ) {
-                Spacer(modifier = Modifier.height(innerPadding.calculateTopPadding()))
-
-                AnimatedContent(
-                    targetState = viewModel.showDetail
-                ) { targetState ->
-                    if (targetState != null) {
-                        bottomBarVisibilityState.value = false
-                        viewModel.updateTopBarVisibilityState(false)
-
-                        DetailTicketCard(
-                            ticket = targetState,
-                            onBack = { viewModel.updateShowDetail(null) }
-                        )
-                    }
-                    else {
-                        bottomBarVisibilityState.value = true
-                        viewModel.updateTopBarVisibilityState(true)
-
-                        MainContent(
-                            tickets = viewModel.tickets,
-                            onShowDetail = { viewModel.updateShowDetail(it)},
-                            animatedVisibilityScope = this@AnimatedContent,
-                            sharedTransitionScope = this@SharedTransitionLayout
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalSharedTransitionApi::class)
-@Composable
-private fun MainContent(
-    tickets: List<TicketEntity>,
-    onShowDetail: (TicketEntity) -> Unit,
-    animatedVisibilityScope: AnimatedVisibilityScope,
-    sharedTransitionScope: SharedTransitionScope
-) {
-    with(sharedTransitionScope) {
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(5.dp),
-             modifier = Modifier
-                 .sharedElement(
-                     state = rememberSharedContentState(key = "key"),
-                     animatedVisibilityScope = animatedVisibilityScope
-                 )
-                 .padding(horizontal = 10.dp)
+        Column(
+            modifier = Modifier.padding(
+                bottom = paddingValues.calculateBottomPadding()
+            )
         ) {
-            items(tickets) {
-                TicketCard(
-                    ticket = it,
-                    onClick = onShowDetail
-                )
+            Spacer(modifier = Modifier.height(innerPadding.calculateTopPadding()))
+
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(5.dp),
+                modifier = Modifier.padding(horizontal = 10.dp)
+            ) {
+                items(viewModel.tickets) { event ->
+                    TicketCard(
+                        ticket = event,
+                        onClick = { navController.navigate(DetailTicketRoute(event.eventId)) }
+                    )
+                }
             }
         }
     }

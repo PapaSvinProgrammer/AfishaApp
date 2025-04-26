@@ -7,14 +7,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.afishaapp.data.module.event.Event
 import com.example.afishaapp.domain.http.GetEvent
-import com.example.afishaapp.domain.room.TicketEvent
+import com.example.afishaapp.domain.room.TicketEventManage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class FormPaymentViewModel @Inject constructor(
     private val getEvent: GetEvent,
-    private val ticketEvent: TicketEvent
+    private val ticketEventManage: TicketEventManage
 ): ViewModel() {
     var event by mutableStateOf<Event?>(null)
         private set
@@ -41,7 +41,7 @@ class FormPaymentViewModel @Inject constructor(
     fun insertTicket() {
         event?.let {
             viewModelScope.launch(Dispatchers.IO) {
-                ticketEvent.insert(it)
+                ticketEventManage.insert(it)
             }
         }
     }

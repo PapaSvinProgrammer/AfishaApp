@@ -18,6 +18,9 @@ interface TicketDao {
     @Query("SELECT * FROM Ticket ORDER BY date_buy DESC")
     suspend fun getAllByDateBuy(): List<TicketEntity>
 
+    @Query("SELECT * FROM Ticket WHERE event_id = :eventId")
+    suspend fun getById(eventId: Int): TicketEntity?
+
     @Query("DELETE FROM Ticket WHERE event_id = :eventId")
     suspend fun delete(eventId: Int)
 }

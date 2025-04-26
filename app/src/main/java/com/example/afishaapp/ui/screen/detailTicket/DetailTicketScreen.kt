@@ -1,4 +1,4 @@
-package com.example.afishaapp.ui.widget.card
+package com.example.afishaapp.ui.screen.detailTicket
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -43,18 +43,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import com.example.afishaapp.R
 import com.example.afishaapp.data.room.TicketEntity
+import com.example.afishaapp.ui.widget.card.HatchHorizontalDivider
 import com.example.afishaapp.ui.widget.text.SubtitleTopBar
 import com.example.afishaapp.ui.widget.text.TitleTopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetailTicketCard(
-    ticket: TicketEntity,
-    onBack: () -> Unit = { }
+fun DetailTicketScreen(
+    navController: NavController,
+    viewModel: DetailTicketViewModel,
+    eventId: Int
 ) {
+    viewModel.getTicketDetail(eventId)
+
     Scaffold (
         topBar = {
             CenterAlignedTopAppBar(
@@ -64,11 +69,11 @@ fun DetailTicketCard(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         TitleTopBar(text = "Билет на")
-                        SubtitleTopBar(text = ticket.name)
+                        SubtitleTopBar(text = viewModel.ticket?.name ?: "")
                     }
                 },
                 navigationIcon = {
-                    IconButton(onClick = onBack) {
+                    IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Default.ArrowBack,
                             contentDescription = stringResource(R.string.ic_arrow_back_content_description)
@@ -124,33 +129,35 @@ fun DetailTicketCard(
                     }
                 }
         ) {
-            ElevatedCard(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(5.dp)
-            ) {
-                Column {
-                    Column(
-                        modifier = Modifier
-                            .weight(3f)
-                            .padding(10.dp)
-                    ) {
-                        TopContent(ticket)
-                    }
+            viewModel.ticket?.let {
+                ElevatedCard(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(5.dp)
+                ) {
+                    Column {
+                        Column(
+                            modifier = Modifier
+                                .weight(3f)
+                                .padding(10.dp)
+                        ) {
+                            TopContent(it)
+                        }
 
-                    HatchHorizontalDivider()
+                        HatchHorizontalDivider()
 
-                    Column(
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(
-                                top = 25.dp,
-                                bottom = 10.dp,
-                                start = 15.dp,
-                                end = 15.dp
-                            )
-                    ) {
-                        BottomContent()
+                        Column(
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(
+                                    top = 25.dp,
+                                    bottom = 10.dp,
+                                    start = 15.dp,
+                                    end = 15.dp
+                                )
+                        ) {
+                            BottomContent()
+                        }
                     }
                 }
             }

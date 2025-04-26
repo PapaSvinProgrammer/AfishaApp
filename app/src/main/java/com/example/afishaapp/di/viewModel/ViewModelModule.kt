@@ -6,6 +6,7 @@ import com.example.afishaapp.ui.screen.aboutMovie.AboutMovieViewModel
 import com.example.afishaapp.ui.screen.movieShowBottomSheet.MovieShowViewModel
 import com.example.afishaapp.ui.screen.commentListEvent.CommentListEventViewModel
 import com.example.afishaapp.ui.screen.commentListPlace.CommentListPlaceViewModel
+import com.example.afishaapp.ui.screen.detailTicket.DetailTicketViewModel
 import com.example.afishaapp.ui.screen.entry.EntryViewModel
 import com.example.afishaapp.ui.screen.event.EventViewModel
 import com.example.afishaapp.ui.screen.eventList.EventListViewModel
@@ -119,4 +120,9 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(TicketViewModel::class)
     fun bindTicketViewModel(viewModel: TicketViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(DetailTicketViewModel::class)
+    fun bindDetailTicketViewModel(viewModel: DetailTicketViewModel): ViewModel
 }

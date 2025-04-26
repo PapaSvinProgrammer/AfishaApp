@@ -1,8 +1,7 @@
-package com.example.afishaapp.ui.screen.ticket
+package com.example.afishaapp.ui.screen.detailTicket
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,18 +11,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class TicketViewModel @Inject constructor(
+class DetailTicketViewModel @Inject constructor(
     private val ticketRepository: TicketRepository
 ): ViewModel() {
-    var topBarVisibilityState by mutableStateOf(true)
+    var ticket by mutableStateOf<TicketEntity?>(null)
         private set
 
-    var tickets by mutableStateOf<List<TicketEntity>>(listOf())
-        private set
-
-    fun getTicketsByStartDate() {
+    fun getTicketDetail(eventId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            tickets = ticketRepository.getAllByStartDate()
+            ticket = ticketRepository.getById(eventId)
         }
     }
 }

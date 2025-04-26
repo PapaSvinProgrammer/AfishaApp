@@ -25,8 +25,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.afishaapp.R
-import com.example.afishaapp.app.support.ConvertDate
-import com.example.afishaapp.app.support.ConvertInfo
+import com.example.afishaapp.app.utils.ConvertDate
+import com.example.afishaapp.app.utils.ConvertInfo
 import com.example.afishaapp.data.module.movieShow.PriceTime
 import com.example.afishaapp.data.module.movieShow.Show
 

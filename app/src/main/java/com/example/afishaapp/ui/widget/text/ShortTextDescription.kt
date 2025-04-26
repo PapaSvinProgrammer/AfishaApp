@@ -15,7 +15,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.afishaapp.R
-import com.example.afishaapp.app.support.ConvertInfo
+import com.example.afishaapp.app.utils.ConvertInfo
 import com.example.afishaapp.ui.theme.DefaultPadding
 
 @Composable

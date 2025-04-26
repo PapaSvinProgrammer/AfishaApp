@@ -50,9 +50,9 @@ import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import com.example.afishaapp.R
 import com.example.afishaapp.app.navigation.AboutMovieRoute
-import com.example.afishaapp.app.support.ConvertCountTitle
-import com.example.afishaapp.app.support.ConvertInfo
-import com.example.afishaapp.app.support.ConvertDate
+import com.example.afishaapp.app.utils.ConvertCountTitle
+import com.example.afishaapp.app.utils.ConvertInfo
+import com.example.afishaapp.app.utils.ConvertDate
 import com.example.afishaapp.di.viewModel.ViewModelFactory
 import com.example.afishaapp.ui.screen.movieShowBottomSheet.MovieShowBottomSheet
 import com.example.afishaapp.ui.theme.DefaultPadding

@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.afishaapp.R
 import com.example.afishaapp.data.room.TicketEntity
+import com.example.afishaapp.ui.screen.detailTicket.drawTicketView
 
 @Composable
 fun TicketCard(
@@ -95,7 +96,7 @@ fun TicketCard(
                 Column(
                     modifier = Modifier.weight(1f)
                 ) {
-                    Spacer(modifier = Modifier.height(20.dp))
+                    Spacer(modifier = Modifier.height(25.dp))
                     BottomContent(ticket)
                 }
             }
@@ -163,7 +164,9 @@ private fun BottomContent(ticket: TicketEntity) {
     Text(
         text = ticket.address,
         fontSize = 14.sp,
-        fontWeight = FontWeight.Medium
+        fontWeight = FontWeight.Medium,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis
     )
 
     Spacer(modifier = Modifier.height(10.dp))

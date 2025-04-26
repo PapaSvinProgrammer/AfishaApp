@@ -5,7 +5,7 @@ import com.example.afishaapp.data.room.TicketEntity
 import com.example.afishaapp.domain.repository.TicketRepository
 import javax.inject.Inject
 
-class TicketEvent @Inject constructor(
+class TicketEventManage @Inject constructor(
     private val ticketRepository: TicketRepository
 ) {
     suspend fun insert(event: Event) {
