@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,15 +27,14 @@ import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.clipPath
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.afishaapp.R
-import com.example.afishaapp.data.room.TicketEntity
+import com.example.afishaapp.data.room.ticket.TicketEntity
 import com.example.afishaapp.ui.screen.detailTicket.drawTicketView
+import com.example.afishaapp.ui.widget.row.SubwayRow
 
 @Composable
 fun TicketCard(
@@ -171,29 +169,10 @@ private fun BottomContent(ticket: TicketEntity) {
 
     Spacer(modifier = Modifier.height(10.dp))
 
-    if (ticket.subway.isNotEmpty()) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            val icon = R.drawable.ic_metro_msk
-
-            Icon(
-                painter = painterResource(icon),
-                contentDescription = null,
-                tint = Color.Unspecified,
-                modifier = Modifier.size(20.dp)
-            )
-
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 10.dp),
-                text = ticket.subway,
-                textAlign = TextAlign.Start,
-                fontSize = 14.sp
-            )
-        }
-    }
+    SubwayRow(
+        location = ticket.location,
+        subway = ticket.subway
+    )
 }
 
 @Composable

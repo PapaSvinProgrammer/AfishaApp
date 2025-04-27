@@ -1,8 +1,8 @@
 package com.example.afishaapp.domain.room
 
 import com.example.afishaapp.data.module.event.Event
-import com.example.afishaapp.data.room.TicketEntity
-import com.example.afishaapp.domain.repository.TicketRepository
+import com.example.afishaapp.data.room.ticket.TicketEntity
+import com.example.afishaapp.domain.repository.room.TicketRepository
 import javax.inject.Inject
 
 class TicketEventManage @Inject constructor(
@@ -23,17 +23,12 @@ class TicketEventManage @Inject constructor(
             price = event.price,
             location = event.place?.location ?: "",
             image = event.images.first().image,
-            phone = event.place?.phone ?: ""
+            phone = event.place?.phone ?: "",
+            placeId = event.place?.id ?: 0
         )
 
         ticketRepository.insert(ticketEntity)
     }
 
-    suspend fun delete(eventId: Int) {
-        if (eventId <= 0) {
-            return
-        }
 
-        ticketRepository.delete(eventId)
-    }
 }

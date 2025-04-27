@@ -1,15 +1,16 @@
-package com.example.afishaapp.data.room
+package com.example.afishaapp.data.room.ticket
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
 @Dao
 interface TicketDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(vararg ticket: TicketEntity)
 
-    @Query("SELECT * FROM Ticket ORDER BY name DESC")
+    @Query("SELECT * FROM Ticket ORDER BY name ASC")
     suspend fun getAllByName(): List<TicketEntity>
 
     @Query("SELECT * FROM Ticket ORDER BY date_buy DESC")

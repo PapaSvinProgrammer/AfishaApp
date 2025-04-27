@@ -1,8 +1,8 @@
-package com.example.afishaapp.data.repository
+package com.example.afishaapp.data.repository.room
 
-import com.example.afishaapp.data.room.TicketDao
-import com.example.afishaapp.data.room.TicketEntity
-import com.example.afishaapp.domain.repository.TicketRepository
+import com.example.afishaapp.data.room.ticket.TicketDao
+import com.example.afishaapp.data.room.ticket.TicketEntity
+import com.example.afishaapp.domain.repository.room.TicketRepository
 import javax.inject.Inject
 
 class TicketRepositoryRoom @Inject constructor(private val dao: TicketDao): TicketRepository {
@@ -20,6 +20,10 @@ class TicketRepositoryRoom @Inject constructor(private val dao: TicketDao): Tick
 
     override suspend fun getById(eventId: Int): TicketEntity? {
         return dao.getById(eventId)
+    }
+
+    override suspend fun search(q: String): List<TicketEntity> {
+        TODO("Not yet implemented")
     }
 
     override suspend fun insert(vararg ticket: TicketEntity) {

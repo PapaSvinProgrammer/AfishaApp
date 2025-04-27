@@ -19,6 +19,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -26,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.afishaapp.R
 import com.example.afishaapp.app.navigation.DetailTicketRoute
+import com.example.afishaapp.ui.screen.bottomSheet.TicketFilterBottomSheet
 import com.example.afishaapp.ui.widget.card.TicketCard
 import com.example.afishaapp.ui.widget.text.TitleTopBar
 
@@ -36,7 +38,11 @@ fun TicketScreen(
     paddingValues: PaddingValues = PaddingValues(0.dp),
     viewModel: TicketViewModel
 ) {
-    viewModel.getTicketsByStartDate()
+    viewModel.getAllTickets()
+
+    LaunchedEffect(Unit) {
+        viewModel.updateTopBarVisibilityState(true)
+    }
 
     Scaffold(
         topBar = {
@@ -48,7 +54,9 @@ fun TicketScreen(
                 CenterAlignedTopAppBar(
                     title = { TitleTopBar(stringResource(R.string.my_ticket_text)) },
                     actions = {
-                        IconButton(onClick = { }) {
+                        IconButton(
+                            onClick = { viewModel.updateFilterBottomSheetState(true) }
+                        ) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_sort),
                                 contentDescription = stringResource(R.string.search_title_text)
@@ -80,10 +88,27 @@ fun TicketScreen(
                 items(viewModel.tickets) { event ->
                     TicketCard(
                         ticket = event,
-                        onClick = { navController.navigate(DetailTicketRoute(event.eventId)) }
+                        onClick = {
+                            viewModel.updateTopBarVisibilityState(false)
+                            navController.navigate(DetailTicketRoute(event.eventId))
+                        }
                     )
                 }
             }
         }
+    }
+
+    if (viewModel.filterBottomSheetState) {
+        TicketFilterBottomSheet(
+            currentFilter = viewModel.currentFilterType,
+            onDismiss = {
+                viewModel.updateFilterBottomSheetState(false)
+            },
+            onClick = {
+                viewModel.updateCurrentFilterType(it)
+                viewModel.getAllTickets()
+                viewModel.updateFilterBottomSheetState(false)
+            }
+        )
     }
 }

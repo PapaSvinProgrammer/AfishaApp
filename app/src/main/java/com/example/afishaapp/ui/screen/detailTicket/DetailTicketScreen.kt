@@ -42,7 +42,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -55,10 +54,11 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.afishaapp.R
 import com.example.afishaapp.app.navigation.EventRoute
 import com.example.afishaapp.app.navigation.PlaceRoute
-import com.example.afishaapp.data.room.TicketEntity
+import com.example.afishaapp.data.room.ticket.TicketEntity
 import com.example.afishaapp.domain.module.SettingsType
 import com.example.afishaapp.ui.screen.bottomSheet.TicketSettingsBottomSheet
 import com.example.afishaapp.ui.widget.card.HatchHorizontalDivider
+import com.example.afishaapp.ui.widget.row.SubwayRow
 import com.example.afishaapp.ui.widget.text.SubtitleTopBar
 import com.example.afishaapp.ui.widget.text.TitleTopBar
 
@@ -88,7 +88,7 @@ fun DetailTicketScreen(
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        TitleTopBar(text = "Билет на")
+                        TitleTopBar(text = stringResource(R.string.ticket_for))
                         SubtitleTopBar(text = viewModel.ticket?.name ?: "")
                     }
                 },
@@ -225,27 +225,10 @@ private fun TopContent(ticket: TicketEntity) {
 
         Spacer(modifier = Modifier.height(5.dp))
 
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            val icon = R.drawable.ic_metro_msk
-
-            Icon(
-                painter = painterResource(icon),
-                contentDescription = null,
-                tint = Color.Unspecified,
-                modifier = Modifier.size(20.dp)
-            )
-
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 10.dp),
-                text = ticket.subway,
-                textAlign = TextAlign.Start,
-                fontSize = 14.sp
-            )
-        }
+        SubwayRow(
+            location = ticket.location,
+            subway = ticket.subway
+        )
     }
 }
 
@@ -277,7 +260,7 @@ private fun HeadTicket(ticket: TicketEntity) {
             Spacer(modifier = Modifier.height(10.dp))
 
             Text(
-                text = "Время",
+                text = stringResource(R.string.time),
                 fontWeight = FontWeight.Medium,
                 fontSize = 15.sp
             )
@@ -291,7 +274,7 @@ private fun HeadTicket(ticket: TicketEntity) {
             Spacer(modifier = Modifier.height(10.dp))
 
             Text(
-                text = "Длительность",
+                text = stringResource(R.string.duration),
                 fontWeight = FontWeight.Medium,
                 fontSize = 15.sp
             )
@@ -305,7 +288,7 @@ private fun HeadTicket(ticket: TicketEntity) {
             Spacer(modifier = Modifier.height(10.dp))
 
             Text(
-                text = "Стоимость",
+                text = stringResource(R.string.cost),
                 fontWeight = FontWeight.Medium,
                 fontSize = 15.sp
             )
@@ -362,12 +345,14 @@ private fun settingsHandle(
     viewModel.ticket?.let {
         when (type) {
             SettingsType.DETAIL_PLACE -> {
+                viewModel.updateSettingsBottomSheetState(false)
                 navController.navigate(
-                    PlaceRoute(0)
+                    PlaceRoute(it.placeId)
                 )
             }
 
             SettingsType.DETAIL_EVENT -> {
+                viewModel.updateSettingsBottomSheetState(false)
                 navController.navigate(
                     EventRoute(it.eventId)
                 )
@@ -375,6 +360,7 @@ private fun settingsHandle(
 
             SettingsType.DELETE -> {
                 viewModel.updateDeleteDialogState(true)
+                viewModel.updateSettingsBottomSheetState(false)
                 viewModel.deleteTicket()
             }
         }

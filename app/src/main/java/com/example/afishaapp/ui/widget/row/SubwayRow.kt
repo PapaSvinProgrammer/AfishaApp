@@ -20,12 +20,28 @@ import com.example.afishaapp.app.utils.metro
 import com.example.afishaapp.data.module.place.Place
 
 @Composable
-fun MetroRow(place: Place) {
+fun SubwayRow(place: Place) {
     if (place.subway.isEmpty()) {
         SpareContent()
     }
     else {
-        MainContent(place)
+        MainContent(
+            location = place.location,
+            subway = place.subway
+        )
+    }
+}
+
+@Composable
+fun SubwayRow(location: String, subway: String) {
+    if (location.isEmpty() || subway.isEmpty()) {
+        SpareContent()
+    }
+    else {
+        MainContent(
+            location = location,
+            subway = subway
+        )
     }
 }
 
@@ -53,11 +69,11 @@ private fun SpareContent() {
 }
 
 @Composable
-private fun MainContent(place: Place) {
+private fun MainContent(location: String, subway: String) {
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
-        val icon = metro[place.location] ?: R.drawable.ic_error
+        val icon = metro[location] ?: R.drawable.ic_error
 
         Icon(
             painter = painterResource(icon),
@@ -70,9 +86,9 @@ private fun MainContent(place: Place) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 10.dp),
-            text = place.subway,
+            text = subway,
             textAlign = TextAlign.Start,
-            fontSize = 15.sp
+            fontSize = 14.sp
         )
     }
 }

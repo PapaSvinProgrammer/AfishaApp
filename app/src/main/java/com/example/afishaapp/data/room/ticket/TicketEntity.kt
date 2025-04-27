@@ -1,10 +1,12 @@
-package com.example.afishaapp.data.room
+package com.example.afishaapp.data.room.ticket
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "Ticket")
+@Entity(
+    tableName = "Ticket"
+)
 data class TicketEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo(name = "name") val name: String,
@@ -18,5 +20,6 @@ data class TicketEntity(
     @ColumnInfo(name = "price") val price: String,
     @ColumnInfo(name = "location") val location: String,
     @ColumnInfo(name = "image") val image: String,
-    @ColumnInfo(name = "phone") val phone: String
+    @ColumnInfo(name = "phone") val phone: String,
+    @ColumnInfo(name = "place_id") val placeId: Int
 )

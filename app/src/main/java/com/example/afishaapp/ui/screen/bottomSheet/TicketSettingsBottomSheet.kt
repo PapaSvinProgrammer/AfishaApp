@@ -9,7 +9,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.example.afishaapp.R
 import com.example.afishaapp.domain.module.SettingsType
-import com.example.afishaapp.domain.module.TicketFilterType
 import com.example.afishaapp.ui.widget.row.CheckRow
 import com.example.afishaapp.ui.widget.text.TitleBottomSheet
 
@@ -26,21 +25,21 @@ fun TicketSettingsBottomSheet(
             TitleBottomSheet(stringResource(R.string.settings))
 
             CheckRow(
-                text = "Подробности события",
+                text = stringResource(R.string.place_details),
                 isCheck = false
             ) {
                 onClick.invoke(SettingsType.DETAIL_EVENT)
             }
 
             CheckRow(
-                text = "Подробности места",
+                text = stringResource(R.string.event_details),
                 isCheck = false
             ) {
                 onClick.invoke(SettingsType.DETAIL_PLACE)
             }
 
             CheckRow(
-                text = "Вернуть билет",
+                text = stringResource(R.string.return_ticket),
                 isCheck = false
             ) {
                 onClick.invoke(SettingsType.DELETE)

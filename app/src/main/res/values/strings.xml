@@ -98,6 +98,12 @@
     <string name="with_sbp">Через СБП</string>
     <string name="with_card">Привязать карту</string>
     <string name="map">Карта</string>
+    <string name="place_details">Подробности события</string>
+    <string name="event_details">Подробности места</string>
+    <string name="return_ticket">Вернуть билет</string>
+    <string name="ticket_for">Билет на</string>
+    <string name="time">Время</string>
+    <string name="cost">Стоимость</string>
 
     <string-array name="ticket_segmented_button">
         <item>"События"</item>

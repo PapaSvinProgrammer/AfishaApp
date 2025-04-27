@@ -65,7 +65,7 @@ import com.example.afishaapp.ui.widget.collapsingTopBar.CollapsedTopBar
 import com.example.afishaapp.ui.widget.collapsingTopBar.ExpandedTopBar
 import com.example.afishaapp.ui.widget.row.CommentsRow
 import com.example.afishaapp.ui.widget.row.ImagesRow
-import com.example.afishaapp.ui.widget.row.MetroRow
+import com.example.afishaapp.ui.widget.row.SubwayRow
 import com.example.afishaapp.ui.widget.shimmer.screen.ShimmerEvent
 import com.example.afishaapp.ui.widget.shimmer.screen.ShimmerExpandedToolbar
 import com.example.afishaapp.ui.widget.text.EventDescriptionText
@@ -306,7 +306,7 @@ private fun PlaceRow(place: Place?, navController: NavController, imageMap: Stri
 
     Row {
         Spacer(modifier = Modifier.width(DefaultPadding))
-        MetroRow(place)
+        SubwayRow(place)
     }
 }
 

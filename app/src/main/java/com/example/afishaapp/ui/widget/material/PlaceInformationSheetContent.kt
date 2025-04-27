@@ -35,7 +35,7 @@ import com.example.afishaapp.data.module.place.Place
 import com.example.afishaapp.ui.theme.DefaultPadding
 import com.example.afishaapp.ui.widget.card.ImageCard
 import com.example.afishaapp.ui.widget.row.ControlButtonsRow
-import com.example.afishaapp.ui.widget.row.MetroRow
+import com.example.afishaapp.ui.widget.row.SubwayRow
 import com.yandex.mapkit.geometry.Point
 
 @Composable
@@ -115,7 +115,7 @@ fun PlaceInformationPagerContent(
             fontSize = 15.sp
         )
 
-        MetroRow(place)
+        SubwayRow(place)
         ImagesRow(place.images)
 
         OutlinedButton(

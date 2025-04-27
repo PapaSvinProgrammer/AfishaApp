@@ -2,10 +2,13 @@ package com.example.afishaapp.di.data
 
 import android.content.Context
 import androidx.room.Room
-import com.example.afishaapp.data.repository.TicketRepositoryRoom
-import com.example.afishaapp.data.room.TicketDao
-import com.example.afishaapp.data.room.TicketDatabase
-import com.example.afishaapp.domain.repository.TicketRepository
+import com.example.afishaapp.data.repository.room.TicketRepositoryRoom
+import com.example.afishaapp.data.room.ticket.TicketDao
+import com.example.afishaapp.data.room.AppDatabase
+import com.example.afishaapp.data.room.likeEvent.EventDao
+import com.example.afishaapp.data.room.likeMovie.MovieDao
+import com.example.afishaapp.data.room.likePlace.PlaceDao
+import com.example.afishaapp.domain.repository.room.TicketRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -18,10 +21,10 @@ interface RoomDatabaseModule {
     companion object {
         @Singleton
         @Provides
-        fun provideRoomDatabase(context: Context): TicketDatabase {
+        fun provideRoomDatabase(context: Context): AppDatabase {
             val database = Room.databaseBuilder(
                 context = context,
-                klass = TicketDatabase::class.java,
+                klass = AppDatabase::class.java,
                 name = NAME_DATABASE
             ).build()
 
@@ -30,8 +33,26 @@ interface RoomDatabaseModule {
 
         @Singleton
         @Provides
-        fun provideTicketDao(database: TicketDatabase): TicketDao {
+        fun provideTicketDao(database: AppDatabase): TicketDao {
             return database.getTicketDao()
+        }
+
+        @Singleton
+        @Provides
+        fun provideEventDao(database: AppDatabase): EventDao {
+            return database.getEventDao()
+        }
+
+        @Singleton
+        @Provides
+        fun provideMovieDao(database: AppDatabase): MovieDao {
+            return database.getMovieDao()
+        }
+
+        @Singleton
+        @Provides
+        fun providePlaceDao(database: AppDatabase): PlaceDao {
+            return database.getPlaceDao()
         }
     }
 
