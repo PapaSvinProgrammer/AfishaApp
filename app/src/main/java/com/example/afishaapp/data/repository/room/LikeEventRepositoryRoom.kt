@@ -1,5 +1,8 @@
 package com.example.afishaapp.data.repository.room
 
+import com.example.afishaapp.app.utils.toEventEntity
+import com.example.afishaapp.app.utils.toTicketEntity
+import com.example.afishaapp.data.module.event.Event
 import com.example.afishaapp.data.room.likeEvent.EventDao
 import com.example.afishaapp.data.room.likeEvent.EventEntity
 import com.example.afishaapp.domain.repository.room.LikeEventRepository
@@ -8,8 +11,8 @@ import javax.inject.Inject
 class LikeEventRepositoryRoom @Inject constructor(
     private val dao: EventDao
 ): LikeEventRepository {
-    override suspend fun insert(eventEntity: EventEntity) {
-        dao.insert(eventEntity)
+    override suspend fun insert(event: Event) {
+        dao.insert(event.toEventEntity())
     }
 
     override suspend fun delete(eventId: Int) {

@@ -1,5 +1,7 @@
 package com.example.afishaapp.data.repository.room
 
+import com.example.afishaapp.app.utils.toTicketEntity
+import com.example.afishaapp.data.module.event.Event
 import com.example.afishaapp.data.room.ticket.TicketDao
 import com.example.afishaapp.data.room.ticket.TicketEntity
 import com.example.afishaapp.domain.repository.room.TicketRepository
@@ -26,8 +28,8 @@ class TicketRepositoryRoom @Inject constructor(private val dao: TicketDao): Tick
         TODO("Not yet implemented")
     }
 
-    override suspend fun insert(vararg ticket: TicketEntity) {
-        dao.insert(*ticket)
+    override suspend fun insert(event: Event) {
+        dao.insert(event.toTicketEntity())
     }
 
     override suspend fun delete(eventId: Int) {

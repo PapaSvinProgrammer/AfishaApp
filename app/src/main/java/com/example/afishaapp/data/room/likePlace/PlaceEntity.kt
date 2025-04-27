@@ -15,10 +15,11 @@ import androidx.room.PrimaryKey
     ]
 )
 data class PlaceEntity(
-    @PrimaryKey(autoGenerate = true) val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo(name = "place_id") val placeId: Int,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "address") val address: String,
     @ColumnInfo(name = "location") val location: String,
-    @ColumnInfo(name = "subway") val subway: String
+    @ColumnInfo(name = "subway") val subway: String,
+    @ColumnInfo(name = "image") val image: String
 )

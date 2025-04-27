@@ -1,5 +1,6 @@
 package com.example.afishaapp.domain.repository.room
 
+import com.example.afishaapp.data.module.event.Event
 import com.example.afishaapp.data.room.ticket.TicketEntity
 
 interface TicketRepository {
@@ -9,6 +10,6 @@ interface TicketRepository {
     suspend fun getById(eventId: Int): TicketEntity?
 
     suspend fun search(q: String): List<TicketEntity>
-    suspend fun insert(vararg ticket: TicketEntity)
+    suspend fun insert(event: Event)
     suspend fun delete(eventId: Int)
 }

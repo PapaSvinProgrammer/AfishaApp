@@ -2,12 +2,18 @@ package com.example.afishaapp.di.data
 
 import android.content.Context
 import androidx.room.Room
+import com.example.afishaapp.data.repository.room.LikeEventRepositoryRoom
+import com.example.afishaapp.data.repository.room.LikeMovieRepositoryRoom
+import com.example.afishaapp.data.repository.room.LikePlaceRepositoryRoom
 import com.example.afishaapp.data.repository.room.TicketRepositoryRoom
 import com.example.afishaapp.data.room.ticket.TicketDao
 import com.example.afishaapp.data.room.AppDatabase
 import com.example.afishaapp.data.room.likeEvent.EventDao
 import com.example.afishaapp.data.room.likeMovie.MovieDao
 import com.example.afishaapp.data.room.likePlace.PlaceDao
+import com.example.afishaapp.domain.repository.room.LikeEventRepository
+import com.example.afishaapp.domain.repository.room.LikeMovieRepository
+import com.example.afishaapp.domain.repository.room.LikePlaceRepository
 import com.example.afishaapp.domain.repository.room.TicketRepository
 import dagger.Binds
 import dagger.Module
@@ -59,4 +65,16 @@ interface RoomDatabaseModule {
     @Singleton
     @Binds
     fun bindTicketRepository(repository: TicketRepositoryRoom): TicketRepository
+
+    @Singleton
+    @Binds
+    fun bindLikeEventRepository(repository: LikeEventRepositoryRoom): LikeEventRepository
+
+    @Singleton
+    @Binds
+    fun bindLikeMovieRepository(repository: LikeMovieRepositoryRoom): LikeMovieRepository
+
+    @Singleton
+    @Binds
+    fun binLikePlaceRepository(repository: LikePlaceRepositoryRoom): LikePlaceRepository
 }
