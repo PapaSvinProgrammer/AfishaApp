@@ -75,6 +75,10 @@ fun PlaceScreen(
     val listState = rememberLazyListState()
     val isCollapsed by remember { derivedStateOf { listState.firstVisibleItemIndex > 0 } }
 
+    if (viewModel.place != null) {
+        viewModel.findLikePlace()
+    }
+
     Box {
         val color = if (!isCollapsed) Color.White else Color.Black
 
@@ -124,7 +128,7 @@ fun PlaceScreen(
 
                 IconButton(
                     onClick = {
-                        viewModel.updateFavoriteState(!viewModel.favoriteState)
+                        handleFavorite(viewModel)
                     }
                 ) {
                     Icon(
@@ -211,6 +215,15 @@ fun PlaceScreen(
                 }
             }
         }
+    }
+}
+
+fun handleFavorite(viewModel: PlaceViewModel) {
+    viewModel.updateFavoriteState(!viewModel.favoriteState)
+
+    when (viewModel.favoriteState) {
+        true -> viewModel.addLikePlace()
+        false -> viewModel.deleteLikePlace()
     }
 }
 

@@ -90,6 +90,10 @@ fun MovieScreen(
         else
             Color.White
 
+    if (viewModel.movie != null) {
+        viewModel.findLikeMovie()
+    }
+
     Box(
         modifier = Modifier.navigationBarsPadding()
     ) {
@@ -112,9 +116,7 @@ fun MovieScreen(
             actions = {
                 IconButton(
                     onClick = {
-                        viewModel.updateFavoriteState(
-                            favoriteState = !viewModel.favoriteState
-                        )
+                        handleFavorite(viewModel)
                     }
                 ) {
                     Icon(
@@ -245,6 +247,17 @@ fun MovieScreen(
             viewModelFactory = viewModelFactory,
             movieId = movieId
         )
+    }
+}
+
+private fun handleFavorite(viewModel: MovieViewModel) {
+    viewModel.updateFavoriteState(
+        favoriteState = !viewModel.favoriteState
+    )
+
+    when (viewModel.favoriteState) {
+        true -> viewModel.addLikeMovie()
+        false -> viewModel.deleteLikeMovie()
     }
 }
 

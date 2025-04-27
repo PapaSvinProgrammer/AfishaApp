@@ -18,4 +18,7 @@ interface EventDao {
 
     @Query("SELECT * FROM like_event ORDER BY name ASC")
     suspend fun getByName(): List<EventEntity>
+
+    @Query("SELECT * FROM like_event WHERE event_id = :eventId")
+    suspend fun getEventById(eventId: Int): EventEntity?
 }

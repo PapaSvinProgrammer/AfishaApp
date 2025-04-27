@@ -21,4 +21,7 @@ interface MovieDao {
 
     @Query("SELECT * FROM like_movie ORDER BY year DESC")
     suspend fun getByYear(): List<MovieEntity>
+
+    @Query("SELECT * FROM like_movie WHERE movie_id = :movieId")
+    suspend fun getMovieById(movieId: Int): MovieEntity?
 }

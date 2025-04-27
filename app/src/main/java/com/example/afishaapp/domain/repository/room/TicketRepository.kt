@@ -7,8 +7,7 @@ interface TicketRepository {
     suspend fun getAllByName(): List<TicketEntity>
     suspend fun getAllByStartDate(): List<TicketEntity>
     suspend fun getAllByBuyDate(): List<TicketEntity>
-    suspend fun getById(eventId: Int): TicketEntity?
-
+    suspend fun getTicketById(eventId: Int): TicketEntity?
     suspend fun search(q: String): List<TicketEntity>
     suspend fun insert(event: Event)
     suspend fun delete(eventId: Int)

@@ -12,6 +12,7 @@ import com.example.afishaapp.data.module.event.Event
 import com.example.afishaapp.domain.http.GetCommentEvent
 import com.example.afishaapp.domain.http.GetEvent
 import com.example.afishaapp.domain.repository.http.MapImageRepository
+import com.example.afishaapp.domain.repository.room.LikeEventRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,10 +20,12 @@ import javax.inject.Inject
 class EventViewModel @Inject constructor(
     private val getEvent: GetEvent,
     private val getCommentEvent: GetCommentEvent,
-    private val mapImageRepository: MapImageRepository
+    private val mapImageRepository: MapImageRepository,
+    private val likeEventRepository: LikeEventRepository
 ): ViewModel() {
     var favoriteState by mutableStateOf(false)
         private set
+
     var event by mutableStateOf<Event?>(null)
         private set
     var comments by mutableStateOf<List<Comment>>(listOf())
@@ -76,6 +79,31 @@ class EventViewModel @Inject constructor(
 
         viewModelScope.launch(Dispatchers.IO) {
             imageMap = mapImageRepository.getImageUrl(coordinate)
+        }
+    }
+
+    fun findLikeEvent() {
+        event?.let {
+            viewModelScope.launch(Dispatchers.IO) {
+                val res = likeEventRepository.getEventById(it.id)
+                favoriteState = res != null
+            }
+        }
+    }
+
+    fun insertLikeEvent() {
+        event?.let {
+            viewModelScope.launch(Dispatchers.IO) {
+                likeEventRepository.insert(it)
+            }
+        }
+    }
+
+    fun deleteLikeEvent() {
+        event?.let {
+            viewModelScope.launch(Dispatchers.IO) {
+                likeEventRepository.delete(it.id)
+            }
         }
     }
 }

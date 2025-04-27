@@ -33,6 +33,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -93,6 +94,12 @@ fun EventScreen(
         }
     }
 
+    LaunchedEffect(viewModel.event) {
+        viewModel.event?.let {
+            viewModel.findLikeEvent()
+        }
+    }
+
     Box {
         val color = if (isCollapsed)
             Color.Black
@@ -118,9 +125,7 @@ fun EventScreen(
             actions = {
                 IconButton(
                     onClick = {
-                        viewModel.updateFavoriteState(
-                            state = !viewModel.favoriteState
-                        )
+                        handleLike(viewModel)
                     }
                 ) {
                     Icon(
@@ -257,6 +262,17 @@ fun EventScreen(
                 }
             }
         }
+    }
+}
+
+private fun handleLike(viewModel: EventViewModel) {
+    viewModel.updateFavoriteState(
+        state = !viewModel.favoriteState
+    )
+
+    when (viewModel.favoriteState) {
+        true -> viewModel.insertLikeEvent()
+        false -> viewModel.deleteLikeEvent()
     }
 }
 

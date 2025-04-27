@@ -9,13 +9,15 @@ import com.example.afishaapp.data.module.comment.Comment
 import com.example.afishaapp.data.module.place.Place
 import com.example.afishaapp.domain.http.GetCommentPlace
 import com.example.afishaapp.domain.http.GetPlace
+import com.example.afishaapp.domain.repository.room.LikePlaceRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class PlaceViewModel @Inject constructor(
     private val getPlace: GetPlace,
-    private val getCommentPlace: GetCommentPlace
+    private val getCommentPlace: GetCommentPlace,
+    private val likePlaceRepository: LikePlaceRepository
 ): ViewModel() {
     var favoriteState by mutableStateOf(false)
         private set
@@ -43,5 +45,29 @@ class PlaceViewModel @Inject constructor(
 
     fun updateFavoriteState(state: Boolean) {
         favoriteState = state
+    }
+
+    fun findLikePlace() {
+        place?.let {
+            viewModelScope.launch(Dispatchers.IO) {
+                likePlaceRepository.getPlaceById(it.id)
+            }
+        }
+    }
+
+    fun addLikePlace() {
+        place?.let {
+            viewModelScope.launch(Dispatchers.IO) {
+                likePlaceRepository.insert(it)
+            }
+        }
+    }
+
+    fun deleteLikePlace() {
+        place?.let {
+            viewModelScope.launch(Dispatchers.IO) {
+                likePlaceRepository.delete(it.id)
+            }
+        }
     }
 }

@@ -1,7 +1,6 @@
 package com.example.afishaapp.data.repository.room
 
 import com.example.afishaapp.app.utils.toEventEntity
-import com.example.afishaapp.app.utils.toTicketEntity
 import com.example.afishaapp.data.module.event.Event
 import com.example.afishaapp.data.room.likeEvent.EventDao
 import com.example.afishaapp.data.room.likeEvent.EventEntity
@@ -25,6 +24,10 @@ class LikeEventRepositoryRoom @Inject constructor(
 
     override suspend fun getByName(): List<EventEntity> {
         return dao.getByName()
+    }
+
+    override suspend fun getEventById(eventId: Int): EventEntity? {
+        return dao.getEventById(eventId)
     }
 
     override suspend fun search(q: String): List<EventEntity> {

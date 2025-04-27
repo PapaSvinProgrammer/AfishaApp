@@ -32,7 +32,7 @@ class DetailTicketViewModel @Inject constructor(
 
     fun getTicketDetail(eventId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            ticket = ticketRepository.getById(eventId)
+            ticket = ticketRepository.getTicketById(eventId)
         }
     }
 

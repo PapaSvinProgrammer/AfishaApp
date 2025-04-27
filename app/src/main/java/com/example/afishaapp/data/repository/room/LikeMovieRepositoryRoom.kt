@@ -30,6 +30,10 @@ class LikeMovieRepositoryRoom @Inject constructor(
         return dao.getByYear()
     }
 
+    override suspend fun getMovieById(movieId: Int): MovieEntity? {
+        return dao.getMovieById(movieId)
+    }
+
     override suspend fun search(q: String): List<MovieEntity> {
         TODO("Not yet implemented")
     }

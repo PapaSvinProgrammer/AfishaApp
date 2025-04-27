@@ -20,7 +20,7 @@ class TicketRepositoryRoom @Inject constructor(private val dao: TicketDao): Tick
         return dao.getAllByDateBuy()
     }
 
-    override suspend fun getById(eventId: Int): TicketEntity? {
+    override suspend fun getTicketById(eventId: Int): TicketEntity? {
         return dao.getById(eventId)
     }
 

@@ -18,4 +18,7 @@ interface PlaceDao {
 
     @Query("SELECT * FROM like_place ORDER BY name ASC")
     suspend fun getByName(): List<PlaceEntity>
+
+    @Query("SELECT * FROM like_place WHERE place_id = :placeId")
+    suspend fun getPlaceById(placeId: Int): PlaceEntity?
 }

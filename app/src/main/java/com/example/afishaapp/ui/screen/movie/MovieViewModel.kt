@@ -8,12 +8,14 @@ import androidx.lifecycle.viewModelScope
 import com.example.afishaapp.app.utils.ParseHtml
 import com.example.afishaapp.data.module.movie.Movie
 import com.example.afishaapp.domain.http.GetMovie
+import com.example.afishaapp.domain.repository.room.LikeMovieRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MovieViewModel @Inject constructor(
-    private val getMovie: GetMovie
+    private val getMovie: GetMovie,
+    private val likeMovieRepository: LikeMovieRepository
 ): ViewModel() {
     var favoriteState by mutableStateOf(false)
         private set
@@ -50,5 +52,30 @@ class MovieViewModel @Inject constructor(
 
     fun updateShowsBottomState(showsBottomState: Boolean) {
         this.showsBottomState = showsBottomState
+    }
+
+    fun addLikeMovie() {
+        movie?.let {
+            viewModelScope.launch(Dispatchers.IO) {
+                likeMovieRepository.insert(it)
+            }
+        }
+    }
+
+    fun deleteLikeMovie() {
+        movie?.let {
+            viewModelScope.launch(Dispatchers.IO) {
+                likeMovieRepository.delete(it.id)
+            }
+        }
+    }
+
+    fun findLikeMovie() {
+        movie?.let {
+            viewModelScope.launch(Dispatchers.IO) {
+                val res = likeMovieRepository.getMovieById(it.id)
+                favoriteState = res != null
+            }
+        }
     }
 }
