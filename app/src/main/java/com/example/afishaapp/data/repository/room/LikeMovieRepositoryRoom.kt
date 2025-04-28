@@ -1,6 +1,6 @@
 package com.example.afishaapp.data.repository.room
 
-import com.example.afishaapp.app.utils.toMovieEntity
+import com.example.afishaapp.app.utils.convertClass.toMovieEntity
 import com.example.afishaapp.data.module.movie.Movie
 import com.example.afishaapp.data.room.likeMovie.MovieDao
 import com.example.afishaapp.data.room.likeMovie.MovieEntity

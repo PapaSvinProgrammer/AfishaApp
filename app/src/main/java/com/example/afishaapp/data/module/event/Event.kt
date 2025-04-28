@@ -5,20 +5,20 @@ import com.example.afishaapp.data.module.image.ImageItem
 import com.example.afishaapp.data.module.search.DateRange
 
 data class Event(
-    val id: Int,
-    val dates: List<DateRange>,
-    val title: String,
-    val place: Place?,
-    val description: String,
-    val bodyText: String,
-    val categories: List<String>,
-    val ageRestriction: String,
-    val price: String,
-    val images: List<ImageItem>,
-    val isFree: Boolean,
-    val favoritesCount: Int,
-    val commentsCount: Int,
-    val shortTitle: String,
-    val tags: List<String>,
-    val participants: List<String>
+    val id: Int = 0,
+    val dates: List<DateRange> = listOf(),
+    val title: String = "",
+    val place: Place? = null,
+    val description: String = "",
+    val bodyText: String = "",
+    val categories: List<String> = listOf(),
+    val ageRestriction: String = "",
+    val price: String = "",
+    val images: List<ImageItem> = listOf(),
+    val isFree: Boolean = false,
+    val favoritesCount: Int = 0,
+    val commentsCount: Int = 0,
+    val shortTitle: String = "",
+    val tags: List<String> = listOf(),
+    val participants: List<String> = listOf()
 )

@@ -1,11 +1,11 @@
-package com.example.afishaapp.app.utils
+package com.example.afishaapp.app.utils.convertClass
 
+import com.example.afishaapp.app.utils.convertData.ConvertInfo
 import com.example.afishaapp.data.module.event.Event
-import com.example.afishaapp.data.module.movie.Movie
-import com.example.afishaapp.data.module.place.Place
+import com.example.afishaapp.data.module.image.ImageItem
+import com.example.afishaapp.data.module.image.Thumbnail
+import com.example.afishaapp.data.module.search.DateRange
 import com.example.afishaapp.data.room.likeEvent.EventEntity
-import com.example.afishaapp.data.room.likeMovie.MovieEntity
-import com.example.afishaapp.data.room.likePlace.PlaceEntity
 import com.example.afishaapp.data.room.ticket.TicketEntity
 
 fun Event.toTicketEntity(): TicketEntity {
@@ -48,27 +48,38 @@ fun Event.toEventEntity(): EventEntity {
     return eventEntity
 }
 
-fun Place.toPlaceEntity(): PlaceEntity {
-    val placeEntity = PlaceEntity(
-        placeId = this.id,
-        name = this.title,
-        address = this.address,
-        location = this.location,
-        subway = this.subway,
-        image = this.images?.first()?.thumbnails?.highImage ?: ""
+fun EventEntity.toEvent(): Event {
+    val dateRange = DateRange(
+        start = this.dateStart,
+        end = this.dateEnd
     )
 
-    return placeEntity
+    val imageItem = ImageItem(
+        image = this.image,
+        thumbnails = Thumbnail(
+            highImage = this.image,
+            lowImage = this.image
+        )
+    )
+
+    val event = Event(
+        id = this.eventId,
+        title = this.name,
+        shortTitle = this.name,
+        price = this.price,
+        dates = listOf(dateRange),
+        images = listOf(imageItem)
+    )
+
+    return event
 }
 
-fun Movie.toMovieEntity(): MovieEntity {
-    val movieEntity = MovieEntity(
-        movieId = this.id,
-        name = this.title,
-        year = this.year,
-        rating = this.imdbRating,
-        image = this.images.first().thumbnails.highImage
-    )
+fun List<EventEntity>.toEventList(): List<Event> {
+    val res = ArrayList<Event>()
 
-    return movieEntity
+    this.forEach {
+        res.add(it.toEvent())
+    }
+
+    return res
 }

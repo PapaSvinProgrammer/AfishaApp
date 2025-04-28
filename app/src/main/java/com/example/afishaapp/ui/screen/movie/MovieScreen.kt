@@ -50,9 +50,9 @@ import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import com.example.afishaapp.R
 import com.example.afishaapp.app.navigation.AboutMovieRoute
-import com.example.afishaapp.app.utils.ConvertCountTitle
-import com.example.afishaapp.app.utils.ConvertInfo
-import com.example.afishaapp.app.utils.ConvertDate
+import com.example.afishaapp.app.utils.convertData.ConvertCountTitle
+import com.example.afishaapp.app.utils.convertData.ConvertInfo
+import com.example.afishaapp.app.utils.convertData.ConvertDate
 import com.example.afishaapp.di.viewModel.ViewModelFactory
 import com.example.afishaapp.ui.screen.movieShowBottomSheet.MovieShowBottomSheet
 import com.example.afishaapp.ui.theme.DefaultPadding
@@ -154,7 +154,7 @@ fun MovieScreen(
                         expandedTopBarHeight = 520.dp
                     ) {
                         AsyncImage(
-                            model = it.poster.thumbnails.lowImage,
+                            model = it.poster?.thumbnails?.lowImage,
                             contentDescription = null,
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
@@ -166,7 +166,7 @@ fun MovieScreen(
                         )
 
                         AsyncImage(
-                            model = it.poster.thumbnails.highImage,
+                            model = it.poster?.thumbnails?.highImage,
                             contentDescription = null,
                             contentScale = ContentScale.Crop,
                             modifier = Modifier

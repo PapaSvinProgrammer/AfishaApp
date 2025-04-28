@@ -50,8 +50,8 @@ import coil3.compose.AsyncImage
 import com.example.afishaapp.R
 import com.example.afishaapp.app.navigation.CommentListPlaceRoute
 import com.example.afishaapp.app.navigation.MapRoute
-import com.example.afishaapp.app.utils.ConvertCountTitle
-import com.example.afishaapp.app.utils.ConvertInfo
+import com.example.afishaapp.app.utils.convertData.ConvertCountTitle
+import com.example.afishaapp.app.utils.convertData.ConvertInfo
 import com.example.afishaapp.app.utils.ParseHtml
 import com.example.afishaapp.data.module.place.Place
 import com.example.afishaapp.ui.theme.DefaultPadding

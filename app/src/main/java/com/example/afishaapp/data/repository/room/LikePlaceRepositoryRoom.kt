@@ -1,6 +1,6 @@
 package com.example.afishaapp.data.repository.room
 
-import com.example.afishaapp.app.utils.toPlaceEntity
+import com.example.afishaapp.app.utils.convertClass.toPlaceEntity
 import com.example.afishaapp.data.module.place.Place
 import com.example.afishaapp.data.room.likePlace.PlaceDao
 import com.example.afishaapp.data.room.likePlace.PlaceEntity

@@ -22,7 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.afishaapp.R
-import com.example.afishaapp.app.utils.ConvertDate
+import com.example.afishaapp.app.utils.convertData.ConvertDate
 import com.example.afishaapp.di.viewModel.ViewModelFactory
 import com.example.afishaapp.ui.screen.bottomSheet.DateBottomSheet
 import com.example.afishaapp.ui.theme.DefaultPadding

@@ -8,7 +8,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.example.afishaapp.R
-import com.example.afishaapp.app.utils.ConvertDate
+import com.example.afishaapp.app.utils.convertData.ConvertDate
 import com.example.afishaapp.ui.widget.row.CheckRow
 import com.example.afishaapp.ui.widget.text.TitleBottomSheet
 

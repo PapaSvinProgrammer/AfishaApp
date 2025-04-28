@@ -35,9 +35,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.afishaapp.R
-import com.example.afishaapp.app.utils.ConvertCountTitle
-import com.example.afishaapp.app.utils.ConvertDate
-import com.example.afishaapp.app.utils.ConvertInfo
+import com.example.afishaapp.app.utils.convertData.ConvertCountTitle
+import com.example.afishaapp.app.utils.convertData.ConvertDate
+import com.example.afishaapp.app.utils.convertData.ConvertInfo
 import com.example.afishaapp.data.module.Genre
 import com.example.afishaapp.data.module.movie.Movie
 import com.example.afishaapp.ui.theme.DefaultPadding

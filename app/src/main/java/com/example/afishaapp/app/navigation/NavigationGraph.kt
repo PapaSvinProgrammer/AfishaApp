@@ -33,6 +33,7 @@ import com.example.afishaapp.ui.screen.event.EventViewModel
 import com.example.afishaapp.ui.screen.eventList.EventListScreen
 import com.example.afishaapp.ui.screen.eventList.EventListViewModel
 import com.example.afishaapp.ui.screen.favorite.FavoriteScreen
+import com.example.afishaapp.ui.screen.favorite.FavoriteViewModel
 import com.example.afishaapp.ui.screen.formPaymentScreen.FormPaymentScreen
 import com.example.afishaapp.ui.screen.formPaymentScreen.FormPaymentViewModel
 import com.example.afishaapp.ui.screen.home.HomeScreen
@@ -111,7 +112,15 @@ fun NavigationGraph(
             )
         }
 
-        composable<FavoriteRoute> { FavoriteScreen() }
+        composable<FavoriteRoute> {
+            val viewModel: FavoriteViewModel = viewModel(factory = viewModelFactory)
+
+            FavoriteScreen(
+                navController = navController,
+                viewModel = viewModel,
+                innerPadding = padding
+            )
+        }
 
         composable<SearchRoute> { SearchScreen() }
 

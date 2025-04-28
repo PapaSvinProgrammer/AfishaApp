@@ -22,8 +22,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
-import com.example.afishaapp.app.utils.ConvertInfo
-import com.example.afishaapp.app.utils.ConvertDate
+import com.example.afishaapp.app.utils.convertData.ConvertInfo
+import com.example.afishaapp.app.utils.convertData.ConvertDate
 import com.example.afishaapp.data.module.event.Event
 
 @Composable

@@ -1,6 +1,6 @@
 package com.example.afishaapp.data.repository.room
 
-import com.example.afishaapp.app.utils.toTicketEntity
+import com.example.afishaapp.app.utils.convertClass.toTicketEntity
 import com.example.afishaapp.data.module.event.Event
 import com.example.afishaapp.data.room.ticket.TicketDao
 import com.example.afishaapp.data.room.ticket.TicketEntity
