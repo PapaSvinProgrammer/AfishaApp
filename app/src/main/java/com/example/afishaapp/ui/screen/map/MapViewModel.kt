@@ -121,14 +121,16 @@ class MapViewModel @Inject constructor(
             deleteAllPlacemark()
 
             list.forEach { place ->
-                val point = Point(place.coordinates.lat, place.coordinates.lon)
-                val placemark = collection.addPlacemark().apply {
-                    geometry = point
-                    setIcon(ImageProvider.fromBitmap(bitmap))
-                    addTapListener(listener)
-                }
+                place.coordinates?.let {
+                    val point = Point(place.coordinates.lat, place.coordinates.lon)
+                    val placemark = collection.addPlacemark().apply {
+                        geometry = point
+                        setIcon(ImageProvider.fromBitmap(bitmap))
+                        addTapListener(listener)
+                    }
 
-                _placemarkMap[placemark] = place
+                    _placemarkMap[placemark] = place
+                }
             }
         }
     }

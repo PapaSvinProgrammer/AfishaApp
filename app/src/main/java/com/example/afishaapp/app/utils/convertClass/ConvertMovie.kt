@@ -11,7 +11,7 @@ fun Movie.toMovieEntity(): MovieEntity {
         name = this.title,
         year = this.year,
         rating = this.imdbRating,
-        image = this.images.first().thumbnails.highImage
+        image = this.poster?.thumbnails?.highImage ?: ""
     )
 
     return movieEntity

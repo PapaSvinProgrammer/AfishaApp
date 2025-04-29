@@ -398,15 +398,17 @@ private fun createBitmapFromVector(id: Int): Bitmap? {
     return bitmap
 }
 
-private fun navigateToYandexMaps(coordinate: Coordinate) {
-    val url = generateUrl(coordinate)
+private fun navigateToYandexMaps(coordinate: Coordinate?) {
+    coordinate?.let {
+        val url = generateUrl(coordinate)
 
-    val intent = Intent(
-        Intent.ACTION_VIEW,
-        url.toUri()
-    )
+        val intent = Intent(
+            Intent.ACTION_VIEW,
+            url.toUri()
+        )
 
-    context.startActivity(intent)
+        context.startActivity(intent)
+    }
 }
 
 private fun generateUrl(coordinate: Coordinate): String {

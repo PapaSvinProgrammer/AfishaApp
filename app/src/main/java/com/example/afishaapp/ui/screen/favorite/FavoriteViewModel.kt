@@ -9,11 +9,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.afishaapp.app.utils.SlideState
 import com.example.afishaapp.app.utils.convertClass.toEventList
 import com.example.afishaapp.app.utils.convertClass.toMovieList
+import com.example.afishaapp.app.utils.convertClass.toPlaceList
 import com.example.afishaapp.data.module.event.Event
 import com.example.afishaapp.data.module.movie.Movie
-import com.example.afishaapp.data.room.likeEvent.EventEntity
-import com.example.afishaapp.data.room.likeMovie.MovieEntity
-import com.example.afishaapp.data.room.likePlace.PlaceEntity
+import com.example.afishaapp.data.module.place.Place
 import com.example.afishaapp.domain.module.EventFilter
 import com.example.afishaapp.domain.module.MovieFilter
 import com.example.afishaapp.domain.repository.room.LikeEventRepository
@@ -44,7 +43,7 @@ class FavoriteViewModel @Inject constructor(
         private set
     var movies by mutableStateOf<List<Movie>>(listOf())
         private set
-    var places by mutableStateOf<List<PlaceEntity>>(listOf())
+    var places by mutableStateOf<List<Place>>(listOf())
         private set
 
     fun updateSlideState(state: SlideState) {
@@ -109,13 +108,13 @@ class FavoriteViewModel @Inject constructor(
 
     private fun getPlacesByName() {
         viewModelScope.launch(Dispatchers.IO) {
-            places = likePlaceRepository.getByName()
+            places = likePlaceRepository.getByName().toPlaceList()
         }
     }
 
     private fun getPlacesByDefault() {
         viewModelScope.launch(Dispatchers.IO) {
-            places = likePlaceRepository.getByDefault()
+            places = likePlaceRepository.getByDefault().toPlaceList()
         }
     }
 }

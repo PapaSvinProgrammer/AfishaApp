@@ -124,8 +124,10 @@ fun PlaceInformationPagerContent(
                 top = 10.dp
             ),
             onClick = {
-                val point = Point(place.coordinates.lat, place.coordinates.lon)
-                moveToPoint.invoke(point)
+                place.coordinates?.let {
+                    val point = Point(place.coordinates.lat, place.coordinates.lon)
+                    moveToPoint.invoke(point)
+                }
             }
         ) {
             Icon(

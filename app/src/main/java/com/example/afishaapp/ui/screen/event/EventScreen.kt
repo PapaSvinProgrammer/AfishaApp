@@ -393,8 +393,8 @@ private fun TagsRow(tags: List<String>) {
 private fun navigateToMap(navController: NavController, place: Place) {
     navController.navigate(
         MapRoute(
-            lat = place.coordinates.lat,
-            lon = place.coordinates.lon,
+            lat = place.coordinates?.lat ?: 0.0,
+            lon = place.coordinates?.lon ?: 0.0,
             placeId = place.id
         )
     )

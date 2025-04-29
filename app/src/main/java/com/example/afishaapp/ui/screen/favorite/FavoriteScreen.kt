@@ -6,6 +6,7 @@ import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -30,12 +31,15 @@ import androidx.navigation.NavController
 import com.example.afishaapp.R
 import com.example.afishaapp.app.navigation.EventRoute
 import com.example.afishaapp.app.navigation.MovieRoute
+import com.example.afishaapp.app.navigation.PlaceRoute
 import com.example.afishaapp.app.utils.SlideState
 import com.example.afishaapp.data.module.event.Event
 import com.example.afishaapp.data.module.movie.Movie
+import com.example.afishaapp.data.module.place.Place
 import com.example.afishaapp.ui.theme.DefaultPadding
 import com.example.afishaapp.ui.widget.card.EventCard
 import com.example.afishaapp.ui.widget.card.MovieCard
+import com.example.afishaapp.ui.widget.card.PlaceCard
 import com.example.afishaapp.ui.widget.endlessLazy.EndlessLazyColumn
 import com.example.afishaapp.ui.widget.endlessLazy.EndlessLazyVerticalGrid
 import com.example.afishaapp.ui.widget.text.TitleTopBar
@@ -132,24 +136,28 @@ fun FavoriteScreen(
             }
         ) { index ->
             when (index) {
-                0 -> FavoriteEventsScreen(
+                0 -> FavoriteEventsSubScreen(
                     events = viewModel.events,
                     onClick = { navController.navigate(EventRoute(it.id)) }
                 )
-                1 -> FavoriteMoviesScreen(
+                1 -> FavoriteMoviesSubScreen(
                     movies = viewModel.movies,
                     onClick = { navController.navigate(MovieRoute(it.id)) }
                 )
-                2 -> FavoritePlacesScreen()
+                2 -> FavoritePlacesSubScreen(
+                    places = viewModel.places,
+                    onClick = { navController.navigate(PlaceRoute(it.id)) }
+                )
             }
         }
     }
 }
 
 @Composable
-fun FavoriteEventsScreen(events: List<Event>, onClick: (Event) -> Unit) {
+fun FavoriteEventsSubScreen(events: List<Event>, onClick: (Event) -> Unit) {
     EndlessLazyColumn(
         items = events,
+        verticalArrangement = Arrangement.spacedBy(40.dp),
         loadMore = {}
     ) { event ->
         EventCard(
@@ -160,10 +168,12 @@ fun FavoriteEventsScreen(events: List<Event>, onClick: (Event) -> Unit) {
 }
 
 @Composable
-fun FavoriteMoviesScreen(movies: List<Movie>, onClick: (Movie) -> Unit) {
+fun FavoriteMoviesSubScreen(movies: List<Movie>, onClick: (Movie) -> Unit) {
     EndlessLazyVerticalGrid(
         columns = GridCells.Fixed(2),
         items = movies,
+        verticalArrangement = Arrangement.spacedBy(30.dp),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
         loadMore = {},
         itemContent = { movie ->
             MovieCard(movie = movie) { onClick.invoke(movie) }
@@ -172,6 +182,15 @@ fun FavoriteMoviesScreen(movies: List<Movie>, onClick: (Movie) -> Unit) {
 }
 
 @Composable
-fun FavoritePlacesScreen() {
-
+fun FavoritePlacesSubScreen(places: List<Place>, onClick: (Place) -> Unit) {
+    EndlessLazyColumn(
+        items = places,
+        verticalArrangement = Arrangement.spacedBy(40.dp),
+        loadMore = {}
+    ) {
+        PlaceCard(
+            place = it,
+            fill = true
+        ) { onClick.invoke(it) }
+    }
 }

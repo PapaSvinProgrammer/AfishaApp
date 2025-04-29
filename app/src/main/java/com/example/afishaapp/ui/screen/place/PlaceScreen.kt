@@ -112,8 +112,8 @@ fun PlaceScreen(
                             navController.navigate(
                                 MapRoute(
                                     placeId = placeId,
-                                    lat = it.coordinates.lat,
-                                    lon = it.coordinates.lon
+                                    lat = it.coordinates?.lat ?: 0.0,
+                                    lon = it.coordinates?.lon ?: 0.0
                                 )
                             )
                         }
