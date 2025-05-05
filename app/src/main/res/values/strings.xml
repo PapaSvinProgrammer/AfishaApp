@@ -104,6 +104,11 @@
     <string name="ticket_for">Билет на</string>
     <string name="time">Время</string>
     <string name="cost">Стоимость</string>
+    <string name="by_date_buy">По дате покупки</string>
+    <string name="by_date_start">По дате проведения</string>
+    <string name="by_name">По наименованию</string>
+    <string name="by_default">По умолчанию</string>
+    <string name="by_year">По дате выхода</string>
 
     <string-array name="ticket_segmented_button">
         <item>"События"</item>

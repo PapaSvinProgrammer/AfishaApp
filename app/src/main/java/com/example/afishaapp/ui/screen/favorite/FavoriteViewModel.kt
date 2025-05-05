@@ -39,12 +39,43 @@ class FavoriteViewModel @Inject constructor(
     var filterPlace by mutableStateOf(EventFilter.DEFAULT)
         private set
 
+    var filterEventBottomSheet by mutableStateOf(false)
+        private set
+    var filterMovieBottomSheet by mutableStateOf(false)
+        private set
+    var filterPlaceBottomSheet by mutableStateOf(false)
+        private set
+
     var events by mutableStateOf<List<Event>>(listOf())
         private set
     var movies by mutableStateOf<List<Movie>>(listOf())
         private set
     var places by mutableStateOf<List<Place>>(listOf())
         private set
+
+    fun updateEventFilter(filter: EventFilter) {
+        filterEvent = filter
+    }
+
+    fun updateMovieFilter(filter: MovieFilter) {
+        filterMovie = filter
+    }
+
+    fun updatePlaceFilter(filter: EventFilter) {
+        filterPlace = filter
+    }
+
+    fun updateFilterEventBottomSheet(state: Boolean) {
+        filterEventBottomSheet = state
+    }
+
+    fun updateFilterMovieBottomSheet(state: Boolean) {
+        filterMovieBottomSheet = state
+    }
+
+    fun updateFilterPlaceBottomSheet(state: Boolean) {
+        filterPlaceBottomSheet = state
+    }
 
     fun updateSlideState(state: SlideState) {
         slideState = state

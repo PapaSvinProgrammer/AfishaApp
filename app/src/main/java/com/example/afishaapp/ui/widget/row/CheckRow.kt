@@ -27,9 +27,7 @@ fun CheckRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable {
-                onClick.invoke()
-            },
+            .clickable { onClick.invoke() },
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(

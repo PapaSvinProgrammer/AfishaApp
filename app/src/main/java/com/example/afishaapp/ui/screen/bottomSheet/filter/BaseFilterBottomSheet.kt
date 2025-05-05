@@ -1,4 +1,4 @@
-package com.example.afishaapp.ui.screen.bottomSheet
+package com.example.afishaapp.ui.screen.bottomSheet.filter
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.navigationBarsPadding

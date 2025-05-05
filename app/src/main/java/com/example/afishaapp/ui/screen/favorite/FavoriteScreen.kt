@@ -16,6 +16,7 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
@@ -36,6 +37,8 @@ import com.example.afishaapp.app.utils.SlideState
 import com.example.afishaapp.data.module.event.Event
 import com.example.afishaapp.data.module.movie.Movie
 import com.example.afishaapp.data.module.place.Place
+import com.example.afishaapp.ui.screen.bottomSheet.filter.EventFilterBottomSheet
+import com.example.afishaapp.ui.screen.bottomSheet.filter.MovieFilterBottomSheet
 import com.example.afishaapp.ui.theme.DefaultPadding
 import com.example.afishaapp.ui.widget.card.EventCard
 import com.example.afishaapp.ui.widget.card.MovieCard
@@ -57,99 +60,153 @@ fun FavoriteScreen(
     viewModel.getMovies()
     viewModel.getPlaces()
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(
-            bottom = innerPadding.calculateBottomPadding(),
-            start = DefaultPadding,
-            end = DefaultPadding
-        )
-    ) {
-        CenterAlignedTopAppBar(
-            title = {
-                TitleTopBar(stringResource(R.string.favorite_text))
-            },
-            actions = {
-                IconButton(onClick = {}) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_sort),
-                        contentDescription = stringResource(R.string.filter)
-                    )
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                title = {
+                    TitleTopBar(stringResource(R.string.favorite_text))
+                },
+                actions = {
+                    IconButton(
+                        onClick = {
+                            handleFilter(viewModel)
+                        }
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_sort),
+                            contentDescription = stringResource(R.string.filter)
+                        )
+                    }
                 }
-            }
-        )
-
-        SingleChoiceSegmentedButtonRow(
-            modifier = Modifier.padding(vertical = 10.dp)
+            )
+        }
+    ) { padding ->
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(
+                top = padding.calculateTopPadding(),
+                bottom = innerPadding.calculateBottomPadding(),
+                start = DefaultPadding,
+                end = DefaultPadding
+            )
         ) {
-            segmentedButtonsList.forEachIndexed { index, label ->
-                SegmentedButton(
-                    shape = SegmentedButtonDefaults.itemShape(
-                        index = index,
-                        count = segmentedButtonsList.size,
-                        baseShape = RoundedCornerShape(8.dp)
-                    ),
+
+            SingleChoiceSegmentedButtonRow(
+                modifier = Modifier.padding(vertical = 10.dp)
+            ) {
+                segmentedButtonsList.forEachIndexed { index, label ->
+                    SegmentedButton(
+                        shape = SegmentedButtonDefaults.itemShape(
+                            index = index,
+                            count = segmentedButtonsList.size,
+                            baseShape = RoundedCornerShape(8.dp)
+                        ),
+                        onClick = {
+                            if (index > viewModel.indexScreen) {
+                                viewModel.updateSlideState(SlideState.LEFT)
+                            }
+                            else {
+                                viewModel.updateSlideState(SlideState.RIGHT)
+                            }
+
+                            viewModel.updateIndexScreen(index)
+                        },
+                        selected = index == viewModel.indexScreen,
+                        label = { Text(text = label) },
+                        icon = {}
+                    )
+                }
+            }
+
+            AnimatedContent(
+                targetState = viewModel.indexScreen,
+                transitionSpec = {
+                    if (viewModel.slideState == SlideState.LEFT) {
+                        ContentTransform(
+                            targetContentEnter = slideIntoContainer(
+                                towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                                animationSpec = tween(300)
+                            ) + fadeIn(),
+                            initialContentExit = slideOutOfContainer(
+                                towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                                animationSpec = tween(300)
+                            ) + fadeOut()
+                        )
+                    }
+                    else {
+                        ContentTransform(
+                            targetContentEnter = slideIntoContainer(
+                                towards = AnimatedContentTransitionScope.SlideDirection.End,
+                                animationSpec = tween(300)
+                            ) + fadeIn(),
+                            initialContentExit = slideOutOfContainer(
+                                towards = AnimatedContentTransitionScope.SlideDirection.End,
+                                animationSpec = tween(300)
+                            ) + fadeOut()
+                        )
+                    }
+                }
+            ) { index ->
+                when (index) {
+                    0 -> FavoriteEventsSubScreen(
+                        events = viewModel.events,
+                        onClick = { navController.navigate(EventRoute(it.id)) }
+                    )
+                    1 -> FavoriteMoviesSubScreen(
+                        movies = viewModel.movies,
+                        onClick = { navController.navigate(MovieRoute(it.id)) }
+                    )
+                    2 -> FavoritePlacesSubScreen(
+                        places = viewModel.places,
+                        onClick = { navController.navigate(PlaceRoute(it.id)) }
+                    )
+                }
+            }
+
+            if (viewModel.filterEventBottomSheet) {
+                EventFilterBottomSheet(
+                    currentFilter = viewModel.filterEvent,
+                    onDismiss = { viewModel.updateFilterEventBottomSheet(false) },
                     onClick = {
-                        if (index > viewModel.indexScreen) {
-                           viewModel.updateSlideState(SlideState.LEFT)
-                        }
-                        else {
-                            viewModel.updateSlideState(SlideState.RIGHT)
-                        }
+                        viewModel.updateEventFilter(it)
+                        viewModel.getEvents()
+                        viewModel.updateFilterEventBottomSheet(false)
+                    }
+                )
+            }
 
-                        viewModel.updateIndexScreen(index)
-                    },
-                    selected = index == viewModel.indexScreen,
-                    label = { Text(text = label) },
-                    icon = {}
+            if (viewModel.filterMovieBottomSheet) {
+                MovieFilterBottomSheet(
+                    currentFilter = viewModel.filterMovie,
+                    onDismiss = { viewModel.updateFilterMovieBottomSheet(false) },
+                    onClick = {
+                        viewModel.updateMovieFilter(it)
+                        viewModel.getMovies()
+                        viewModel.updateFilterMovieBottomSheet(false)
+                    }
+                )
+            }
+
+            if (viewModel.filterPlaceBottomSheet) {
+                EventFilterBottomSheet(
+                    currentFilter = viewModel.filterPlace,
+                    onDismiss = { viewModel.updateFilterPlaceBottomSheet(false) },
+                    onClick = {
+                        viewModel.updatePlaceFilter(it)
+                        viewModel.getPlaces()
+                        viewModel.updateFilterPlaceBottomSheet(false)
+                    }
                 )
             }
         }
+    }
+}
 
-        AnimatedContent(
-            targetState = viewModel.indexScreen,
-            transitionSpec = {
-                if (viewModel.slideState == SlideState.LEFT) {
-                    ContentTransform(
-                        targetContentEnter = slideIntoContainer(
-                            towards = AnimatedContentTransitionScope.SlideDirection.Start,
-                            animationSpec = tween(300)
-                        ) + fadeIn(),
-                        initialContentExit = slideOutOfContainer(
-                            towards = AnimatedContentTransitionScope.SlideDirection.Start,
-                            animationSpec = tween(300)
-                        ) + fadeOut()
-                    )
-                }
-                else {
-                    ContentTransform(
-                        targetContentEnter = slideIntoContainer(
-                            towards = AnimatedContentTransitionScope.SlideDirection.End,
-                            animationSpec = tween(300)
-                        ) + fadeIn(),
-                        initialContentExit = slideOutOfContainer(
-                            towards = AnimatedContentTransitionScope.SlideDirection.End,
-                            animationSpec = tween(300)
-                        ) + fadeOut()
-                    )
-                }
-            }
-        ) { index ->
-            when (index) {
-                0 -> FavoriteEventsSubScreen(
-                    events = viewModel.events,
-                    onClick = { navController.navigate(EventRoute(it.id)) }
-                )
-                1 -> FavoriteMoviesSubScreen(
-                    movies = viewModel.movies,
-                    onClick = { navController.navigate(MovieRoute(it.id)) }
-                )
-                2 -> FavoritePlacesSubScreen(
-                    places = viewModel.places,
-                    onClick = { navController.navigate(PlaceRoute(it.id)) }
-                )
-            }
-        }
+fun handleFilter(viewModel: FavoriteViewModel) {
+    when (viewModel.indexScreen) {
+        0 -> viewModel.updateFilterEventBottomSheet(true)
+        1 -> viewModel.updateFilterMovieBottomSheet(true)
+        2 -> viewModel.updateFilterPlaceBottomSheet(true)
     }
 }
 

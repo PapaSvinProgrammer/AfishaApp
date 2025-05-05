@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.afishaapp.R
 import com.example.afishaapp.app.navigation.DetailTicketRoute
-import com.example.afishaapp.ui.screen.bottomSheet.TicketFilterBottomSheet
+import com.example.afishaapp.ui.screen.bottomSheet.filter.TicketFilterBottomSheet
 import com.example.afishaapp.ui.widget.card.TicketCard
 import com.example.afishaapp.ui.widget.text.TitleTopBar
 
