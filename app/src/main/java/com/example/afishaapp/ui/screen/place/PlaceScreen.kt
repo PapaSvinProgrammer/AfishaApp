@@ -239,7 +239,6 @@ private fun SmoothEventDescription(
             .padding(horizontal = DefaultPadding)
             .fillMaxWidth()
             .animateContentSize()
-            .height(if (!isExpanded) 200.dp else 400.dp )
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null,
