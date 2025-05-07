@@ -50,6 +50,7 @@ import com.example.afishaapp.ui.screen.profile.ProfileScreen
 import com.example.afishaapp.ui.screen.registration.RegistrationScreen
 import com.example.afishaapp.ui.screen.registration.RegistrationViewModel
 import com.example.afishaapp.ui.screen.search.SearchScreen
+import com.example.afishaapp.ui.screen.search.SearchViewModel
 import com.example.afishaapp.ui.screen.start.StartScreen
 import com.example.afishaapp.ui.screen.start.StartViewModel
 import com.example.afishaapp.ui.screen.ticket.TicketScreen
@@ -122,7 +123,15 @@ fun NavigationGraph(
             )
         }
 
-        composable<SearchRoute> { SearchScreen() }
+        composable<SearchRoute> {
+            val viewMode: SearchViewModel = viewModel(factory = viewModelFactory)
+
+            SearchScreen(
+                navController = navController,
+                viewModel = viewMode,
+                padding = padding
+            )
+        }
 
         composable<StartRoute> {
             val viewModel: StartViewModel = viewModel(factory = viewModelFactory)

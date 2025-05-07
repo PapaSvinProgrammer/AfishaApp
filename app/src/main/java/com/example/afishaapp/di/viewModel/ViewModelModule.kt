@@ -18,6 +18,7 @@ import com.example.afishaapp.ui.screen.movie.MovieViewModel
 import com.example.afishaapp.ui.screen.movieList.MovieListViewModel
 import com.example.afishaapp.ui.screen.place.PlaceViewModel
 import com.example.afishaapp.ui.screen.registration.RegistrationViewModel
+import com.example.afishaapp.ui.screen.search.SearchViewModel
 import com.example.afishaapp.ui.screen.start.StartViewModel
 import com.example.afishaapp.ui.screen.ticket.TicketViewModel
 import dagger.Binds
@@ -131,4 +132,9 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(FavoriteViewModel::class)
     fun bindFavoriteViewModel(viewModel: FavoriteViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SearchViewModel::class)
+    fun bindSearchViewModel(viewModel: SearchViewModel): ViewModel
 }

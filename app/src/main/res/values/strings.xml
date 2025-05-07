@@ -109,6 +109,8 @@
     <string name="by_name">По наименованию</string>
     <string name="by_default">По умолчанию</string>
     <string name="by_year">По дате выхода</string>
+    <string name="clear_field">Очистить поле</string>
+    <string name="search_title">Найдется все</string>
 
     <string-array name="ticket_segmented_button">
         <item>"События"</item>
