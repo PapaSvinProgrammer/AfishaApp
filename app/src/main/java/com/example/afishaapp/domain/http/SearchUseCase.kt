@@ -8,53 +8,57 @@ import javax.inject.Inject
 class SearchUseCase @Inject constructor(
     private val searchRepository: SearchRepository
 ) {
-    suspend fun search(text: String, place: String = ""): SearchResponse? {
+    suspend fun search(text: String, place: String = "", page: Int = 1): SearchResponse? {
         if (text.length <= 2) {
             return null
         }
 
         val queryParameters = QueryParameters(
             searchText = text,
-            locationSlug = place
+            locationSlug = place,
+            page = page
         )
 
         return searchRepository.search(queryParameters)
     }
 
-    suspend fun searchEvent(text: String, place: String = ""): SearchResponse? {
+    suspend fun searchEvent(text: String, place: String = "", page: Int = 1): SearchResponse? {
         if (text.length <= 2) {
             return null
         }
 
         val queryParameters = QueryParameters(
             searchText = text,
-            locationSlug = place
+            locationSlug = place,
+            page = page
         )
 
         return searchRepository.searchEvent(queryParameters)
     }
 
-    suspend fun searchNews(text: String, place: String = ""): SearchResponse? {
+    suspend fun searchNews(text: String, place: String = "", page: Int = 1): SearchResponse? {
         if (text.length <= 2) {
             return null
         }
 
         val queryParameters = QueryParameters(
             searchText = text,
-            locationSlug = place
+            locationSlug = place,
+            page = page
         )
 
         return searchRepository.searchNews(queryParameters)
     }
 
-    suspend fun searchPlace(text: String, place: String = ""): SearchResponse? {
+    suspend fun searchPlace(text: String, place: String = "", page: Int = 1): SearchResponse? {
         if (text.length <= 2) {
             return null
         }
 
         val queryParameters = QueryParameters(
             searchText = text,
-            locationSlug = place
+            locationSlug = place,
+            page = page
         )
 
         return searchRepository.searchPlace(queryParameters)

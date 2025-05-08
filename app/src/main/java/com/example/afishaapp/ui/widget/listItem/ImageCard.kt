@@ -1,7 +1,7 @@
-package com.example.afishaapp.ui.widget.card
+package com.example.afishaapp.ui.widget.listItem
 
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -11,15 +11,15 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 
 @Composable
-fun MapImageCard(
+fun ImageCard(
     imageUrl: String
 ) {
     AsyncImage(
         model = imageUrl,
         modifier = Modifier
             .clip(RoundedCornerShape(15.dp))
-            .fillMaxWidth()
-            .height(200.dp),
+            .width(270.dp)
+            .height(180.dp),
         contentDescription = null,
         contentScale = ContentScale.Crop
     )

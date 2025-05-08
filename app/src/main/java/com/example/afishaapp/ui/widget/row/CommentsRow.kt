@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.sp
 import com.example.afishaapp.app.utils.convertData.ConvertCountTitle
 import com.example.afishaapp.data.module.comment.Comment
 import com.example.afishaapp.ui.theme.DefaultPadding
-import com.example.afishaapp.ui.widget.card.CommentCard
+import com.example.afishaapp.ui.widget.listItem.CommentCard
 
 @Composable
 fun CommentsRow(

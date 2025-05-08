@@ -33,7 +33,7 @@ import com.example.afishaapp.app.utils.convertData.ConvertInfo
 import com.example.afishaapp.data.module.image.ImageItem
 import com.example.afishaapp.data.module.place.Place
 import com.example.afishaapp.ui.theme.DefaultPadding
-import com.example.afishaapp.ui.widget.card.ImageCard
+import com.example.afishaapp.ui.widget.listItem.ImageCard
 import com.example.afishaapp.ui.widget.row.ControlButtonsRow
 import com.example.afishaapp.ui.widget.row.SubwayRow
 import com.yandex.mapkit.geometry.Point

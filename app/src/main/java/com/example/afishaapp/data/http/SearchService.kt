@@ -8,30 +8,35 @@ interface SearchService {
     @GET("public-api/v1.4/search/")
     suspend fun search(
         @Query("q") text: String,
-        @Query("location") location: String
+        @Query("location") location: String,
+        @Query("page") page: Int = 1
     ): SearchResponse
 
     @GET("public-api/v1.4/search/?ctype=news")
     suspend fun searchNews(
         @Query("q") text: String,
-        @Query("location") location: String
+        @Query("location") location: String,
+        @Query("page") page: Int = 1
     ): SearchResponse
 
     @GET("public-api/v1.4/search/?ctype=place")
     suspend fun searchPlace(
         @Query("q") text: String,
-        @Query("location") location: String
+        @Query("location") location: String,
+        @Query("page") page: Int = 1
     ): SearchResponse
 
     @GET("public-api/v1.4/search/?ctype=list")
     suspend fun searchList(
         @Query("q") text: String,
-        @Query("location") location: String
+        @Query("location") location: String,
+        @Query("page") page: Int = 1
     ): SearchResponse
 
     @GET("public-api/v1.4/search/?ctype=event")
     suspend fun searchEvent(
         @Query("q") text: String,
-        @Query("location") location: String
+        @Query("location") location: String,
+        @Query("page") page: Int = 1
     ): SearchResponse
 }

@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.sp
 import com.example.afishaapp.R
 import com.example.afishaapp.data.module.image.ImageItem
 import com.example.afishaapp.ui.theme.DefaultPadding
-import com.example.afishaapp.ui.widget.card.ImageCard
+import com.example.afishaapp.ui.widget.listItem.ImageCard
 
 @Composable
 fun ImagesRow(

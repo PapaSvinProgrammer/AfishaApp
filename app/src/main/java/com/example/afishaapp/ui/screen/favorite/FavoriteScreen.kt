@@ -40,9 +40,9 @@ import com.example.afishaapp.data.module.place.Place
 import com.example.afishaapp.ui.screen.bottomSheet.filter.EventFilterBottomSheet
 import com.example.afishaapp.ui.screen.bottomSheet.filter.MovieFilterBottomSheet
 import com.example.afishaapp.ui.theme.DefaultPadding
-import com.example.afishaapp.ui.widget.card.EventCard
-import com.example.afishaapp.ui.widget.card.MovieCard
-import com.example.afishaapp.ui.widget.card.PlaceCard
+import com.example.afishaapp.ui.widget.listItem.EventCard
+import com.example.afishaapp.ui.widget.listItem.MovieCard
+import com.example.afishaapp.ui.widget.listItem.PlaceCard
 import com.example.afishaapp.ui.widget.endlessLazy.EndlessLazyColumn
 import com.example.afishaapp.ui.widget.endlessLazy.EndlessLazyVerticalGrid
 import com.example.afishaapp.ui.widget.text.TitleTopBar

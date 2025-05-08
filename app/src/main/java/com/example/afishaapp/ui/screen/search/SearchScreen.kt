@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.afishaapp.ui.screen.main.bottomBarVisibilityState
 import com.example.afishaapp.ui.widget.material.SearchLayout
 
@@ -17,13 +18,14 @@ fun SearchScreen(
     padding: PaddingValues
 ) {
     viewModel.getCurrentPlace()
-    viewModel.getHistory()
+    val searchHistoryLazyPagingItems = viewModel.resultHistory.collectAsLazyPagingItems()
 
     LaunchedEffect(viewModel.expanded) {
         bottomBarVisibilityState.value = !viewModel.expanded
 
         if (!viewModel.expanded) {
             viewModel.clearResultItems()
+            viewModel.updateQuery("")
         }
     }
 
@@ -34,14 +36,17 @@ fun SearchScreen(
             query = viewModel.query,
             expanded = viewModel.expanded,
             searchResult = viewModel.resultItems,
-            historyResult = viewModel.resultHistory,
+            historyResult = searchHistoryLazyPagingItems,
             onQueryChange = {
-                viewModel.query = it
+                viewModel.updateQuery(it)
                 viewModel.search(it)
             },
-            onExpandedChange = { viewModel.expanded = it},
+            onExpandedChange = { viewModel.updateExpanded(it) },
             onClick = {
                 viewModel.addStringInHistory(it.title)
+            },
+            onLoadMore = {
+                viewModel.loadMoreItems()
             }
         )
     }

@@ -5,10 +5,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import com.example.afishaapp.data.module.search.ResultItem
 import com.example.afishaapp.domain.http.SearchUseCase
 import com.example.afishaapp.domain.repository.PreferencesRepository
 import com.example.afishaapp.domain.repository.room.SearchHistoryRepository
+import com.example.afishaapp.domain.room.GetSearchHistory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -16,20 +18,24 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(
     private val searchUseCase: SearchUseCase,
     private val preferencesRepository: PreferencesRepository,
-    private val searchHistoryRepository: SearchHistoryRepository
+    private val searchHistoryRepository: SearchHistoryRepository,
+    getSearchHistory: GetSearchHistory
 ): ViewModel() {
     private var currentLocation by mutableStateOf("")
+    private var nextPage = 1
 
     var query by mutableStateOf("")
+        private set
     var expanded by mutableStateOf(false)
+        private set
 
     var resultItems by mutableStateOf<List<ResultItem>>(listOf())
         private set
-    var resultHistory by mutableStateOf<List<String>>(listOf())
-        private set
+    val resultHistory = getSearchHistory.execute().cachedIn(viewModelScope)
 
     fun search(q: String) {
         clearResultItems()
+        nextPage = 1
 
         viewModelScope.launch(Dispatchers.IO) {
             val result = searchUseCase.search(
@@ -53,15 +59,35 @@ class SearchViewModel @Inject constructor(
         resultItems = listOf()
     }
 
-    fun getHistory() {
-        viewModelScope.launch(Dispatchers.IO) {
-            resultHistory = searchHistoryRepository.getAll()
-        }
-    }
-
     fun addStringInHistory(query: String) {
         viewModelScope.launch(Dispatchers.IO) {
             searchHistoryRepository.insert(query)
         }
+    }
+
+    fun loadMoreItems() {
+        nextPage++
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = searchUseCase.search(
+                text = query,
+                place = currentLocation,
+                page = nextPage
+            )
+
+            result?.let {
+                val temp = resultItems.toMutableList()
+                temp.addAll(it.results)
+                resultItems = temp
+            }
+        }
+    }
+
+    fun updateQuery(query: String) {
+        this.query = query
+    }
+
+    fun updateExpanded(expanded: Boolean) {
+        this.expanded = expanded
     }
 }

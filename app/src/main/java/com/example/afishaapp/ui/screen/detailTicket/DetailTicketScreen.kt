@@ -57,7 +57,7 @@ import com.example.afishaapp.app.navigation.PlaceRoute
 import com.example.afishaapp.data.room.ticket.TicketEntity
 import com.example.afishaapp.domain.module.SettingsType
 import com.example.afishaapp.ui.screen.bottomSheet.TicketSettingsBottomSheet
-import com.example.afishaapp.ui.widget.card.HatchHorizontalDivider
+import com.example.afishaapp.ui.widget.listItem.HatchHorizontalDivider
 import com.example.afishaapp.ui.widget.row.SubwayRow
 import com.example.afishaapp.ui.widget.text.SubtitleTopBar
 import com.example.afishaapp.ui.widget.text.TitleTopBar

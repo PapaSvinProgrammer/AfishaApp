@@ -27,7 +27,7 @@ import com.example.afishaapp.app.navigation.EventRoute
 import com.example.afishaapp.ui.screen.bottomSheet.CategoryEventBottomSheet
 import com.example.afishaapp.ui.theme.DefaultPadding
 import com.example.afishaapp.ui.widget.endlessLazy.EndlessLazyColumn
-import com.example.afishaapp.ui.widget.card.EventCard
+import com.example.afishaapp.ui.widget.listItem.EventCard
 import com.example.afishaapp.ui.widget.shimmer.card.ShimmerFillEventCard
 import com.example.afishaapp.ui.widget.text.TitleTopBar
 

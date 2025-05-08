@@ -2,28 +2,40 @@ package com.example.afishaapp.ui.widget.material
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.itemContentType
+import androidx.paging.compose.itemKey
 import com.example.afishaapp.R
+import com.example.afishaapp.app.utils.convertData.ConvertInfo
 import com.example.afishaapp.data.module.search.ResultItem
+import com.example.afishaapp.data.room.searchHistory.SearchHistoryEntity
+import com.example.afishaapp.ui.widget.endlessLazy.EndlessLazyColumn
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,10 +45,11 @@ fun SearchLayout(
     onQueryChange: (String) -> Unit,
     onExpandedChange: (Boolean) -> Unit,
     onClick: (ResultItem) -> Unit,
+    onLoadMore: () -> Unit,
     searchResult: List<ResultItem>,
-    historyResult: List<String>
+    historyResult: LazyPagingItems<SearchHistoryEntity>
 ) {
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = Modifier.fillMaxWidth()) {
         SearchBar(
             modifier = Modifier.align(Alignment.TopCenter),
             inputField = {
@@ -68,14 +81,15 @@ fun SearchLayout(
         ) {
             if (query.isEmpty()) {
                 HistoryLayout(
-                    historyList = historyResult,
+                    lazyPagingItems = historyResult,
                     onQueryChange = onQueryChange
                 )
             }
             else {
                 SearchResultLayout(
                     searchResult = searchResult,
-                    onClick = onClick
+                    onClick = onClick,
+                    onLoadMore = onLoadMore
                 )
             }
         }
@@ -125,16 +139,37 @@ private fun LeadingIcon(
 }
 
 @Composable
-private fun HistoryLayout(historyList: List<String>, onQueryChange: (String) -> Unit) {
-    historyList.forEach {
-        ListItem(
-            modifier = Modifier.clickable { onQueryChange(it) },
-            headlineContent = { Text(it) },
-            leadingContent = {
-                Icon(
-                    painter = painterResource(R.drawable.ic_history),
-                    contentDescription = null
-                )
+private fun HistoryLayout(
+    lazyPagingItems: LazyPagingItems<SearchHistoryEntity>,
+    onQueryChange: (String) -> Unit
+) {
+    LazyColumn(modifier = Modifier.fillMaxWidth()) {
+        items(
+            count = lazyPagingItems.itemCount,
+            key = lazyPagingItems.itemKey { it.id },
+            contentType = lazyPagingItems.itemContentType { "Search item" },
+            itemContent = { index ->
+                val entity = lazyPagingItems[index]
+
+                entity?.let {
+                    ListItem(
+                        modifier = Modifier.clickable { onQueryChange(it.query) },
+                        headlineContent = { Text(text = ConvertInfo.convertTitle(it.query)) },
+                        colors = ListItemDefaults.colors(
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
+                        ),
+                        leadingContent = {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_history),
+                                contentDescription = null
+                            )
+                        }
+                    )
+                    HorizontalDivider(
+                        modifier = Modifier.padding(start = 54.dp),
+                        color = Color.Gray
+                    )
+                }
             }
         )
     }
@@ -143,20 +178,36 @@ private fun HistoryLayout(historyList: List<String>, onQueryChange: (String) -> 
 @Composable
 private fun SearchResultLayout(
     searchResult: List<ResultItem>,
-    onClick: (ResultItem) -> Unit
+    onClick: (ResultItem) -> Unit,
+    onLoadMore: () -> Unit
 ) {
-    LazyColumn {
-        items(searchResult) {
-            ListItem(
-                modifier = Modifier.clickable { onClick(it) },
-                headlineContent = { Text(text = it.title) },
-                leadingContent = {
-                    Icon(
-                        imageVector = Icons.Default.Search,
-                        contentDescription = null
-                    )
-                }
-            )
-        }
+    EndlessLazyColumn(
+        items = searchResult,
+        loadMore = onLoadMore
+    ) {
+        ListItem(
+            modifier = Modifier.clickable { onClick(it) },
+            headlineContent = { Text(text = ConvertInfo.convertTitle(it.title)) },
+            colors = ListItemDefaults.colors(
+                containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
+            ),
+            leadingContent = {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = null
+                )
+            },
+            trailingContent = {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Default.KeyboardArrowRight,
+                    contentDescription = null
+                )
+            }
+        )
+
+        HorizontalDivider(
+            modifier = Modifier.padding(start = 54.dp),
+            color = Color.Gray
+        )
     }
 }

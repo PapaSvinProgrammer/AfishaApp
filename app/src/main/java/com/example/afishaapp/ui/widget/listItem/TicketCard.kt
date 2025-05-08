@@ -1,4 +1,4 @@
-package com.example.afishaapp.ui.widget.card
+package com.example.afishaapp.ui.widget.listItem
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

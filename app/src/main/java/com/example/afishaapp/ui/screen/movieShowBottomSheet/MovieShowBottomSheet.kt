@@ -26,7 +26,7 @@ import com.example.afishaapp.app.utils.convertData.ConvertDate
 import com.example.afishaapp.di.viewModel.ViewModelFactory
 import com.example.afishaapp.ui.screen.bottomSheet.DateBottomSheet
 import com.example.afishaapp.ui.theme.DefaultPadding
-import com.example.afishaapp.ui.widget.card.ShowCard
+import com.example.afishaapp.ui.widget.listItem.ShowCard
 import com.example.afishaapp.ui.widget.chip.SelectDropDown
 
 @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)

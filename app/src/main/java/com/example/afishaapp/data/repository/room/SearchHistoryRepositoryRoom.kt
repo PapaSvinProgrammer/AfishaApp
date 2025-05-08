@@ -1,5 +1,6 @@
 package com.example.afishaapp.data.repository.room
 
+import androidx.paging.PagingSource
 import com.example.afishaapp.data.room.searchHistory.SearchHistoryDao
 import com.example.afishaapp.data.room.searchHistory.SearchHistoryEntity
 import com.example.afishaapp.domain.repository.room.SearchHistoryRepository
@@ -13,7 +14,7 @@ class SearchHistoryRepositoryRoom @Inject constructor(
         dao.insert(item)
     }
 
-    override suspend fun getAll(): List<String> {
-        return dao.getAll()
+    override fun getAllPaged(): PagingSource<Int, SearchHistoryEntity> {
+        return dao.getAllPaged()
     }
 }

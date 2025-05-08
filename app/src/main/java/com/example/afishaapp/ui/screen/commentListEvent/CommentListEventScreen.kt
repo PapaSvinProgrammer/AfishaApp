@@ -18,7 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.example.afishaapp.R
 import com.example.afishaapp.ui.screen.bottomSheet.filter.DirectedFilterBottomSheet
-import com.example.afishaapp.ui.widget.card.CommentCardFill
+import com.example.afishaapp.ui.widget.listItem.CommentCardFill
 import com.example.afishaapp.ui.widget.endlessLazy.EndlessLazyColumn
 import com.example.afishaapp.ui.widget.shimmer.ShimmerCommentList
 import com.example.afishaapp.ui.widget.text.SubtitleTopBar

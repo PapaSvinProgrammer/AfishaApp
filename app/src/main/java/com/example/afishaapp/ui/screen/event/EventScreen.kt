@@ -61,7 +61,7 @@ import com.example.afishaapp.data.module.place.Place
 import com.example.afishaapp.ui.theme.DefaultPadding
 import com.example.afishaapp.ui.widget.chip.ChipInfo
 import com.example.afishaapp.ui.widget.row.SelectRow
-import com.example.afishaapp.ui.widget.card.MapImageCard
+import com.example.afishaapp.ui.widget.listItem.MapImageCard
 import com.example.afishaapp.ui.widget.collapsingTopBar.CollapsedTopBar
 import com.example.afishaapp.ui.widget.collapsingTopBar.ExpandedTopBar
 import com.example.afishaapp.ui.widget.row.CommentsRow

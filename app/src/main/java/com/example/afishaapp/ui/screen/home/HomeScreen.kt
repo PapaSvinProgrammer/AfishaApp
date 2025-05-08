@@ -44,8 +44,8 @@ import com.example.afishaapp.domain.module.EventCategory
 import com.example.afishaapp.ui.screen.bottomSheet.CategoryEventBottomSheet
 import com.example.afishaapp.ui.screen.bottomSheet.CityBottomSheet
 import com.example.afishaapp.ui.theme.DefaultPadding
-import com.example.afishaapp.ui.widget.card.EventCard
-import com.example.afishaapp.ui.widget.card.MovieCard
+import com.example.afishaapp.ui.widget.listItem.EventCard
+import com.example.afishaapp.ui.widget.listItem.MovieCard
 import com.example.afishaapp.ui.widget.chip.SelectDropDown
 import com.example.afishaapp.ui.widget.row.SelectRow
 import com.example.afishaapp.ui.widget.shimmer.card.ShimmerEventCard

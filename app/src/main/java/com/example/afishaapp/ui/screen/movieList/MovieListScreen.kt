@@ -23,7 +23,7 @@ import com.example.afishaapp.R
 import com.example.afishaapp.app.navigation.MovieRoute
 import com.example.afishaapp.ui.screen.bottomSheet.filter.BaseFilterBottomSheet
 import com.example.afishaapp.ui.widget.endlessLazy.EndlessLazyVerticalGrid
-import com.example.afishaapp.ui.widget.card.MovieCard
+import com.example.afishaapp.ui.widget.listItem.MovieCard
 import com.example.afishaapp.ui.widget.shimmer.card.ShimmerMovieCard
 import com.example.afishaapp.ui.widget.text.TitleTopBar
 

@@ -15,7 +15,8 @@ class SearchRepositoryImpl @Inject constructor(
         return try {
             retrofit.create<SearchService>().search(
                 text = queryParameters.searchText,
-                location = queryParameters.locationSlug
+                location = queryParameters.locationSlug,
+                page = queryParameters.page
             )
         } catch (e: Exception) {
             null
@@ -26,7 +27,8 @@ class SearchRepositoryImpl @Inject constructor(
         return try {
             retrofit.create<SearchService>().searchEvent(
                 text = queryParameters.searchText,
-                location = queryParameters.locationSlug
+                location = queryParameters.locationSlug,
+                page = queryParameters.page
             )
         } catch (e: Exception) {
             null
@@ -37,7 +39,8 @@ class SearchRepositoryImpl @Inject constructor(
         return try {
             retrofit.create<SearchService>().searchPlace(
                 text = queryParameters.searchText,
-                location = queryParameters.locationSlug
+                location = queryParameters.locationSlug,
+                page = queryParameters.page
             )
         } catch (e: Exception) {
             null
@@ -48,7 +51,8 @@ class SearchRepositoryImpl @Inject constructor(
         return try {
             retrofit.create<SearchService>().searchList(
                 text = queryParameters.searchText,
-                location = queryParameters.locationSlug
+                location = queryParameters.locationSlug,
+                page = queryParameters.page
             )
         } catch (e: Exception) {
             null
@@ -59,7 +63,8 @@ class SearchRepositoryImpl @Inject constructor(
         return try {
             retrofit.create<SearchService>().searchNews(
                 text = queryParameters.searchText,
-                location = queryParameters.locationSlug
+                location = queryParameters.locationSlug,
+                page = queryParameters.page
             )
         } catch (e: Exception) {
             null

@@ -1,4 +1,4 @@
-package com.example.afishaapp.ui.widget.card
+package com.example.afishaapp.ui.widget.listItem
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -23,13 +23,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.example.afishaapp.app.utils.convertData.ConvertInfo
-import com.example.afishaapp.data.module.place.Place
+import com.example.afishaapp.app.utils.convertData.ConvertDate
+import com.example.afishaapp.data.module.event.Event
 
 @Composable
-fun PlaceCard(
-    place: Place,
+fun EventCard(
+    event: Event,
     fill: Boolean = false,
-    onClick: () -> Unit) {
+    onClick: (Event) -> Unit
+) {
     Column(
         modifier = if (fill) {
             Modifier
@@ -39,7 +41,9 @@ fun PlaceCard(
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = ripple(),
-                    onClick = onClick
+                    onClick = {
+                        onClick.invoke(event)
+                    }
                 )
         } else {
             Modifier
@@ -49,12 +53,14 @@ fun PlaceCard(
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = ripple(),
-                    onClick = onClick
+                    onClick = {
+                        onClick.invoke(event)
+                    }
                 )
         }
     ) {
         AsyncImage(
-            model = place.images?.first()?.thumbnails?.highImage,
+            model = event.images[0].thumbnails.highImage,
             contentDescription = "",
             contentScale = ContentScale.Crop,
             modifier = Modifier
@@ -64,7 +70,7 @@ fun PlaceCard(
         )
 
         Text(
-            text = ConvertInfo.convertTitle(place.title),
+            text = ConvertInfo.convertTitle(event.shortTitle),
             fontSize = 15.sp,
             fontWeight = FontWeight.Medium,
             color = Color.Black,
@@ -74,14 +80,14 @@ fun PlaceCard(
         )
 
         Text(
-            text = place.address,
+            text = ConvertDate.convertStartDate(event.dates),
             fontSize = 14.sp,
             fontWeight = FontWeight.Normal,
             color = Color.Gray
         )
 
         Text(
-            text = place.subway,
+            text = ConvertInfo.convertPrice(event.price),
             fontSize = 15.sp,
             fontWeight = FontWeight.Medium,
             color = Color.Black
