@@ -8,6 +8,8 @@ import com.example.afishaapp.data.room.likeMovie.MovieDao
 import com.example.afishaapp.data.room.likeMovie.MovieEntity
 import com.example.afishaapp.data.room.likePlace.PlaceDao
 import com.example.afishaapp.data.room.likePlace.PlaceEntity
+import com.example.afishaapp.data.room.searchHistory.SearchHistoryDao
+import com.example.afishaapp.data.room.searchHistory.SearchHistoryEntity
 import com.example.afishaapp.data.room.ticket.TicketDao
 import com.example.afishaapp.data.room.ticket.TicketEntity
 
@@ -16,7 +18,8 @@ import com.example.afishaapp.data.room.ticket.TicketEntity
         TicketEntity::class,
         EventEntity::class,
         MovieEntity::class,
-        PlaceEntity::class
+        PlaceEntity::class,
+        SearchHistoryEntity::class
     ],
     version = 1
 )
@@ -25,4 +28,5 @@ abstract class AppDatabase: RoomDatabase() {
     abstract fun getEventDao(): EventDao
     abstract fun getMovieDao(): MovieDao
     abstract fun getPlaceDao(): PlaceDao
+    abstract fun getSearchHistoryDao(): SearchHistoryDao
 }

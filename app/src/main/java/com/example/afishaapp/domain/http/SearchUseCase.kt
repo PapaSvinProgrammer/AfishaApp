@@ -5,7 +5,7 @@ import com.example.afishaapp.data.module.search.SearchResponse
 import com.example.afishaapp.domain.repository.http.SearchRepository
 import javax.inject.Inject
 
-class Search @Inject constructor(
+class SearchUseCase @Inject constructor(
     private val searchRepository: SearchRepository
 ) {
     suspend fun search(text: String, place: String = ""): SearchResponse? {

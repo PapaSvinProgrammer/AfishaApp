@@ -3,10 +3,11 @@ package com.example.afishaapp.ui.screen.search
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
+import com.example.afishaapp.ui.screen.main.bottomBarVisibilityState
 import com.example.afishaapp.ui.widget.material.SearchLayout
 
 @Composable
@@ -15,7 +16,16 @@ fun SearchScreen(
     viewModel: SearchViewModel,
     padding: PaddingValues
 ) {
-    val textFieldState = TextFieldState()
+    viewModel.getCurrentPlace()
+    viewModel.getHistory()
+
+    LaunchedEffect(viewModel.expanded) {
+        bottomBarVisibilityState.value = !viewModel.expanded
+
+        if (!viewModel.expanded) {
+            viewModel.clearResultItems()
+        }
+    }
 
     Column(
         modifier = Modifier.padding(padding)
@@ -23,10 +33,16 @@ fun SearchScreen(
         SearchLayout(
             query = viewModel.query,
             expanded = viewModel.expanded,
-            searchResults = listOf(),
-            historyResults = listOf(),
-            onQueryChange = { viewModel.query = it },
-            onExpandedChange = { viewModel.expanded = it}
+            searchResult = viewModel.resultItems,
+            historyResult = viewModel.resultHistory,
+            onQueryChange = {
+                viewModel.query = it
+                viewModel.search(it)
+            },
+            onExpandedChange = { viewModel.expanded = it},
+            onClick = {
+                viewModel.addStringInHistory(it.title)
+            }
         )
     }
 }

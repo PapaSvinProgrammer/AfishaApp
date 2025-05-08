@@ -3,7 +3,7 @@ package com.example.afishaapp.di.domain
 import com.example.afishaapp.domain.http.GetAgent
 import com.example.afishaapp.domain.http.GetCommentEvent
 import com.example.afishaapp.domain.http.GetEvent
-import com.example.afishaapp.domain.http.Search
+import com.example.afishaapp.domain.http.SearchUseCase
 import com.example.afishaapp.domain.repository.http.AgentRepository
 import com.example.afishaapp.domain.repository.http.CommentRepository
 import com.example.afishaapp.domain.repository.http.EventRepository
@@ -20,8 +20,8 @@ interface HttpModuleDomain {
         }
 
         @Provides
-        fun provideSearch(repository: SearchRepository): Search {
-            return Search(repository)
+        fun provideSearch(repository: SearchRepository): SearchUseCase {
+            return SearchUseCase(repository)
         }
 
         @Provides
