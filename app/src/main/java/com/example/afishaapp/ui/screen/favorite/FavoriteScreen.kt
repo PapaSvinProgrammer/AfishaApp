@@ -7,9 +7,15 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -27,7 +33,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.afishaapp.R
 import com.example.afishaapp.app.navigation.EventRoute
@@ -83,7 +91,9 @@ fun FavoriteScreen(
     ) { padding ->
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
                 top = padding.calculateTopPadding(),
                 bottom = innerPadding.calculateBottomPadding(),
                 start = DefaultPadding,
@@ -212,42 +222,93 @@ fun handleFilter(viewModel: FavoriteViewModel) {
 
 @Composable
 fun FavoriteEventsSubScreen(events: List<Event>, onClick: (Event) -> Unit) {
-    EndlessLazyColumn(
-        items = events,
-        verticalArrangement = Arrangement.spacedBy(40.dp),
-        loadMore = {}
-    ) { event ->
-        EventCard(
-            event = event,
-            fill = true
-        ) { onClick.invoke(event) }
+    if (events.isEmpty()) {
+        EmptyListContent()
+    }
+    else {
+        EndlessLazyColumn(
+            items = events,
+            verticalArrangement = Arrangement.spacedBy(40.dp),
+            loadMore = {}
+        ) { event ->
+            EventCard(
+                event = event,
+                fill = true
+            ) { onClick.invoke(event) }
+        }
     }
 }
 
 @Composable
 fun FavoriteMoviesSubScreen(movies: List<Movie>, onClick: (Movie) -> Unit) {
-    EndlessLazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        items = movies,
-        verticalArrangement = Arrangement.spacedBy(30.dp),
-        horizontalArrangement = Arrangement.spacedBy(10.dp),
-        loadMore = {},
-        itemContent = { movie ->
-            MovieCard(movie = movie) { onClick.invoke(movie) }
-        }
-    )
+    if (movies.isEmpty()) {
+        EmptyListContent()
+    }
+    else {
+        EndlessLazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            items = movies,
+            verticalArrangement = Arrangement.spacedBy(30.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            loadMore = {},
+            itemContent = { movie ->
+                MovieCard(movie = movie) { onClick.invoke(movie) }
+            }
+        )
+    }
 }
 
 @Composable
 fun FavoritePlacesSubScreen(places: List<Place>, onClick: (Place) -> Unit) {
-    EndlessLazyColumn(
-        items = places,
-        verticalArrangement = Arrangement.spacedBy(40.dp),
-        loadMore = {}
+    if (places.isEmpty()) {
+        EmptyListContent()
+    }
+    else {
+        EndlessLazyColumn(
+            items = places,
+            verticalArrangement = Arrangement.spacedBy(40.dp),
+            loadMore = {}
+        ) {
+            PlaceCard(
+                place = it,
+                fill = true
+            ) { onClick.invoke(it) }
+        }
+    }
+}
+
+@Composable
+private fun EmptyListContent() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(
+                start = DefaultPadding,
+                end = DefaultPadding
+            ),
+        contentAlignment = Alignment.Center
     ) {
-        PlaceCard(
-            place = it,
-            fill = true
-        ) { onClick.invoke(it) }
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_broken_heart),
+                contentDescription = null,
+                modifier = Modifier.size(200.dp)
+            )
+
+            Text(
+                text = "В сердечке пусто",
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp
+            )
+
+            Spacer(modifier = Modifier.height(DefaultPadding))
+
+            Text(
+                text = "Ставьте лайки событиям, чтобы сохранить их",
+                fontSize = 15.sp
+            )
+        }
     }
 }

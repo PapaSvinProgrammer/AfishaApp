@@ -14,7 +14,7 @@ fun generateAccountImage(): Int {
     return imageArray.random()
 }
 
-val metro = mapOf(
+val subwayIcon = mapOf(
     "msk" to R.drawable.ic_metro_msk,
     "spb" to R.drawable.ic_metro_spb,
     "ekb" to R.drawable.ic_metro_ekb,

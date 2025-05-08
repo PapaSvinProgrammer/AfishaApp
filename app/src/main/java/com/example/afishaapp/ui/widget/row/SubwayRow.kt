@@ -16,7 +16,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.afishaapp.R
-import com.example.afishaapp.app.utils.metro
 import com.example.afishaapp.data.module.place.Place
 
 @Composable
@@ -73,7 +72,7 @@ private fun MainContent(location: String, subway: String) {
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
-        val icon = metro[location] ?: R.drawable.ic_error
+        val icon = com.example.afishaapp.app.utils.subwayIcon[location] ?: R.drawable.ic_error
 
         Icon(
             painter = painterResource(icon),
