@@ -25,7 +25,7 @@
     <string name="music_text">Музыка</string>
     <string name="cinema_text">Кино</string>
     <string name="theater_text">Театр</string>
-    <string name="ic_arrow_back_content_description">Назад</string>
+    <string name="arrow_back_description">Назад</string>
     <string name="profile_title">Профиль</string>
     <string name="ic_account_circle_content_description">Фото аккаунта</string>
     <string name="ic_account_content_description">Аккаунт</string>
@@ -113,6 +113,10 @@
     <string name="search_title">Найдется все</string>
     <string name="ticket_empty_title">Пока тут пусто</string>
     <string name="ticket_empty_description">Купите первый билет, чтобы начать историю</string>
+    <string name="favorite_empty_list_title">В сердечке пусто</string>
+    <string name="favorite_empty_list_description">Ставьте лайки событиям, чтобы сохранить их</string>
+    <string name="apply">Применить</string>
+    <string name="all">Все</string>
 
     <string-array name="ticket_segmented_button">
         <item>"События"</item>

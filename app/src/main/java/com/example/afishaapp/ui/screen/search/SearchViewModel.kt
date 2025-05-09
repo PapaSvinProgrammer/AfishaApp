@@ -33,6 +33,9 @@ class SearchViewModel @Inject constructor(
         private set
     val resultHistory = getSearchHistory.execute().cachedIn(viewModelScope)
 
+    var searchDialogState by mutableStateOf(false)
+        private set
+
     fun search(q: String) {
         clearResultItems()
         nextPage = 1
@@ -89,5 +92,9 @@ class SearchViewModel @Inject constructor(
 
     fun updateExpanded(expanded: Boolean) {
         this.expanded = expanded
+    }
+
+    fun updateSearchDialogState(state: Boolean) {
+        searchDialogState = state
     }
 }

@@ -34,6 +34,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -94,11 +95,11 @@ fun FavoriteScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                top = padding.calculateTopPadding(),
-                bottom = innerPadding.calculateBottomPadding(),
-                start = DefaultPadding,
-                end = DefaultPadding
-            )
+                    top = padding.calculateTopPadding(),
+                    bottom = innerPadding.calculateBottomPadding(),
+                    start = DefaultPadding,
+                    end = DefaultPadding
+                )
         ) {
 
             SingleChoiceSegmentedButtonRow(
@@ -298,7 +299,7 @@ private fun EmptyListContent() {
             )
 
             Text(
-                text = "В сердечке пусто",
+                text = stringResource(R.string.favorite_empty_list_title),
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp
             )
@@ -306,8 +307,9 @@ private fun EmptyListContent() {
             Spacer(modifier = Modifier.height(DefaultPadding))
 
             Text(
-                text = "Ставьте лайки событиям, чтобы сохранить их",
-                fontSize = 15.sp
+                text = stringResource(R.string.favorite_empty_list_description),
+                fontSize = 15.sp,
+                textAlign = TextAlign.Center
             )
         }
     }

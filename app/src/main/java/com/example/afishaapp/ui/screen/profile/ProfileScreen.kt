@@ -6,14 +6,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -30,6 +28,7 @@ import androidx.navigation.NavController
 import com.example.afishaapp.R
 import com.example.afishaapp.app.navigation.AboutAppRoute
 import com.example.afishaapp.app.navigation.StartRoute
+import com.example.afishaapp.ui.screen.dialog.ExitDialog
 import com.example.afishaapp.ui.theme.acidFontFamily
 import com.example.afishaapp.ui.widget.row.SelectRow
 import com.example.afishaapp.ui.widget.text.TitleTopBar
@@ -49,7 +48,7 @@ fun ProfileScreen(navController: NavController) {
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                            contentDescription = stringResource(R.string.ic_arrow_back_content_description)
+                            contentDescription = stringResource(R.string.arrow_back_description)
                         )
                     }
                 },
@@ -119,31 +118,15 @@ fun ProfileScreen(navController: NavController) {
         }
     }
 
+
     if (exitState) {
-        AlertDialog(
-            title = {
-                Text(text = stringResource(R.string.exit))
-            },
-            text = {
-                Text(text = stringResource(R.string.exit_text))
-            },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        navController.navigate(StartRoute) {
-                            popUpTo(navController.graph.id)
-                        }
-                    }
-                ) {
-                    Text(text = stringResource(R.string.exiting))
+        ExitDialog(
+            onConfirmClick = {
+                navController.navigate(StartRoute) {
+                    popUpTo(navController.graph.id)
                 }
             },
-            dismissButton = {
-                TextButton(onClick = { exitState = false }) {
-                    Text(text = stringResource(R.string.cancel))
-                }
-            },
-            onDismissRequest = {
+            onDismissClick = {
                 exitState = false
             }
         )

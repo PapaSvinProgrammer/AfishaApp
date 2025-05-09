@@ -48,7 +48,7 @@ fun MovieListScreen(
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                            contentDescription = stringResource(R.string.ic_arrow_back_content_description)
+                            contentDescription = stringResource(R.string.arrow_back_description)
                         )
                     }
                 },
@@ -58,7 +58,7 @@ fun MovieListScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.DateRange,
-                            contentDescription = stringResource(R.string.ic_arrow_back_content_description)
+                            contentDescription = stringResource(R.string.arrow_back_description)
                         )
                     }
 
@@ -67,7 +67,7 @@ fun MovieListScreen(
                     ) {
                         Icon(
                             painter = painterResource(R.drawable.ic_sort),
-                            contentDescription = stringResource(R.string.ic_arrow_back_content_description)
+                            contentDescription = stringResource(R.string.arrow_back_description)
                         )
                     }
                 }

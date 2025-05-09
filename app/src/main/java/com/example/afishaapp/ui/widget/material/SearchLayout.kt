@@ -46,6 +46,7 @@ fun SearchLayout(
     onExpandedChange: (Boolean) -> Unit,
     onClick: (ResultItem) -> Unit,
     onLoadMore: () -> Unit,
+    onClickSettings: () -> Unit,
     searchResult: List<ResultItem>,
     historyResult: LazyPagingItems<SearchHistoryEntity>
 ) {
@@ -70,7 +71,8 @@ fun SearchLayout(
                             query = query,
                             expanded = expanded,
                             onQueryChange = onQueryChange,
-                            onExpandedChange = onExpandedChange
+                            onExpandedChange = onExpandedChange,
+                            onClickSettings = onClickSettings
                         )
                     },
                     placeholder = { Text(stringResource(R.string.search_title)) }
@@ -101,10 +103,11 @@ private fun TrailingIcon(
     query: String,
     expanded: Boolean,
     onQueryChange: (String) -> Unit,
-    onExpandedChange: (Boolean) -> Unit
+    onExpandedChange: (Boolean) -> Unit,
+    onClickSettings: () -> Unit
 ) {
     if (!expanded) {
-        IconButton(onClick = { }) {
+        IconButton(onClick = onClickSettings) {
             Icon(
                 imageVector = Icons.Default.MoreVert,
                 contentDescription = null

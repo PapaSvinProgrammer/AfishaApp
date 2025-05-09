@@ -279,7 +279,7 @@ fun MapScreen(
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                        contentDescription = stringResource(R.string.ic_arrow_back_content_description)
+                        contentDescription = stringResource(R.string.arrow_back_description)
                     )
                 }
             }

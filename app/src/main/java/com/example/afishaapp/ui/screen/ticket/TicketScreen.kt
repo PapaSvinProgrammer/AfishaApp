@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -179,7 +180,8 @@ private fun EmptyTicketListContent(
 
             Text(
                 text = stringResource(R.string.ticket_empty_description),
-                fontSize = 15.sp
+                fontSize = 15.sp,
+                textAlign = TextAlign.Center
             )
         }
     }

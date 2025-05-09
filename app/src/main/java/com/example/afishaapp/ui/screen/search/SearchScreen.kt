@@ -1,5 +1,6 @@
 package com.example.afishaapp.ui.screen.search
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -8,6 +9,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.afishaapp.ui.screen.dialog.SearchFilterDialog
 import com.example.afishaapp.ui.screen.main.bottomBarVisibilityState
 import com.example.afishaapp.ui.widget.material.SearchLayout
 
@@ -45,9 +47,18 @@ fun SearchScreen(
             onClick = {
                 viewModel.addStringInHistory(it.title)
             },
-            onLoadMore = {
-                viewModel.loadMoreItems()
-            }
+            onLoadMore = { viewModel.loadMoreItems() },
+            onClickSettings = { viewModel.updateSearchDialogState(true) }
+        )
+    }
+
+    if (viewModel.searchDialogState) {
+        SearchFilterDialog(
+            onConfirmClick = {
+                Log.d("RRRR", it.toString())
+                viewModel.updateSearchDialogState(false)
+            },
+            onDismissClick = { viewModel.updateSearchDialogState(false) }
         )
     }
 }
