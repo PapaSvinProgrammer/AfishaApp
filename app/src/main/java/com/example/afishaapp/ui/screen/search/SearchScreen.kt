@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.isTraversalGroup
+import androidx.compose.ui.semantics.semantics
 import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.afishaapp.ui.screen.dialog.SearchFilterDialog
@@ -32,7 +34,7 @@ fun SearchScreen(
     }
 
     Column(
-        modifier = Modifier.padding(padding)
+        modifier = Modifier.padding(bottom = padding.calculateBottomPadding())
     ) {
         SearchLayout(
             query = viewModel.query,
