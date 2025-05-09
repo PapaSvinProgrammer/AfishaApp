@@ -1,16 +1,16 @@
 package com.example.afishaapp.ui.screen.search
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.semantics.isTraversalGroup
-import androidx.compose.ui.semantics.semantics
 import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.afishaapp.app.navigation.EventRoute
+import com.example.afishaapp.app.navigation.PlaceRoute
+import com.example.afishaapp.data.module.search.ResultItem
 import com.example.afishaapp.ui.screen.dialog.SearchFilterDialog
 import com.example.afishaapp.ui.screen.main.bottomBarVisibilityState
 import com.example.afishaapp.ui.widget.material.SearchLayout
@@ -47,6 +47,7 @@ fun SearchScreen(
             },
             onExpandedChange = { viewModel.updateExpanded(it) },
             onClick = {
+                navigateToDetailScreen(it, navController)
                 viewModel.addStringInHistory(it.title)
             },
             onLoadMore = { viewModel.loadMoreItems() },
@@ -57,10 +58,17 @@ fun SearchScreen(
     if (viewModel.searchDialogState) {
         SearchFilterDialog(
             onConfirmClick = {
-                Log.d("RRRR", it.toString())
+                //TODO
                 viewModel.updateSearchDialogState(false)
             },
             onDismissClick = { viewModel.updateSearchDialogState(false) }
         )
+    }
+}
+
+private fun navigateToDetailScreen(item: ResultItem, navController: NavController) {
+    when (item.ctype) {
+        "event" -> navController.navigate(EventRoute(item.id))
+        "place" -> navController.navigate(PlaceRoute(item.id))
     }
 }

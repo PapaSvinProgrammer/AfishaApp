@@ -38,15 +38,10 @@ fun SearchFilterDialog(
             id = -1,
             slug = "place",
             name = "Места"
-        ),
-        Category(
-            id = -1,
-            slug = "news",
-            name = "Новости"
         )
     )
 
-    val childCheckedStates = remember { mutableStateListOf(true, true, true) }
+    val childCheckedStates = remember { mutableStateListOf(true, true) }
 
     AlertDialog(
         title = {
