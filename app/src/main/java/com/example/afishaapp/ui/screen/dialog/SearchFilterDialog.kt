@@ -46,7 +46,7 @@ fun SearchFilterDialog(
         )
     )
 
-    val childCheckedStates = remember { mutableStateListOf(false, false, false) }
+    val childCheckedStates = remember { mutableStateListOf(true, true, true) }
 
     AlertDialog(
         title = {
