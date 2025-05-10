@@ -1,6 +1,5 @@
 package com.example.afishaapp.ui.screen.map
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -26,14 +25,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.BottomSheetScaffold
-import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -45,7 +42,6 @@ import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -69,78 +65,88 @@ import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CameraPosition
-import com.yandex.mapkit.mapview.MapView
 import androidx.core.graphics.createBitmap
 import androidx.core.net.toUri
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 import com.example.afishaapp.app.navigation.PlaceRoute
 import com.example.afishaapp.data.module.Coordinate
-import com.example.afishaapp.ui.widget.material.AnimatedOutlineBox
 import com.example.afishaapp.ui.widget.material.PlaceInformationSheetContent
 import com.example.afishaapp.ui.widget.material.SquareSlider
 import com.example.afishaapp.ui.widget.text.TitleBottomSheet
 import com.yandex.mapkit.map.MapObjectTapListener
-import kotlinx.coroutines.CoroutineScope
+import com.yandex.mapkit.mapview.MapView
 import kotlinx.coroutines.launch
 import java.util.Locale
 
-@SuppressLint("StaticFieldLeak")
-private lateinit var context: Context
-private lateinit var mapView: MapView
-private lateinit var viewModel: MapViewModel
-private lateinit var mainPoint: Point
-
-@OptIn(ExperimentalMaterial3Api::class)
-private lateinit var bottomSheetState: BottomSheetScaffoldState
-private lateinit var scope: CoroutineScope
-private lateinit var pagerState: PagerState
-
 private const val ZOOM = 16.5f
+private lateinit var mapView: MapView
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MapScreen(
     navController: NavController,
-    mapViewModel: MapViewModel,
+    viewModel: MapViewModel,
     placeId: Int,
     lat: Double,
     lon: Double
 ) {
-    context = LocalContext.current
-    viewModel = mapViewModel
-    mainPoint = Point(lat, lon)
-
     val segmentedButtonsList = stringArrayResource(R.array.map_info_segmented_button)
-    val derivedIndex by remember {
-        derivedStateOf {
-            viewModel.selectedIndex
+    val derivedIndex by remember { derivedStateOf { viewModel.selectedIndex } }
+    val pagerState = rememberPagerState(pageCount = { viewModel.places.size })
+    val bottomSheetState = rememberBottomSheetScaffoldState()
+    val scope = rememberCoroutineScope()
+
+    val mainPoint = Point(lat, lon)
+    val context = LocalContext.current
+
+    val placemarkListener = MapObjectTapListener { mapObject, _ ->
+        val place = viewModel.placemarkMap[mapObject]
+
+        scope.launch { bottomSheetState.bottomSheetState.expand() }
+        viewModel.updateSelectedIndex(0)
+
+        scope.launch {
+            val index = viewModel.places.indexOf(place)
+            pagerState.animateScrollToPage(index)
         }
+
+        true
     }
 
-    pagerState = rememberPagerState(pageCount = { viewModel.places.size })
-    bottomSheetState = rememberBottomSheetScaffoldState()
-    scope = rememberCoroutineScope()
+    LifecycleEventEffect(Lifecycle.Event.ON_START) {
+        viewModel.getPlaceInfo(placeId)
+
+        mapView.onStart()
+        MapKitFactory.getInstance().onStart()
+
+        viewModel.mapCollection = mapView.mapWindow.map.mapObjects
+        moveToStartLocation(mainPoint)
+    }
+
+    LifecycleEventEffect(Lifecycle.Event.ON_STOP) {
+        viewModel.deleteAllPlacemark()
+        mapView.onStop()
+        MapKitFactory.getInstance().onStop()
+    }
 
     LaunchedEffect(viewModel.places) {
         if (viewModel.places.isNotEmpty()) {
             viewModel.addPlacemarkList(
                 list = viewModel.places,
-                bitmap = createBitmapFromVector(R.drawable.ic_pin),
+                bitmap = createBitmapFromVector(R.drawable.ic_pin, context),
                 listener = placemarkListener
             )
         }
     }
 
-    LaunchedEffect(viewModel.selectedIndex) {
-        when (viewModel.selectedIndex) {
-            1 -> prepareMapForSettingsAreaSheetContent(mainPoint)
-        }
-    }
-
-    LaunchedEffect(viewModel.radius) {
+    LaunchedEffect(key1 = viewModel.radius, key2 = viewModel.selectedIndex) {
         if (viewModel.selectedIndex == 1) {
             addCircleArea(
                 radius = viewModel.radius,
-                point = mainPoint
+                point = mainPoint,
+                viewModel = viewModel,
+                context = context
             )
 
             viewModel.getPlacesWithRadius(
@@ -148,24 +154,6 @@ fun MapScreen(
                 lon = lon,
                 radius = viewModel.radius.toInt()
             )
-        }
-    }
-
-    LaunchedEffect(Unit) {
-        viewModel.getPlaceInfo(placeId)
-
-        mapView.onStart()
-        MapKitFactory.getInstance().onStart()
-
-        viewModel.mapCollection = mapView.mapWindow.map.mapObjects
-
-        moveToStartLocation(mainPoint)
-    }
-
-    DisposableEffect(Unit) {
-        onDispose {
-            mapView.onStop()
-            MapKitFactory.getInstance().onStop()
         }
     }
 
@@ -226,11 +214,15 @@ fun MapScreen(
                     }
                 ) { index ->
                     when (index) {
-                        0 ->
-                            PlaceInformationSheetContent(
+                        0 -> PlaceInformationSheetContent(
                                 pagerState = pagerState,
                                 list = viewModel.places,
-                                mapButtonClick = { navigateToYandexMaps(it.coordinates) },
+                                mapButtonClick = {
+                                    navigateToYandexMaps(
+                                        coordinate = it.coordinates,
+                                        context = context
+                                    )
+                                },
                                 moreButtonClick = { navController.navigate(PlaceRoute(it.id)) },
                                 moveToPoint = {
                                     scope.launch {
@@ -239,7 +231,11 @@ fun MapScreen(
                                     moveToStartLocation(it)
                                 }
                             )
-                        1 -> SettingAreaSheetContent()
+                        1 -> SettingAreaSheetContent(
+                            radius = viewModel.radius,
+                            onValueChange = { viewModel.updateRadius(it) },
+                            onReset = { resetSettings(viewModel) }
+                        )
                     }
                 }
             }
@@ -259,51 +255,45 @@ fun MapScreen(
                 }
             )
 
-            Box(
-                modifier = Modifier
-                    .statusBarsPadding()
-                    .padding(
-                        start = DefaultPadding,
-                        top = 10.dp
-                    )
-            ) {
-                ElevatedButton(
-                    onClick = { navController.popBackStack() },
-                    shape = CircleShape,
-                    contentPadding = PaddingValues(0.dp),
-                    modifier = Modifier.size(48.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.White,
-                        contentColor = Color.Black
-                    )
-                ) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                        contentDescription = stringResource(R.string.arrow_back_description)
-                    )
-                }
-            }
+            BackElevatedButton { navController.popBackStack() }
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-private val placemarkListener = MapObjectTapListener { mapObject, _ ->
-    val place = viewModel.placemarkMap[mapObject]
-
-    scope.launch { bottomSheetState.bottomSheetState.expand() }
-    viewModel.updateSelectedIndex(0)
-
-    scope.launch {
-        val index = viewModel.places.indexOf(place)
-        pagerState.animateScrollToPage(index)
+@Composable
+private fun BackElevatedButton(onClick: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .statusBarsPadding()
+            .padding(
+                start = DefaultPadding,
+                top = 10.dp
+            )
+    ) {
+        ElevatedButton(
+            onClick = onClick,
+            shape = CircleShape,
+            contentPadding = PaddingValues(0.dp),
+            modifier = Modifier.size(48.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.White,
+                contentColor = Color.Black
+            )
+        ) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                contentDescription = stringResource(R.string.arrow_back_description)
+            )
+        }
     }
-
-    true
 }
 
 @Composable
-private fun SettingAreaSheetContent() {
+private fun SettingAreaSheetContent(
+    radius: Float,
+    onValueChange: (Float) -> Unit,
+    onReset: () -> Unit
+) {
     Column(
         modifier = Modifier
             .padding(horizontal = DefaultPadding)
@@ -314,8 +304,8 @@ private fun SettingAreaSheetContent() {
         TitleBottomSheet(stringResource(R.string.setting_area))
 
         SquareSlider(
-            value = viewModel.radius,
-            onValueChange = { viewModel.updateRadius(it) },
+            value = radius,
+            onValueChange = onValueChange,
             steps = 10,
             valueRange = 100f..1000f
         )
@@ -325,7 +315,7 @@ private fun SettingAreaSheetContent() {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            val formattedNum = "%.1f".format(Locale.ENGLISH, viewModel.radius / 100)
+            val formattedNum = "%.1f".format(Locale.ENGLISH, radius / 100)
 
             Text(
                 text = "$formattedNum км.",
@@ -334,7 +324,7 @@ private fun SettingAreaSheetContent() {
             )
 
             OutlinedButton(
-                onClick = { resetSettings() }
+                onClick = onReset
             ) {
                 Text(
                     text = stringResource(R.string.reset_settings),
@@ -342,35 +332,22 @@ private fun SettingAreaSheetContent() {
                 )
             }
         }
-
-        Spacer(modifier = Modifier.height(10.dp))
-        AnimatedOutlineBox(stringResource(R.string.filtering)) { }
     }
 }
 
-private fun resetSettings() {
+private fun resetSettings(viewModel: MapViewModel) {
     viewModel.deleteCircleArea()
     viewModel.deleteAllPlacemark()
     viewModel.updateRadius(0f)
     viewModel.resetToDefaultPlace()
 }
 
-private fun prepareMapForSettingsAreaSheetContent(point: Point) {
-    if (viewModel.radius <= 100) {
-        addCircleArea(
-            point = point,
-            radius = 100f
-        )
-
-        viewModel.getPlacesWithRadius(
-            lat = point.latitude,
-            lon = point.longitude,
-            radius = 100
-        )
-    }
-}
-
-private fun addCircleArea(point: Point, radius: Float) {
+private fun addCircleArea(
+    point: Point,
+    radius: Float,
+    context: Context,
+    viewModel: MapViewModel
+) {
     viewModel.addCircleArea(
         point = point,
         radius = radius,
@@ -387,7 +364,7 @@ private fun moveToStartLocation(point: Point) {
     )
 }
 
-private fun createBitmapFromVector(id: Int): Bitmap? {
+private fun createBitmapFromVector(id: Int, context: Context): Bitmap? {
     val drawable = ContextCompat.getDrawable(context, id) ?: return null
     val bitmap = createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight)
 
@@ -398,7 +375,7 @@ private fun createBitmapFromVector(id: Int): Bitmap? {
     return bitmap
 }
 
-private fun navigateToYandexMaps(coordinate: Coordinate?) {
+private fun navigateToYandexMaps(coordinate: Coordinate?, context: Context) {
     coordinate?.let {
         val url = generateUrl(coordinate)
 
