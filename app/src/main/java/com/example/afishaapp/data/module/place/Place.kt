@@ -19,7 +19,7 @@ data class Place (
     val favoritesCount: Int = 0,
     val commentsCount: Int = 0,
     val categories: List<String> = listOf(),
-    val tags: List<String> = listOf(),
+    val tags: List<String>? = listOf(),
     val isClosed: Boolean = true,
     val hasParkingLot: Boolean = false
 )

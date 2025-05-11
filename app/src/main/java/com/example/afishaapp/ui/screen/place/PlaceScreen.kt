@@ -190,7 +190,7 @@ fun PlaceScreen(
                     )
 
                     Spacer(modifier = Modifier.height(10.dp))
-                    TagsRow(it.tags)
+                    TagsRow(it.tags ?: listOf())
 
                     Spacer(modifier = Modifier.height(20.dp))
                     SmoothEventDescription(
