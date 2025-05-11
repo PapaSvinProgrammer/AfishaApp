@@ -20,6 +20,7 @@ import com.example.afishaapp.ui.screen.place.PlaceViewModel
 import com.example.afishaapp.ui.screen.registration.RegistrationViewModel
 import com.example.afishaapp.ui.screen.search.SearchViewModel
 import com.example.afishaapp.ui.screen.start.StartViewModel
+import com.example.afishaapp.ui.screen.startSetting.StartSettingViewModel
 import com.example.afishaapp.ui.screen.ticket.TicketViewModel
 import dagger.Binds
 import dagger.MapKey
@@ -137,4 +138,9 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(SearchViewModel::class)
     fun bindSearchViewModel(viewModel: SearchViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(StartSettingViewModel::class)
+    fun bindStartSettingViewModel(viewModel: StartSettingViewModel): ViewModel
 }

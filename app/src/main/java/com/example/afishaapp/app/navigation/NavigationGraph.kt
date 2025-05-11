@@ -53,6 +53,8 @@ import com.example.afishaapp.ui.screen.search.SearchScreen
 import com.example.afishaapp.ui.screen.search.SearchViewModel
 import com.example.afishaapp.ui.screen.start.StartScreen
 import com.example.afishaapp.ui.screen.start.StartViewModel
+import com.example.afishaapp.ui.screen.startSetting.StartSettingScreen
+import com.example.afishaapp.ui.screen.startSetting.StartSettingViewModel
 import com.example.afishaapp.ui.screen.ticket.TicketScreen
 import com.example.afishaapp.ui.screen.ticket.TicketViewModel
 
@@ -67,7 +69,7 @@ fun NavigationGraph(
 
     NavHost(
         navController = navController,
-        startDestination = HomeRoute,
+        startDestination = StartSettingRoute,
         enterTransition = {
             slideIntoContainer(
                 towards = AnimatedContentTransitionScope.SlideDirection.Start,
@@ -305,6 +307,15 @@ fun NavigationGraph(
                 navController = navController,
                 viewModel = viewModel,
                 eventId = route.eventId
+            )
+        }
+
+        composable<StartSettingRoute> {
+            val viewModel: StartSettingViewModel = viewModel(factory = viewModelFactory)
+
+            StartSettingScreen(
+                navController = navController,
+                viewModel = viewModel
             )
         }
     }
