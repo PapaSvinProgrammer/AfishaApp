@@ -33,7 +33,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.afishaapp.data.room.ticket.TicketEntity
-import com.example.afishaapp.ui.screen.detailTicket.drawTicketView
+import com.example.afishaapp.ui.screen.ticketDetail.drawTicketView
 import com.example.afishaapp.ui.widget.row.SubwayRow
 
 @Composable

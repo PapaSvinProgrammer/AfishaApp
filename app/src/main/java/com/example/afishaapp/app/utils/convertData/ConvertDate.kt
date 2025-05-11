@@ -9,6 +9,7 @@ import java.time.LocalDate
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
+import java.util.Date
 import java.util.Locale
 
 private const val DEFAULT_RESPONSE = "Уточняйте на сайте"
@@ -85,6 +86,11 @@ object ConvertDate {
         val time = localDate.plusDays(days.toLong()).toEpochSecond()
 
         return convertSelectTime(time)
+    }
+
+    fun convertMillisToDate(millis: Long): String {
+        val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        return formatter.format(Date(millis))
     }
 
     private fun convertDate(time: Long): String {

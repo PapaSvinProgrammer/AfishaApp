@@ -117,6 +117,9 @@
     <string name="favorite_empty_list_description">Ставьте лайки событиям, чтобы сохранить их</string>
     <string name="apply">Применить</string>
     <string name="all">Все</string>
+    <string name="select_city">Выберете город</string>
+    <string name="select_city_description">Мы покажем, что в нем можно найти</string>
+    <string name="skip">Пропустить</string>
 
     <string-array name="ticket_segmented_button">
         <item>"События"</item>

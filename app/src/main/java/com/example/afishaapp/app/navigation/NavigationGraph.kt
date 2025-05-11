@@ -24,8 +24,8 @@ import com.example.afishaapp.ui.screen.commentListEvent.CommentListEventScreen
 import com.example.afishaapp.ui.screen.commentListEvent.CommentListEventViewModel
 import com.example.afishaapp.ui.screen.commentListPlace.CommentListPlaceScreen
 import com.example.afishaapp.ui.screen.commentListPlace.CommentListPlaceViewModel
-import com.example.afishaapp.ui.screen.detailTicket.DetailTicketScreen
-import com.example.afishaapp.ui.screen.detailTicket.DetailTicketViewModel
+import com.example.afishaapp.ui.screen.ticketDetail.DetailTicketScreen
+import com.example.afishaapp.ui.screen.ticketDetail.DetailTicketViewModel
 import com.example.afishaapp.ui.screen.entry.EntryScreen
 import com.example.afishaapp.ui.screen.entry.EntryViewModel
 import com.example.afishaapp.ui.screen.event.EventScreen

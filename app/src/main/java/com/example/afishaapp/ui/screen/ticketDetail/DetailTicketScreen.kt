@@ -1,4 +1,4 @@
-package com.example.afishaapp.ui.screen.detailTicket
+package com.example.afishaapp.ui.screen.ticketDetail
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
