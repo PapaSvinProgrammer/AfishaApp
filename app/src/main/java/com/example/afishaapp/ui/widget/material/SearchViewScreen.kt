@@ -1,6 +1,8 @@
 package com.example.afishaapp.ui.widget.material
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -45,7 +47,9 @@ fun SearchViewScreen(
     onClick: (ResultItem) -> Unit
 ) {
     AnimatedVisibility(
-        visible = expanded
+        visible = expanded,
+        enter = slideInVertically(initialOffsetY = { it }),
+        exit = slideOutVertically(targetOffsetY = { it })
     ) {
         Column(
             modifier = Modifier

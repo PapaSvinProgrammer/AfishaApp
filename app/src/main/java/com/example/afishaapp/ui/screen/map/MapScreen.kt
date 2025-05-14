@@ -108,7 +108,7 @@ fun MapScreen(
 
         scope.launch {
             val index = viewModel.places.indexOf(place)
-            pagerState.animateScrollToPage(index)
+            if (pagerState.pageCount > 0) pagerState.animateScrollToPage(index)
         }
 
         true

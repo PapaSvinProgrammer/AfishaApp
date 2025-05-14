@@ -6,7 +6,10 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
+import com.example.afishaapp.data.module.QueryParameters
+import com.example.afishaapp.data.module.event.Event
 import com.example.afishaapp.data.module.search.ResultItem
+import com.example.afishaapp.domain.http.GetEvent
 import com.example.afishaapp.domain.http.SearchUseCase
 import com.example.afishaapp.domain.repository.PreferencesRepository
 import com.example.afishaapp.domain.repository.room.SearchHistoryRepository
@@ -19,10 +22,15 @@ class SearchViewModel @Inject constructor(
     private val searchUseCase: SearchUseCase,
     private val preferencesRepository: PreferencesRepository,
     private val searchHistoryRepository: SearchHistoryRepository,
+    private val getEvent: GetEvent,
     getSearchHistory: GetSearchHistory
 ): ViewModel() {
-    private var currentLocation by mutableStateOf("")
     private var nextPage = 1
+
+    var currentLocation by mutableStateOf("")
+        private set
+    var events by mutableStateOf<List<Event>>(listOf())
+        private set
 
     var query by mutableStateOf("")
         private set
@@ -35,6 +43,20 @@ class SearchViewModel @Inject constructor(
 
     var searchDialogState by mutableStateOf(false)
         private set
+
+    fun getDefaultEvents(location: String) {
+        val queryParameters = QueryParameters(
+            locationSlug = location
+        )
+
+        viewModelScope.launch {
+            val response = getEvent.getEvents(queryParameters)
+
+            response?.let {
+                events = it.results
+            }
+        }
+    }
 
     fun search(q: String) {
         clearResultItems()

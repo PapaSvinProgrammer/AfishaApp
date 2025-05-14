@@ -38,8 +38,8 @@ import com.example.afishaapp.app.navigation.EventListRoute
 import com.example.afishaapp.app.navigation.EventRoute
 import com.example.afishaapp.app.navigation.MovieListRoute
 import com.example.afishaapp.app.navigation.MovieRoute
-import com.example.afishaapp.data.module.event.EventResponse
-import com.example.afishaapp.data.module.movie.MovieResponse
+import com.example.afishaapp.data.module.event.Event
+import com.example.afishaapp.data.module.movie.Movie
 import com.example.afishaapp.domain.module.EventCategory
 import com.example.afishaapp.ui.screen.bottomSheet.CategoryEventBottomSheet
 import com.example.afishaapp.ui.screen.bottomSheet.CityBottomSheet
@@ -138,7 +138,7 @@ fun HomeScreen(
                 )
             }
 
-            EventList(viewModel.eventResponse) {
+            EventList(viewModel.events) {
                 navController.navigate(EventRoute(it))
             }
 
@@ -156,7 +156,7 @@ fun HomeScreen(
                 )
             }
 
-            MovieList(viewModel.movieResponse) {
+            MovieList(viewModel.movies) {
                 navController.navigate(MovieRoute(it))
             }
 
@@ -175,7 +175,7 @@ fun HomeScreen(
                 )
             }
 
-            ConcertList(viewModel.eventConcert) {
+            ConcertList(viewModel.eventsConcert) {
                 navController.navigate(EventRoute(it))
             }
 
@@ -194,7 +194,7 @@ fun HomeScreen(
                 )
             }
 
-            ExhibitionList(viewModel.eventExhibition) {
+            ExhibitionList(viewModel.eventsExhibition) {
                 navController.navigate(EventRoute(it))
             }
         }
@@ -226,7 +226,7 @@ fun HomeScreen(
 }
 
 @Composable
-private fun EventList(eventResponse: EventResponse?, onClick: (Int) -> Unit) {
+fun EventList(events: List<Event>, onClick: (Int) -> Unit) {
     val eventListState = rememberLazyListState()
     val eventFlingBehavior = rememberSnapFlingBehavior(eventListState, SnapPosition.Start)
 
@@ -236,26 +236,24 @@ private fun EventList(eventResponse: EventResponse?, onClick: (Int) -> Unit) {
         state = eventListState,
         flingBehavior = eventFlingBehavior
     ) {
-        if (eventResponse == null) {
+        if (events.isEmpty()) {
             items(3) {
                 ShimmerEventCard()
             }
         }
 
-        eventResponse?.let {
-            items(it.results) { event ->
-                EventCard(
-                    event = event
-                ) {
-                    onClick.invoke(event.id)
-                }
+        items(events) { event ->
+            EventCard(
+                event = event
+            ) {
+                onClick.invoke(event.id)
             }
         }
     }
 }
 
 @Composable
-private fun MovieList(movieResponse: MovieResponse?, onClick: (Int) -> Unit) {
+fun MovieList(movies: List<Movie>, onClick: (Int) -> Unit) {
     val movieListState = rememberLazyListState()
     val movieFlingBehavior = rememberSnapFlingBehavior(movieListState, SnapPosition.Start)
 
@@ -265,27 +263,25 @@ private fun MovieList(movieResponse: MovieResponse?, onClick: (Int) -> Unit) {
         state = movieListState,
         flingBehavior = movieFlingBehavior
     ) {
-        if (movieResponse == null) {
+        if (movies.isEmpty()) {
             items(3) {
                 ShimmerMovieCard()
             }
         }
 
-        movieResponse?.let {
-            items(it.results) { movie ->
-                MovieCard(
-                    movie = movie,
-                    onClick = {
-                        onClick.invoke(movie.id)
-                    }
-                )
-            }
+        items(movies) { movie ->
+            MovieCard(
+                movie = movie,
+                onClick = {
+                    onClick.invoke(movie.id)
+                }
+            )
         }
     }
 }
 
 @Composable
-private fun ConcertList(eventConcert: EventResponse?, onClick: (Int) -> Unit) {
+private fun ConcertList(eventsConcert: List<Event>, onClick: (Int) -> Unit) {
     val concertListState = rememberLazyListState()
     val concertFlingBehavior = rememberSnapFlingBehavior(concertListState, SnapPosition.Start)
 
@@ -295,27 +291,25 @@ private fun ConcertList(eventConcert: EventResponse?, onClick: (Int) -> Unit) {
         state = concertListState,
         flingBehavior = concertFlingBehavior
     ) {
-        if (eventConcert == null) {
+        if (eventsConcert.isEmpty()) {
             items(3) {
                 ShimmerEventCard()
             }
         }
 
-        eventConcert?.let {
-            items(it.results) { event ->
-                EventCard(
-                    event = event,
-                    onClick = {
-                        onClick.invoke(event.id)
-                    }
-                )
-            }
+        items(eventsConcert) { event ->
+            EventCard(
+                event = event,
+                onClick = {
+                    onClick.invoke(event.id)
+                }
+            )
         }
     }
 }
 
 @Composable
-private fun ExhibitionList(eventExhibition: EventResponse?, onClick: (Int) -> Unit) {
+private fun ExhibitionList(eventsExhibition: List<Event>, onClick: (Int) -> Unit) {
     val exhibitionListState = rememberLazyListState()
     val exhibitionFlingBehavior = rememberSnapFlingBehavior(exhibitionListState, SnapPosition.Start)
 
@@ -326,21 +320,19 @@ private fun ExhibitionList(eventExhibition: EventResponse?, onClick: (Int) -> Un
         state = exhibitionListState,
         flingBehavior = exhibitionFlingBehavior
     ) {
-        if (eventExhibition == null) {
+        if (eventsExhibition.isEmpty()) {
             items(3) {
                 ShimmerEventCard()
             }
         }
 
-        eventExhibition?.let {
-            items(it.results) { event ->
-                EventCard(
-                    event = event,
-                    onClick = {
-                        onClick.invoke(event.id)
-                    }
-                )
-            }
+        items(eventsExhibition) { event ->
+            EventCard(
+                event = event,
+                onClick = {
+                    onClick.invoke(event.id)
+                }
+            )
         }
     }
 }

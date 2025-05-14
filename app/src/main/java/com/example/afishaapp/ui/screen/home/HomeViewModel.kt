@@ -8,8 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.afishaapp.data.module.Category
 import com.example.afishaapp.data.module.City
 import com.example.afishaapp.data.module.QueryParameters
-import com.example.afishaapp.data.module.event.EventResponse
-import com.example.afishaapp.data.module.movie.MovieResponse
+import com.example.afishaapp.data.module.event.Event
+import com.example.afishaapp.data.module.movie.Movie
 import com.example.afishaapp.domain.http.GetEvent
 import com.example.afishaapp.domain.http.GetMovie
 import com.example.afishaapp.domain.module.EventCategory
@@ -42,13 +42,13 @@ class HomeViewModel @Inject constructor(
     var currentLocationSlug by mutableStateOf("")
         private set
 
-    var eventResponse by mutableStateOf<EventResponse?>(null)
+    var events by mutableStateOf<List<Event>>(listOf())
         private set
-    var movieResponse by mutableStateOf<MovieResponse?>(null)
+    var movies by mutableStateOf<List<Movie>>(listOf())
         private set
-    var eventConcert by mutableStateOf<EventResponse?>(null)
+    var eventsConcert by mutableStateOf<List<Event>>(listOf())
         private set
-    var eventExhibition by mutableStateOf<EventResponse?>(null)
+    var eventsExhibition by mutableStateOf<List<Event>>(listOf())
         private set
 
     var categoryEvent by mutableStateOf<List<Category>>(listOf())
@@ -113,7 +113,11 @@ class HomeViewModel @Inject constructor(
                 category = category.slug
             )
 
-            eventResponse = getEvent.getEvents(queryParameters)
+            val response = getEvent.getEvents(queryParameters)
+
+            response?.let {
+                events = it.results
+            }
         }
 
         viewModelScope.launch(Dispatchers.IO) {
@@ -122,7 +126,11 @@ class HomeViewModel @Inject constructor(
                 category = EventCategory.CONCERT.slug
             )
 
-            eventConcert = getEvent.getEvents(queryParameters)
+            val response = getEvent.getEvents(queryParameters)
+
+            response?.let {
+                eventsConcert = response.results
+            }
         }
 
         viewModelScope.launch(Dispatchers.IO) {
@@ -131,15 +139,21 @@ class HomeViewModel @Inject constructor(
                 category = EventCategory.EXHIBITION.slug
             )
 
-            eventExhibition = getEvent.getEvents(queryParameters)
+            val response = getEvent.getEvents(queryParameters)
+
+            response?.let {
+                eventsExhibition = response.results
+            }
         }
     }
 
-    fun getMovies(
-        locationSlug: String = currentLocationSlug
-    ) {
+    fun getMovies(locationSlug: String = currentLocationSlug) {
         viewModelScope.launch(Dispatchers.IO) {
-            movieResponse = getMovie.getMoviesByRating(locationSlug)
+            val response = getMovie.getMoviesByRating(locationSlug)
+
+            response?.let {
+                movies = it.results
+            }
         }
     }
 

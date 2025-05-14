@@ -40,6 +40,7 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -48,6 +49,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import com.example.afishaapp.R
 import com.example.afishaapp.app.navigation.AboutMovieRoute
 import com.example.afishaapp.app.utils.convertData.ConvertCountTitle
@@ -114,29 +117,31 @@ fun MovieScreen(
                 }
             },
             actions = {
-                IconButton(
-                    onClick = {
-                        handleFavorite(viewModel)
+                if (viewModel.movie != null) {
+                    IconButton(
+                        onClick = {
+                            handleFavorite(viewModel)
+                        }
+                    ) {
+                        Icon(
+                            imageVector = if (viewModel.favoriteState)
+                                Icons.Default.Favorite
+                            else
+                                Icons.Default.FavoriteBorder,
+                            contentDescription = stringResource(R.string.favorite_text),
+                            tint = Color.Red
+                        )
                     }
-                ) {
-                    Icon(
-                        imageVector = if (viewModel.favoriteState)
-                            Icons.Default.Favorite
-                        else
-                            Icons.Default.FavoriteBorder,
-                        contentDescription = stringResource(R.string.favorite_text),
-                        tint = Color.Red
-                    )
-                }
 
-                IconButton(
-                    onClick = {  }
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_share),
-                        contentDescription = stringResource(R.string.share),
-                        tint = color
-                    )
+                    IconButton(
+                        onClick = {  }
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_share),
+                            contentDescription = stringResource(R.string.share),
+                            tint = color
+                        )
+                    }
                 }
             }
         )
@@ -154,7 +159,10 @@ fun MovieScreen(
                         expandedTopBarHeight = 520.dp
                     ) {
                         AsyncImage(
-                            model = it.poster?.thumbnails?.lowImage,
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data(it.poster?.thumbnails?.lowImage)
+                                .crossfade(true)
+                                .build(),
                             contentDescription = null,
                             contentScale = ContentScale.Crop,
                             modifier = Modifier

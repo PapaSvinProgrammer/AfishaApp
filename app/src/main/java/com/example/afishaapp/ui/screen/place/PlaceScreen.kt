@@ -101,41 +101,43 @@ fun PlaceScreen(
                 }
             },
             actions = {
-                val favoriteIcon = if (viewModel.favoriteState)
-                    Icons.Default.Favorite
-                else
-                    Icons.Default.FavoriteBorder
+                if (viewModel.place != null) {
+                    val favoriteIcon = if (viewModel.favoriteState)
+                        Icons.Default.Favorite
+                    else
+                        Icons.Default.FavoriteBorder
 
-                IconButton(
-                    onClick = {
-                        viewModel.place?.let {
-                            navController.navigate(
-                                MapRoute(
-                                    placeId = placeId,
-                                    lat = it.coordinates?.lat ?: 0.0,
-                                    lon = it.coordinates?.lon ?: 0.0
+                    IconButton(
+                        onClick = {
+                            viewModel.place?.let {
+                                navController.navigate(
+                                    MapRoute(
+                                        placeId = placeId,
+                                        lat = it.coordinates?.lat ?: 0.0,
+                                        lon = it.coordinates?.lon ?: 0.0
+                                    )
                                 )
-                            )
+                            }
                         }
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_map),
+                            tint = color,
+                            contentDescription = stringResource(R.string.favorite_text)
+                        )
                     }
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_map),
-                        tint = color,
-                        contentDescription = stringResource(R.string.favorite_text)
-                    )
-                }
 
-                IconButton(
-                    onClick = {
-                        handleFavorite(viewModel)
+                    IconButton(
+                        onClick = {
+                            handleFavorite(viewModel)
+                        }
+                    ) {
+                        Icon(
+                            imageVector = favoriteIcon,
+                            tint = Color.Red,
+                            contentDescription = stringResource(R.string.favorite_text)
+                        )
                     }
-                ) {
-                    Icon(
-                        imageVector = favoriteIcon,
-                        tint = Color.Red,
-                        contentDescription = stringResource(R.string.favorite_text)
-                    )
                 }
             }
         )

@@ -78,9 +78,7 @@ fun EventScreen(
     viewModel: EventViewModel,
     eventId: Int
 ) {
-    val derivedEventId by remember {
-        derivedStateOf { eventId }
-    }
+    val derivedEventId by remember { derivedStateOf { eventId } }
 
     viewModel.getEventInfo(derivedEventId)
     viewModel.getComments(derivedEventId)
@@ -123,29 +121,31 @@ fun EventScreen(
                 }
             },
             actions = {
-                IconButton(
-                    onClick = {
-                        handleLike(viewModel)
-                    }
-                ) {
-                    Icon(
-                        imageVector = if (viewModel.favoriteState)
+                if (viewModel.event != null) {
+                    IconButton(
+                        onClick = {
+                            handleLike(viewModel)
+                        }
+                    ) {
+                        Icon(
+                            imageVector = if (viewModel.favoriteState)
                                 Icons.Default.Favorite
                             else
                                 Icons.Default.FavoriteBorder,
-                        contentDescription = stringResource(R.string.favorite_text),
-                        tint = Color.Red
-                    )
-                }
+                            contentDescription = stringResource(R.string.favorite_text),
+                            tint = Color.Red
+                        )
+                    }
 
-                IconButton(
-                    onClick = {  }
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_share),
-                        contentDescription = stringResource(R.string.share),
-                        tint = color
-                    )
+                    IconButton(
+                        onClick = {  }
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_share),
+                            contentDescription = stringResource(R.string.share),
+                            tint = color
+                        )
+                    }
                 }
             }
         )

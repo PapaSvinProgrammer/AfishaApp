@@ -2,16 +2,20 @@ package com.example.afishaapp.ui.screen.search
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.afishaapp.app.navigation.EventRoute
 import com.example.afishaapp.app.navigation.PlaceRoute
 import com.example.afishaapp.data.module.search.ResultItem
 import com.example.afishaapp.ui.screen.dialog.SearchFilterDialog
+import com.example.afishaapp.ui.screen.home.EventList
 import com.example.afishaapp.ui.screen.main.bottomBarVisibilityState
 import com.example.afishaapp.ui.widget.material.SearchLayout
 
@@ -23,6 +27,10 @@ fun SearchScreen(
 ) {
     viewModel.getCurrentPlace()
     val searchHistoryLazyPagingItems = viewModel.resultHistory.collectAsLazyPagingItems()
+
+    LaunchedEffect(viewModel.currentLocation) {
+        viewModel.getDefaultEvents(viewModel.currentLocation)
+    }
 
     LaunchedEffect(viewModel.expanded) {
         bottomBarVisibilityState.value = !viewModel.expanded
@@ -52,6 +60,13 @@ fun SearchScreen(
             },
             onLoadMore = { viewModel.loadMoreItems() },
             onClickSettings = { viewModel.updateSearchDialogState(true) }
+        )
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        EventList(
+            events = viewModel.events,
+            onClick = { navController.navigate(EventRoute(it)) }
         )
     }
 
