@@ -29,8 +29,4 @@ class LikeEventRepositoryRoom @Inject constructor(
     override suspend fun getEventById(eventId: Int): EventEntity? {
         return dao.getEventById(eventId)
     }
-
-    override suspend fun search(q: String): List<EventEntity> {
-        TODO("Not yet implemented")
-    }
 }

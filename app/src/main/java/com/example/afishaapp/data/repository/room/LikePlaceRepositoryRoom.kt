@@ -29,8 +29,4 @@ class LikePlaceRepositoryRoom @Inject constructor(
     override suspend fun getPlaceById(placeId: Int): PlaceEntity? {
         return dao.getPlaceById(placeId)
     }
-
-    override suspend fun search(q: String): List<PlaceEntity> {
-        TODO("Not yet implemented")
-    }
 }

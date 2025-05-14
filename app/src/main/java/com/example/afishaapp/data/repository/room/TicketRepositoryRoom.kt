@@ -25,7 +25,7 @@ class TicketRepositoryRoom @Inject constructor(private val dao: TicketDao): Tick
     }
 
     override suspend fun search(q: String): List<TicketEntity> {
-        TODO("Not yet implemented")
+        return dao.search(q)
     }
 
     override suspend fun insert(event: Event) {

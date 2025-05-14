@@ -36,8 +36,10 @@ import androidx.navigation.NavController
 import com.example.afishaapp.R
 import com.example.afishaapp.app.navigation.DetailTicketRoute
 import com.example.afishaapp.ui.screen.bottomSheet.filter.TicketFilterBottomSheet
+import com.example.afishaapp.ui.screen.main.bottomBarVisibilityState
 import com.example.afishaapp.ui.theme.DefaultPadding
 import com.example.afishaapp.ui.widget.listItem.TicketCard
+import com.example.afishaapp.ui.widget.material.SearchViewScreen
 import com.example.afishaapp.ui.widget.text.TitleTopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -51,6 +53,10 @@ fun TicketScreen(
 
     LaunchedEffect(Unit) {
         viewModel.updateTopBarVisibilityState(true)
+    }
+
+    LaunchedEffect(viewModel.expanded) {
+        bottomBarVisibilityState.value = !viewModel.expanded
     }
 
     Scaffold(
@@ -72,7 +78,9 @@ fun TicketScreen(
                             )
                         }
 
-                        IconButton(onClick = { }) {
+                        IconButton(
+                            onClick = { viewModel.updateExpanded(true) }
+                        ) {
                             Icon(
                                 imageVector = Icons.Rounded.Search,
                                 contentDescription = stringResource(R.string.search_title_text)
@@ -98,6 +106,18 @@ fun TicketScreen(
             )
         }
     }
+
+    SearchViewScreen(
+        query = viewModel.query,
+        expanded = viewModel.expanded,
+        onQueryChange = {
+            viewModel.updateQuery(it)
+            viewModel.search(it)
+        },
+        onExpandedChange = { viewModel.updateExpanded(it) },
+        searchResult = viewModel.searchResult,
+        onClick = {  }
+    )
 
     if (viewModel.filterBottomSheetState) {
         TicketFilterBottomSheet(

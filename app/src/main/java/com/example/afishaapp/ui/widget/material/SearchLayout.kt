@@ -48,10 +48,11 @@ fun SearchLayout(
     onQueryChange: (String) -> Unit,
     onExpandedChange: (Boolean) -> Unit,
     onClick: (ResultItem) -> Unit,
-    onLoadMore: () -> Unit,
-    onClickSettings: () -> Unit,
+    onLoadMore: (() -> Unit)? = null,
+    onClickSettings: (() -> Unit)? = null,
     searchResult: List<ResultItem>,
-    historyResult: LazyPagingItems<SearchHistoryEntity>
+    historyResult: LazyPagingItems<SearchHistoryEntity>? = null,
+
 ) {
     Box(
         modifier = Modifier
@@ -70,13 +71,13 @@ fun SearchLayout(
                     expanded = expanded,
                     onExpandedChange = onExpandedChange,
                     leadingIcon = {
-                        LeadingIcon(
+                        SearchLeadingIcon(
                             expanded = expanded,
                             onExpandedChange = onExpandedChange
                         )
                     },
                     trailingIcon = {
-                        TrailingIcon(
+                        SearchTrailingIcon(
                             query = query,
                             expanded = expanded,
                             onQueryChange = onQueryChange,
@@ -90,7 +91,7 @@ fun SearchLayout(
             expanded = expanded,
             onExpandedChange = onExpandedChange
         ) {
-            if (query.isEmpty()) {
+            if (query.isEmpty() && historyResult != null) {
                 HistoryLayout(
                     lazyPagingItems = historyResult,
                     onQueryChange = onQueryChange
@@ -108,15 +109,15 @@ fun SearchLayout(
 }
 
 @Composable
-private fun TrailingIcon(
+fun SearchTrailingIcon(
     query: String,
     expanded: Boolean,
     onQueryChange: (String) -> Unit,
     onExpandedChange: (Boolean) -> Unit,
-    onClickSettings: () -> Unit
+    onClickSettings: (() -> Unit)?
 ) {
     if (!expanded) {
-        IconButton(onClick = onClickSettings) {
+        IconButton(onClick = { onClickSettings?.invoke() }) {
             Icon(
                 imageVector = Icons.Default.MoreVert,
                 contentDescription = null
@@ -136,7 +137,7 @@ private fun TrailingIcon(
 }
 
 @Composable
-private fun LeadingIcon(
+fun SearchLeadingIcon(
     expanded: Boolean,
     onExpandedChange: (Boolean) -> Unit
 ) {
@@ -191,11 +192,11 @@ private fun HistoryLayout(
 private fun SearchResultLayout(
     searchResult: List<ResultItem>,
     onClick: (ResultItem) -> Unit,
-    onLoadMore: () -> Unit
+    onLoadMore: (() -> Unit)?
 ) {
     EndlessLazyColumn(
         items = searchResult,
-        loadMore = onLoadMore
+        loadMore = { onLoadMore?.invoke() }
     ) {
         ListItem(
             modifier = Modifier.clickable { onClick(it) },

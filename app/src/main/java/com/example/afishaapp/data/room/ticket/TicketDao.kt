@@ -24,4 +24,7 @@ interface TicketDao {
 
     @Query("DELETE FROM Ticket WHERE event_id = :eventId")
     suspend fun delete(eventId: Int)
+
+    @Query("SELECT * FROM Ticket WHERE name LIKE '%' || :q || '%'")
+    suspend fun search(q: String): List<TicketEntity>
 }

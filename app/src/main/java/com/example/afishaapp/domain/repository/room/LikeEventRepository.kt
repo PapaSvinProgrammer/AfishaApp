@@ -9,5 +9,4 @@ interface LikeEventRepository {
     suspend fun getByDefault(): List<EventEntity>
     suspend fun getByName(): List<EventEntity>
     suspend fun getEventById(eventId: Int): EventEntity?
-    suspend fun search(q: String): List<EventEntity>
 }

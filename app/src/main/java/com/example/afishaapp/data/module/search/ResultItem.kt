@@ -10,7 +10,7 @@ data class ResultItem(
     val favoriteCount: Int,
     val commentsCount: Int,
     val description: String,
-    val place: Place,
+    val place: Place? = null,
     @SerializedName("daterange")
     val dateRange: DateRange,
     val address: String

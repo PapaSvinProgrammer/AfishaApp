@@ -5,6 +5,7 @@ import com.example.afishaapp.data.module.event.Event
 import com.example.afishaapp.data.module.image.ImageItem
 import com.example.afishaapp.data.module.image.Thumbnail
 import com.example.afishaapp.data.module.search.DateRange
+import com.example.afishaapp.data.module.search.ResultItem
 import com.example.afishaapp.data.room.likeEvent.EventEntity
 import com.example.afishaapp.data.room.ticket.TicketEntity
 

@@ -5,6 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.afishaapp.app.utils.convertClass.toResultItemList
+import com.example.afishaapp.data.module.search.ResultItem
 import com.example.afishaapp.data.room.ticket.TicketEntity
 import com.example.afishaapp.domain.module.TicketFilterType
 import com.example.afishaapp.domain.repository.room.TicketRepository
@@ -24,6 +26,21 @@ class TicketViewModel @Inject constructor(
 
     var tickets by mutableStateOf<List<TicketEntity>>(listOf())
         private set
+    var searchResult by mutableStateOf<List<ResultItem>>(listOf())
+        private set
+
+    var query by mutableStateOf("")
+        private set
+    var expanded by mutableStateOf(false)
+        private set
+
+    fun updateQuery(query: String) {
+        this.query = query
+    }
+
+    fun updateExpanded(expanded: Boolean) {
+        this.expanded = expanded
+    }
 
     fun updateCurrentFilterType(type: TicketFilterType) {
         currentFilterType = type
@@ -42,6 +59,14 @@ class TicketViewModel @Inject constructor(
             TicketFilterType.NAME -> getTicketsByName()
             TicketFilterType.START_DATE -> getTicketsByStartDate()
             TicketFilterType.BUY_DATE -> getTicketsByBuyDate()
+        }
+    }
+
+    fun search(q: String) {
+        if (q.length < 3) return
+
+        viewModelScope.launch(Dispatchers.IO) {
+            searchResult = ticketRepository.search(q).toResultItemList()
         }
     }
 
