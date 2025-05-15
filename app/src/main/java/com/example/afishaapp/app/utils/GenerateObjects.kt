@@ -21,3 +21,18 @@ val subwayIcon = mapOf(
     "kzn" to R.drawable.ic_metro_kzn,
     "nnv" to R.drawable.ic_metro_nnv
 )
+
+val categoryList = listOf(
+    "Кино" to R.drawable.ic_cinema,
+    "Концерт" to R.drawable.ic_speaker,
+    "Театр" to R.drawable.ic_theater,
+    "Квест" to R.drawable.ic_detective,
+    "Выставка" to R.drawable.ic_image,
+    "Для детей" to R.drawable.ic_lolipop,
+    "Музей" to R.drawable.ic_museum,
+    "Вечеринка" to R.drawable.ic_party,
+    "Для бизнеса" to R.drawable.ic_rating,
+    "Благотворительность" to R.drawable.ic_charity,
+    "Мода и красота" to R.drawable.ic_fashion,
+    "Обучающее" to R.drawable.ic_books
+)

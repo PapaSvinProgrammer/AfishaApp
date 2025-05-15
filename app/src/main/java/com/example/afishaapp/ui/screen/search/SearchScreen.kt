@@ -1,23 +1,41 @@
 package com.example.afishaapp.ui.screen.search
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.afishaapp.R
+import com.example.afishaapp.app.navigation.EventListRoute
 import com.example.afishaapp.app.navigation.EventRoute
 import com.example.afishaapp.app.navigation.PlaceRoute
+import com.example.afishaapp.app.utils.categoryList
 import com.example.afishaapp.data.module.search.ResultItem
 import com.example.afishaapp.ui.screen.dialog.SearchFilterDialog
 import com.example.afishaapp.ui.screen.home.EventList
 import com.example.afishaapp.ui.screen.main.bottomBarVisibilityState
+import com.example.afishaapp.ui.theme.DefaultPadding
+import com.example.afishaapp.ui.widget.chip.AboutChipInfo
 import com.example.afishaapp.ui.widget.material.SearchLayout
+import com.example.afishaapp.ui.widget.row.SelectRow
 
 @Composable
 fun SearchScreen(
@@ -62,22 +80,80 @@ fun SearchScreen(
             onClickSettings = { viewModel.updateSearchDialogState(true) }
         )
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(DefaultPadding))
 
-        EventList(
-            events = viewModel.events,
-            onClick = { navController.navigate(EventRoute(it)) }
-        )
+        Column(
+            modifier = Modifier.verticalScroll(rememberScrollState())
+        ) {
+            Spacer(modifier = Modifier.height(20.dp))
+
+            SelectRow(
+                text = stringResource(R.string.future_event),
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                onClick = { title ->
+                    navController.navigate(
+                        EventListRoute(
+                            title = title,
+                            categorySlug = "",
+                            location = viewModel.currentLocation
+                        )
+                    )
+                }
+            )
+
+            EventList(
+                events = viewModel.events,
+                onClick = { navController.navigate(EventRoute(it)) }
+            )
+
+            Text(
+                modifier = Modifier.padding(DefaultPadding),
+                text = stringResource(R.string.categories),
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp
+            )
+
+            GenerateCategoryLayout()
+            Spacer(modifier = Modifier.height(DefaultPadding))
+        }
+
+        if (viewModel.searchDialogState) {
+            SearchFilterDialog(
+                onConfirmClick = {
+                    //TODO
+                    viewModel.updateSearchDialogState(false)
+                },
+                onDismissClick = { viewModel.updateSearchDialogState(false) }
+            )
+        }
     }
+}
 
-    if (viewModel.searchDialogState) {
-        SearchFilterDialog(
-            onConfirmClick = {
-                //TODO
-                viewModel.updateSearchDialogState(false)
-            },
-            onDismissClick = { viewModel.updateSearchDialogState(false) }
-        )
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun GenerateCategoryLayout() {
+    FlowRow(
+        maxItemsInEachRow = 3,
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+        modifier = Modifier.padding(horizontal = 10.dp)
+    ) {
+        categoryList.forEach {
+            AboutChipInfo(
+                modifier = Modifier.weight(1f),
+                titleSize = 14.sp,
+                title = it.first,
+                icon = {
+                    Icon(
+                        painter = painterResource(it.second),
+                        contentDescription = null,
+                        modifier = Modifier.size(40.dp)
+                    )
+                    Spacer(modifier = Modifier.height(5.dp))
+                }
+            )
+        }
     }
 }
 
