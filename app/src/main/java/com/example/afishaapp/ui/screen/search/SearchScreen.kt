@@ -1,5 +1,6 @@
 package com.example.afishaapp.ui.screen.search
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -27,6 +28,7 @@ import com.example.afishaapp.R
 import com.example.afishaapp.app.navigation.EventListRoute
 import com.example.afishaapp.app.navigation.EventRoute
 import com.example.afishaapp.app.navigation.PlaceRoute
+import com.example.afishaapp.app.utils.CategoryNode
 import com.example.afishaapp.app.utils.categoryList
 import com.example.afishaapp.data.module.search.ResultItem
 import com.example.afishaapp.ui.screen.dialog.SearchFilterDialog
@@ -114,7 +116,18 @@ fun SearchScreen(
                 fontSize = 18.sp
             )
 
-            GenerateCategoryLayout()
+            GenerateCategoryLayout(
+                onClick = {
+                    navController.navigate(
+                        EventListRoute(
+                            title = it.title,
+                            categorySlug = it.slug,
+                            location = viewModel.currentLocation
+                        )
+                    )
+                }
+            )
+
             Spacer(modifier = Modifier.height(DefaultPadding))
         }
 
@@ -132,7 +145,7 @@ fun SearchScreen(
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun GenerateCategoryLayout() {
+private fun GenerateCategoryLayout(onClick: (CategoryNode) -> Unit) {
     FlowRow(
         maxItemsInEachRow = 3,
         horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -141,12 +154,14 @@ private fun GenerateCategoryLayout() {
     ) {
         categoryList.forEach {
             AboutChipInfo(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier
+                    .weight(1f)
+                    .clickable { onClick(it) },
                 titleSize = 14.sp,
-                title = it.first,
+                title = it.title,
                 icon = {
                     Icon(
-                        painter = painterResource(it.second),
+                        painter = painterResource(it.icon),
                         contentDescription = null,
                         modifier = Modifier.size(40.dp)
                     )

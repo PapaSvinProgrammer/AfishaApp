@@ -2,6 +2,12 @@ package com.example.afishaapp.app.utils
 
 import com.example.afishaapp.R
 
+data class CategoryNode(
+    val title: String,
+    val slug: String,
+    val icon: Int
+)
+
 private val imageArray = listOf(
     R.drawable.account_cat,
     R.drawable.account_bear,
@@ -23,16 +29,16 @@ val subwayIcon = mapOf(
 )
 
 val categoryList = listOf(
-    "Кино" to R.drawable.ic_cinema,
-    "Концерт" to R.drawable.ic_speaker,
-    "Театр" to R.drawable.ic_theater,
-    "Квест" to R.drawable.ic_detective,
-    "Выставка" to R.drawable.ic_image,
-    "Для детей" to R.drawable.ic_lolipop,
-    "Музей" to R.drawable.ic_museum,
-    "Вечеринка" to R.drawable.ic_party,
-    "Для бизнеса" to R.drawable.ic_rating,
-    "Благотворительность" to R.drawable.ic_charity,
-    "Мода и красота" to R.drawable.ic_fashion,
-    "Обучающее" to R.drawable.ic_books
+    CategoryNode("Кино", "cinema", R.drawable.ic_cinema),
+    CategoryNode("Концерт", "concert", R.drawable.ic_speaker),
+    CategoryNode("Театр", "theater", R.drawable.ic_theater),
+    CategoryNode("Квест", "quest", R.drawable.ic_detective),
+    CategoryNode("Выставка", "exhibition", R.drawable.ic_image),
+    CategoryNode("Для детей", "kids", R.drawable.ic_lolipop),
+    CategoryNode("Экскурсии", "tour", R.drawable.ic_museum),
+    CategoryNode("Вечеринка", "party", R.drawable.ic_party),
+    CategoryNode("Для бизнеса", "business-events", R.drawable.ic_rating),
+    CategoryNode("Благотворительность", "ocial-activity", R.drawable.ic_charity),
+    CategoryNode("Мода и красота", "fashion", R.drawable.ic_fashion),
+    CategoryNode("Обучающее", "education", R.drawable.ic_books)
 )

@@ -120,6 +120,10 @@
     <string name="select_city">Выберете город</string>
     <string name="select_city_description">Мы покажем, что в нем можно найти</string>
     <string name="skip">Пропустить</string>
+    <string name="favorite_category">Любимые категории</string>
+    <string name="favorite_category_description">Выберете категории, чтобы лучше настроить систему рекомендаций для вас</string>
+    <string name="date_born">Укажите дату рождения</string>
+    <string name="date_born_description">Это поможет системе рекомендаций</string>
 
     <string-array name="ticket_segmented_button">
         <item>"События"</item>
