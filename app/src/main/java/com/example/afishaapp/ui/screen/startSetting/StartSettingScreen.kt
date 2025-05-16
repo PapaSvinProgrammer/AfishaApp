@@ -1,11 +1,5 @@
 package com.example.afishaapp.ui.screen.startSetting
 
-import androidx.compose.animation.Animatable
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.AnimationVector4D
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -50,7 +44,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -67,23 +60,14 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.afishaapp.R
 import com.example.afishaapp.app.navigation.HomeRoute
+import com.example.afishaapp.app.utils.CategoryNode
 import com.example.afishaapp.app.utils.categoryList
 import com.example.afishaapp.app.utils.convertData.ConvertDate
-import com.example.afishaapp.ui.theme.ColorBottom1
-import com.example.afishaapp.ui.theme.ColorBottom2
-import com.example.afishaapp.ui.theme.ColorBottom3
-import com.example.afishaapp.ui.theme.ColorMiddle1
-import com.example.afishaapp.ui.theme.ColorMiddle2
-import com.example.afishaapp.ui.theme.ColorMiddle3
-import com.example.afishaapp.ui.theme.ColorTop1
-import com.example.afishaapp.ui.theme.ColorTop2
-import com.example.afishaapp.ui.theme.ColorTop3
 import com.example.afishaapp.ui.theme.DefaultPadding
+import com.example.afishaapp.ui.widget.material.AnimateBackgroundLayout
 import com.example.afishaapp.ui.widget.material.DatePickerFieldToModal
 import com.example.afishaapp.ui.widget.material.HorizontalLinePagerIndicator
-import com.example.afishaapp.ui.widget.material.meshGradient
 import kotlinx.coroutines.launch
-import kotlin.random.Random
 
 @Composable
 fun StartSettingScreen(
@@ -95,86 +79,15 @@ fun StartSettingScreen(
     }
 
     val pagerState = rememberPagerState { 3 }
-    val topColor = remember { Animatable(initialValue = ColorTop1) }
-    val middleColor = remember { Animatable(initialValue = ColorMiddle1) }
-    val bottomColor = remember { Animatable(initialValue = ColorBottom1) }
 
-    LaunchedEffect(pagerState.currentPage) {
-        val colors1 = listOf(ColorTop1, ColorMiddle1, ColorBottom1)
-        val colors2 = listOf(ColorTop2, ColorMiddle2, ColorBottom2)
-        val colors3 = listOf(ColorTop3, ColorMiddle3, ColorBottom3)
-
-        var colors = colors1
-
-        when (pagerState.currentPage) {
-            1 -> colors = colors2
-            2 -> colors = colors3
-        }
-
-        fun animate(color: Animatable<Color, AnimationVector4D>, index: Int) {
-            launch {
-                color.animateTo(
-                    targetValue = colors[index],
-                    animationSpec = tween(
-                        durationMillis = Random.nextInt(300, 500)
-                    )
-                )
-            }
-        }
-
-        listOf(topColor, middleColor, bottomColor).forEachIndexed { index, animatable ->
-            animate(animatable, index)
-        }
-    }
-
-    val animatedPoint = remember { Animatable(.8f) }
-
-    LaunchedEffect(pagerState.currentPage) {
-        if (pagerState.currentPage % 2 == 1) {
-            animatedPoint.animateTo(
-                targetValue = .1f,
-                animationSpec = spring(stiffness = Spring.StiffnessVeryLow)
-            )
-        }
-        else {
-            animatedPoint.animateTo(
-                targetValue = .9f,
-                animationSpec = spring(stiffness = Spring.StiffnessVeryLow)
-            )
-        }
-    }
-
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .meshGradient(
-                points = listOf(
-                    listOf(
-                        Offset(0f, 0f) to topColor.value,
-                        Offset(.5f, 0f) to topColor.value,
-                        Offset(1f, 0f) to topColor.value
-                    ),
-                    listOf(
-                        Offset(0f, .5f) to middleColor.value,
-                        Offset(.5f, animatedPoint.value) to middleColor.value,
-                        Offset(1f, .5f) to middleColor.value
-                    ),
-                    listOf(
-                        Offset(0f, 1f) to bottomColor.value,
-                        Offset(.5f, 1f) to bottomColor.value,
-                        Offset(1f, 1f) to bottomColor.value
-                    )
-                ),
-                resolutionX = 32
-            )
-    ) {
+    AnimateBackgroundLayout(currentPage = pagerState.currentPage) {
         HorizontalPager(
             state = pagerState,
             modifier = Modifier.fillMaxSize()
         ) {
             when (it) {
                 0 -> CountryStartPage(viewModel)
-                1 -> CategoryStartPage()
+                1 -> CategoryStartPage(viewModel)
                 2 -> DatePickerStartPage(viewModel)
             }
         }
@@ -321,7 +234,7 @@ private fun TitlePage(
 }
 
 @Composable
-private fun CategoryStartPage() {
+private fun CategoryStartPage(viewModel: StartSettingViewModel) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -337,80 +250,84 @@ private fun CategoryStartPage() {
         )
 
         Spacer(modifier = Modifier.height(DefaultPadding))
-        GenerateCategoryList()
+        GenerateCategoryList(
+            selectedCategory = viewModel.selectedCategory,
+            onClick = {
+                viewModel.selectedCategory[it.slug] = it.slug !in viewModel.selectedCategory
+            }
+        )
     }
 }
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun GenerateCategoryList() {
+private fun GenerateCategoryList(
+    selectedCategory: MutableMap<String, Boolean>,
+    onClick: (CategoryNode) -> Unit
+) {
     FlowRow(
         maxItemsInEachRow = 3,
         horizontalArrangement = Arrangement.spacedBy(10.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         categoryList.forEach {
-            CategoryCard(
+            val isClicked = selectedCategory.getOrDefault(it.slug, false)
+
+            BorderCard(
                 modifier = Modifier.weight(1f),
-                title = it.title,
-                icon = {
-                    Icon(
-                        painter = painterResource(it.icon),
-                        contentDescription = null,
-                        tint = Color.Black,
-                        modifier = Modifier.size(40.dp)
-                    )
-                },
-                onClick = {}
+                isClicked = isClicked,
+                onClick = { onClick(it) },
+                content = {
+                    Column(
+                        modifier = Modifier.padding(vertical = DefaultPadding),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        val color = if (isClicked) MaterialTheme.colorScheme.primary else Color.Black
+
+                        Icon(
+                            painter = painterResource(it.icon),
+                            contentDescription = null,
+                            tint = color,
+                            modifier = Modifier.size(40.dp)
+                        )
+
+                        Spacer(modifier = Modifier.height(5.dp))
+
+                        Text(
+                            text = it.title,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 14.sp,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth().padding(horizontal = 5.dp),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            color = color
+                        )
+                    }
+                }
             )
         }
     }
 }
 
 @Composable
-private fun CategoryCard(
-    modifier: Modifier,
-    title: String,
-    icon: @Composable () -> Unit,
-    onClick: () -> Unit
+private fun BorderCard(
+    modifier: Modifier = Modifier,
+    isClicked: Boolean = false,
+    content: @Composable () -> Unit,
+    onClick: () -> Unit = {}
 ) {
-    var clicked by remember { mutableStateOf(false) }
-
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(10.dp))
             .fillMaxWidth()
             .border(
-                width = if (clicked) 2.dp else 1.dp,
-                color = if (clicked) MaterialTheme.colorScheme.primary else Color.Black,
+                width = if (isClicked) 2.dp else 1.dp ,
+                color = if (isClicked) MaterialTheme.colorScheme.primary else Color.Black,
                 shape = RoundedCornerShape(10.dp)
             )
-            .clickable {
-                onClick()
-                clicked = !clicked
-            }
-    ) {
-        Column(
-            modifier = Modifier.padding(vertical = DefaultPadding),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            icon()
-
-            Spacer(modifier = Modifier.height(5.dp))
-
-            Text(
-                text = title,
-                fontWeight = FontWeight.Bold,
-                fontSize = 14.sp,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 5.dp),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        }
-    }
+            .clickable { onClick() }
+    ) { content() }
 }
 
 @Composable

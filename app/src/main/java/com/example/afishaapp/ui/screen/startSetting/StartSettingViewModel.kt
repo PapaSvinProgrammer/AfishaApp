@@ -1,10 +1,13 @@
 package com.example.afishaapp.ui.screen.startSetting
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.afishaapp.app.utils.CategoryNode
 import com.example.afishaapp.data.module.City
 import com.example.afishaapp.domain.repository.PreferencesRepository
 import com.example.afishaapp.domain.repository.http.CityRepository
@@ -23,6 +26,7 @@ class StartSettingViewModel @Inject constructor(
         private set
     var selectedDate by mutableStateOf("DD/MM/YYYY")
         private set
+    val selectedCategory = mutableStateMapOf<String, Boolean>()
 
     fun updateSelectedCity(selectedCity: String) {
         this.selectedCity = selectedCity
