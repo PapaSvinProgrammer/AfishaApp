@@ -2,6 +2,7 @@ package com.example.afishaapp.data.repository.room
 
 import com.example.afishaapp.app.utils.convertClass.toEventEntity
 import com.example.afishaapp.data.module.event.Event
+import com.example.afishaapp.data.room.likeEvent.EventCategoryCount
 import com.example.afishaapp.data.room.likeEvent.EventDao
 import com.example.afishaapp.data.room.likeEvent.EventEntity
 import com.example.afishaapp.domain.repository.room.LikeEventRepository
@@ -28,5 +29,13 @@ class LikeEventRepositoryRoom @Inject constructor(
 
     override suspend fun getEventById(eventId: Int): EventEntity? {
         return dao.getEventById(eventId)
+    }
+
+    override suspend fun getCount(): Int {
+        return dao.getCount()
+    }
+
+    override suspend fun getCategoryCount(): List<EventCategoryCount> {
+       return dao.getCountCategory()
     }
 }

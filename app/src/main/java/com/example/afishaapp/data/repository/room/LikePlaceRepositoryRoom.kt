@@ -29,4 +29,8 @@ class LikePlaceRepositoryRoom @Inject constructor(
     override suspend fun getPlaceById(placeId: Int): PlaceEntity? {
         return dao.getPlaceById(placeId)
     }
+
+    override suspend fun getCount(): Int {
+        return dao.getCount()
+    }
 }

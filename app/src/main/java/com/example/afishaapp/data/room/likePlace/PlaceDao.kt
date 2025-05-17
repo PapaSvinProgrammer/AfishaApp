@@ -21,4 +21,7 @@ interface PlaceDao {
 
     @Query("SELECT * FROM like_place WHERE place_id = :placeId")
     suspend fun getPlaceById(placeId: Int): PlaceEntity?
+
+    @Query("SELECT COUNT(*) FROM like_place")
+    suspend fun getCount(): Int
 }

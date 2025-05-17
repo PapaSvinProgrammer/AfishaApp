@@ -13,4 +13,10 @@ interface SearchHistoryDao {
 
     @Query("SELECT * FROM search_history ORDER BY id DESC")
     fun getAllPaged(): PagingSource<Int, SearchHistoryEntity>
+
+    @Query("SELECT COUNT(*) FROM like_event")
+    suspend fun getCount(): Int
+
+    @Query("DELETE FROM search_history")
+    suspend fun clear()
 }

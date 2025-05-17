@@ -9,4 +9,5 @@ interface LikePlaceRepository {
     suspend fun getByDefault(): List<PlaceEntity>
     suspend fun getByName(): List<PlaceEntity>
     suspend fun getPlaceById(placeId: Int): PlaceEntity?
+    suspend fun getCount(): Int
 }

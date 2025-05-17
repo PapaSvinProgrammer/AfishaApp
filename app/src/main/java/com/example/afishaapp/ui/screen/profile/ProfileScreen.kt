@@ -27,7 +27,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.afishaapp.R
 import com.example.afishaapp.app.navigation.AboutAppRoute
+import com.example.afishaapp.app.navigation.ChartRoute
 import com.example.afishaapp.app.navigation.StartRoute
+import com.example.afishaapp.app.navigation.StartSettingRoute
 import com.example.afishaapp.ui.screen.dialog.ExitDialog
 import com.example.afishaapp.ui.theme.acidFontFamily
 import com.example.afishaapp.ui.widget.row.SelectRow
@@ -96,7 +98,9 @@ fun ProfileScreen(navController: NavController) {
 
             SelectRow(
                 text = stringResource(R.string.clarify_preferences)
-            ) { }
+            ) {
+                navController.navigate(StartSettingRoute)
+            }
 
             SelectRow(
                 text = stringResource(R.string.settings)
@@ -104,7 +108,9 @@ fun ProfileScreen(navController: NavController) {
 
             SelectRow(
                 text = stringResource(R.string.statistics)
-            ) { }
+            ) {
+                navController.navigate(ChartRoute)
+            }
 
             SelectRow(
                 text = stringResource(R.string.support)

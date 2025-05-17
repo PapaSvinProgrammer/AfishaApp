@@ -21,5 +21,6 @@ data class EventEntity(
     @ColumnInfo(name = "price") val price: String,
     @ColumnInfo(name = "date_start") val dateStart: Long,
     @ColumnInfo(name = "date_end") val dateEnd: Long,
-    @ColumnInfo(name = "image") val image: String
+    @ColumnInfo(name = "image") val image: String,
+    @ColumnInfo(name = "category") val category: String
 )

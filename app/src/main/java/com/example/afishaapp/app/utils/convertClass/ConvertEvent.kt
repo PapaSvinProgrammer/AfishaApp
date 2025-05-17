@@ -5,6 +5,7 @@ import com.example.afishaapp.data.module.event.Event
 import com.example.afishaapp.data.module.image.ImageItem
 import com.example.afishaapp.data.module.image.Thumbnail
 import com.example.afishaapp.data.module.search.DateRange
+import com.example.afishaapp.data.room.likeEvent.EventCategoryCount
 import com.example.afishaapp.data.room.likeEvent.EventEntity
 import com.example.afishaapp.data.room.ticket.TicketEntity
 
@@ -42,7 +43,8 @@ fun Event.toEventEntity(): EventEntity {
         price = price,
         dateStart = start,
         dateEnd = end,
-        image = this.images.first().thumbnails.highImage
+        image = this.images.first().thumbnails.highImage,
+        category = this.categories.firstOrNull() ?: "None"
     )
 
     return eventEntity
@@ -79,6 +81,16 @@ fun List<EventEntity>.toEventList(): List<Event> {
 
     this.forEach {
         res.add(it.toEvent())
+    }
+
+    return res
+}
+
+fun List<EventCategoryCount>.toCategoryMap(): Map<String, Int> {
+    val res = mutableMapOf<String, Int>()
+
+    forEach { item ->
+        res[item.category] = item.count
     }
 
     return res

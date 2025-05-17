@@ -21,4 +21,10 @@ interface EventDao {
 
     @Query("SELECT * FROM like_event WHERE event_id = :eventId")
     suspend fun getEventById(eventId: Int): EventEntity?
+
+    @Query("SELECT COUNT(*) FROM like_event")
+    suspend fun getCount(): Int
+
+    @Query("SELECT category, COUNT(*) AS `count` FROM like_event GROUP BY category")
+    suspend fun getCountCategory(): List<EventCategoryCount>
 }

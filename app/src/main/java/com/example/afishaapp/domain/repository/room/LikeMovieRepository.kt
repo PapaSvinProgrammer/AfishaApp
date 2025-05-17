@@ -10,4 +10,5 @@ interface LikeMovieRepository {
     suspend fun getByRating(): List<MovieEntity>
     suspend fun getByYear(): List<MovieEntity>
     suspend fun getMovieById(movieId: Int): MovieEntity?
+    suspend fun getCount(): Int
 }

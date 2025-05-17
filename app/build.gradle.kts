@@ -54,6 +54,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.vico.compose.m3)
     implementation(libs.androidx.room.paging)
     implementation(libs.androidx.paging.runtime.ktx)
     implementation(libs.androidx.paging.compose)

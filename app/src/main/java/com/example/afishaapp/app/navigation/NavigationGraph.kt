@@ -20,6 +20,8 @@ import com.example.afishaapp.ui.screen.aboutEvent.AboutEventScreen
 import com.example.afishaapp.ui.screen.aboutEvent.AboutEventViewModel
 import com.example.afishaapp.ui.screen.aboutMovie.AboutMovieScreen
 import com.example.afishaapp.ui.screen.aboutMovie.AboutMovieViewModel
+import com.example.afishaapp.ui.screen.chart.ChartScreen
+import com.example.afishaapp.ui.screen.chart.ChartViewModel
 import com.example.afishaapp.ui.screen.commentListEvent.CommentListEventScreen
 import com.example.afishaapp.ui.screen.commentListEvent.CommentListEventViewModel
 import com.example.afishaapp.ui.screen.commentListPlace.CommentListPlaceScreen
@@ -69,7 +71,7 @@ fun NavigationGraph(
 
     NavHost(
         navController = navController,
-        startDestination = StartSettingRoute,
+        startDestination = HomeRoute,
         enterTransition = {
             slideIntoContainer(
                 towards = AnimatedContentTransitionScope.SlideDirection.Start,
@@ -314,6 +316,15 @@ fun NavigationGraph(
             val viewModel: StartSettingViewModel = viewModel(factory = viewModelFactory)
 
             StartSettingScreen(
+                navController = navController,
+                viewModel = viewModel
+            )
+        }
+
+        composable<ChartRoute> {
+            val viewModel: ChartViewModel = viewModel(factory = viewModelFactory)
+
+            ChartScreen(
                 navController = navController,
                 viewModel = viewModel
             )

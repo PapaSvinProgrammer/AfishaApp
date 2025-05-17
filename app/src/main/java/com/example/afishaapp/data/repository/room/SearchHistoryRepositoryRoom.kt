@@ -14,6 +14,14 @@ class SearchHistoryRepositoryRoom @Inject constructor(
         dao.insert(item)
     }
 
+    override suspend fun getCount(): Int {
+        return dao.getCount()
+    }
+
+    override suspend fun clear() {
+        return dao.clear()
+    }
+
     override fun getAllPaged(): PagingSource<Int, SearchHistoryEntity> {
         return dao.getAllPaged()
     }

@@ -31,7 +31,7 @@ fun SelectRow(
     fontFamily: FontFamily = FontFamily.Default,
     fontSize: TextUnit = 15.sp,
     icon: ImageVector? = Icons.AutoMirrored.Default.KeyboardArrowRight,
-    onClick: (String) -> Unit,
+    onClick: (String) -> Unit
 ) {
     Row(
         modifier = Modifier

@@ -96,3 +96,6 @@ data class DetailTicketRoute(
 
 @Serializable
 object StartSettingRoute
+
+@Serializable
+object ChartRoute

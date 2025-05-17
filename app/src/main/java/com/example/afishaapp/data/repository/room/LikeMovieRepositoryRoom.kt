@@ -33,4 +33,8 @@ class LikeMovieRepositoryRoom @Inject constructor(
     override suspend fun getMovieById(movieId: Int): MovieEntity? {
         return dao.getMovieById(movieId)
     }
+
+    override suspend fun getCount(): Int {
+        return dao.getCount()
+    }
 }

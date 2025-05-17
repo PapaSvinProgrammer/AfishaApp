@@ -3,6 +3,7 @@ package com.example.afishaapp.di.viewModel
 import androidx.lifecycle.ViewModel
 import com.example.afishaapp.ui.screen.aboutEvent.AboutEventViewModel
 import com.example.afishaapp.ui.screen.aboutMovie.AboutMovieViewModel
+import com.example.afishaapp.ui.screen.chart.ChartViewModel
 import com.example.afishaapp.ui.screen.movieShowBottomSheet.MovieShowViewModel
 import com.example.afishaapp.ui.screen.commentListEvent.CommentListEventViewModel
 import com.example.afishaapp.ui.screen.commentListPlace.CommentListPlaceViewModel
@@ -143,4 +144,9 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(StartSettingViewModel::class)
     fun bindStartSettingViewModel(viewModel: StartSettingViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ChartViewModel::class)
+    fun bindChartViewModel(viewModel: ChartViewModel): ViewModel
 }
