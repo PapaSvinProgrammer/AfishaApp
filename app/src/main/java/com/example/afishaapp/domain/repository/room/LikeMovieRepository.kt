@@ -2,6 +2,7 @@ package com.example.afishaapp.domain.repository.room
 
 import com.example.afishaapp.data.module.movie.Movie
 import com.example.afishaapp.data.room.likeMovie.MovieEntity
+import kotlinx.coroutines.flow.Flow
 
 interface LikeMovieRepository {
     suspend fun insert(movie: Movie)
@@ -10,5 +11,5 @@ interface LikeMovieRepository {
     suspend fun getByRating(): List<MovieEntity>
     suspend fun getByYear(): List<MovieEntity>
     suspend fun getMovieById(movieId: Int): MovieEntity?
-    suspend fun getCount(): Int
+    fun getCount(): Flow<Int>
 }

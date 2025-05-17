@@ -6,6 +6,7 @@ import com.example.afishaapp.data.room.likeEvent.EventCategoryCount
 import com.example.afishaapp.data.room.likeEvent.EventDao
 import com.example.afishaapp.data.room.likeEvent.EventEntity
 import com.example.afishaapp.domain.repository.room.LikeEventRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class LikeEventRepositoryRoom @Inject constructor(
@@ -31,7 +32,7 @@ class LikeEventRepositoryRoom @Inject constructor(
         return dao.getEventById(eventId)
     }
 
-    override suspend fun getCount(): Int {
+    override fun getCount(): Flow<Int> {
         return dao.getCount()
     }
 

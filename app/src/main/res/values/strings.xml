@@ -124,6 +124,15 @@
     <string name="favorite_category_description">Выберете категории, чтобы лучше настроить систему рекомендаций для вас</string>
     <string name="date_born">Укажите дату рождения</string>
     <string name="date_born_description">Это поможет системе рекомендаций</string>
+    <string name="add_in_favorite">Добавлено в избарнное</string>
+    <string name="event_by_category">События по категориям</string>
+    <string name="search_history">История поиска</string>
+    <string name="count_response">Количество запросов: %1$s</string>
+    <string name="clear">Очистить</string>
+    <string name="show">Показать</string>
+    <string name="clear_history">Очистить историю</string>
+    <string name="clear_history_description">Вы действительно хотите очистить историю?</string>
+    <string name="ready">Готово</string>
 
     <string-array name="ticket_segmented_button">
         <item>"События"</item>

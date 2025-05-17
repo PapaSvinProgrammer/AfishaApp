@@ -5,6 +5,7 @@ import com.example.afishaapp.data.module.place.Place
 import com.example.afishaapp.data.room.likePlace.PlaceDao
 import com.example.afishaapp.data.room.likePlace.PlaceEntity
 import com.example.afishaapp.domain.repository.room.LikePlaceRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class LikePlaceRepositoryRoom @Inject constructor(
@@ -30,7 +31,7 @@ class LikePlaceRepositoryRoom @Inject constructor(
         return dao.getPlaceById(placeId)
     }
 
-    override suspend fun getCount(): Int {
+    override fun getCount(): Flow<Int> {
         return dao.getCount()
     }
 }

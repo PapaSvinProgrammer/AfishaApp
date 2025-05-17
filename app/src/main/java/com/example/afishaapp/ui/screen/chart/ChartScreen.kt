@@ -48,7 +48,10 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.navigation.NavController
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.afishaapp.R
+import com.example.afishaapp.ui.screen.dialog.ClearHistoryDialog
+import com.example.afishaapp.ui.screen.dialog.HistoryResultDialog
 import com.example.afishaapp.ui.theme.DefaultPadding
 import com.example.afishaapp.ui.widget.material.rememberMarker
 import com.example.afishaapp.ui.widget.text.TitleTopBar
@@ -77,6 +80,8 @@ fun ChartScreen(
     navController: NavController,
     viewModel: ChartViewModel
 ) {
+    val searchHistoryItemPage = viewModel.searchHistoryResult.collectAsLazyPagingItems()
+
     LifecycleEventEffect(Lifecycle.Event.ON_START) {
         viewModel.getAllCountFavorite()
         viewModel.getCountSearchHistory()
@@ -108,20 +113,39 @@ fun ChartScreen(
         ) {
             HistorySearchContent(
                 count = viewModel.searchHistoryCount,
-                onDetail = {  },
-                onClear = {  }
+                onDetail = { viewModel.updateResultDialogState(true) },
+                onClear = { viewModel.updateClearDialogState(true) }
             )
 
             ChartContent(
-                title = "Добавлено в избарнное",
+                title = stringResource(R.string.add_in_favorite),
                 data = viewModel.countFavorite
             )
 
             ChartContent(
-                title = "События по категориям",
+                title = stringResource(R.string.event_by_category),
                 data = viewModel.eventCategory
             )
         }
+    }
+
+    if (viewModel.clearHistoryDialogState) {
+        ClearHistoryDialog(
+            onConfirm = {
+                viewModel.clearSearchHistory()
+                viewModel.updateClearDialogState(false)
+            },
+            onDismiss = { viewModel.updateClearDialogState(false) }
+        )
+    }
+
+    if (viewModel.historyResultDialogState) {
+         HistoryResultDialog(
+             historyResult = searchHistoryItemPage,
+             onDismiss = {
+                 viewModel.updateResultDialogState(false)
+             }
+         )
     }
 }
 
@@ -171,7 +195,7 @@ private fun TitleRow(
                 interactionSource = null,
                 indication = null,
                 onClick = onClick
-        ),
+            ),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
@@ -202,14 +226,14 @@ private fun HistorySearchContent(
             .animateContentSize()
     ) {
         TitleRow(
-            text = "История поиска",
+            text = stringResource(R.string.search_history),
             icon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded) },
             onClick = { isExpanded = !isExpanded }
         )
 
         if (isExpanded) {
             Text(
-                text = "Количество запросов: $count",
+                text = stringResource(R.string.count_response, count),
                 modifier = Modifier.padding(horizontal = DefaultPadding)
             )
             Spacer(modifier = Modifier.height(10.dp))
@@ -223,20 +247,24 @@ private fun HistorySearchContent(
                 OutlinedButton(
                     border = BorderStroke(1.dp, Color.Red),
                     onClick = onClear,
-                    modifier = Modifier.fillMaxWidth().weight(1f)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
                 ) {
                     Text(
-                        text = "Очистить",
+                        text = stringResource(R.string.clear),
                         color = Color.Red
                     )
                 }
 
                 OutlinedButton(
-                    modifier = Modifier.fillMaxWidth().weight(1f),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
                     onClick = onDetail
                 ) {
                     Text(
-                        text = "Показать",
+                        text = stringResource(R.string.show),
                         color = Color.Black
                     )
                 }

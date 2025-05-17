@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MovieDao {
@@ -26,5 +27,5 @@ interface MovieDao {
     suspend fun getMovieById(movieId: Int): MovieEntity?
 
     @Query("SELECT COUNT(*) FROM like_movie")
-    suspend fun getCount(): Int
+    fun getCount(): Flow<Int>
 }

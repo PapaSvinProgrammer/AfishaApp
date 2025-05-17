@@ -3,6 +3,7 @@ package com.example.afishaapp.domain.repository.room
 import com.example.afishaapp.data.module.event.Event
 import com.example.afishaapp.data.room.likeEvent.EventCategoryCount
 import com.example.afishaapp.data.room.likeEvent.EventEntity
+import kotlinx.coroutines.flow.Flow
 
 interface LikeEventRepository {
     suspend fun insert(event: Event)
@@ -10,6 +11,6 @@ interface LikeEventRepository {
     suspend fun getByDefault(): List<EventEntity>
     suspend fun getByName(): List<EventEntity>
     suspend fun getEventById(eventId: Int): EventEntity?
-    suspend fun getCount(): Int
+    fun getCount(): Flow<Int>
     suspend fun getCategoryCount(): List<EventCategoryCount>
 }

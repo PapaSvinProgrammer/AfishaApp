@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import com.example.afishaapp.app.utils.convertClass.toCategoryMap
 import com.example.afishaapp.data.module.Category
 import com.example.afishaapp.domain.repository.room.LikeEventRepository
@@ -19,7 +20,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ChartViewModel @Inject constructor(
-    private val getSearchHistory: GetSearchHistory,
+    getSearchHistory: GetSearchHistory,
     private val searchHistoryRepository: SearchHistoryRepository,
     private val likeEventRepository: LikeEventRepository,
     private val likeMovieRepository: LikeMovieRepository,
@@ -36,15 +37,38 @@ class ChartViewModel @Inject constructor(
     var categories by mutableStateOf<List<Category>>(listOf())
         private set
 
+    var clearHistoryDialogState by mutableStateOf(false)
+        private set
+    var historyResultDialogState by mutableStateOf(false)
+        private set
+
+    val searchHistoryResult = getSearchHistory.execute().cachedIn(viewModelScope)
+
+    fun updateClearDialogState(state: Boolean) {
+        clearHistoryDialogState = state
+    }
+
+    fun updateResultDialogState(state: Boolean) {
+        historyResultDialogState = state
+    }
+
     fun getAllCountFavorite() {
         viewModelScope.launch(Dispatchers.IO) {
-            val countEvent = likeEventRepository.getCount()
-            val countMovie = likeMovieRepository.getCount()
-            val countPlace = likePlaceRepository.getCount()
+            likeEventRepository.getCount().collect {
+                _countFavorite["События"] = it
+            }
+        }
 
-            _countFavorite["События"] = countEvent
-            _countFavorite["Фильмы"] = countMovie
-            _countFavorite["Места"] = countPlace
+        viewModelScope.launch(Dispatchers.IO) {
+            likeMovieRepository.getCount().collect {
+                _countFavorite["Фильмы"] = it
+            }
+        }
+
+        viewModelScope.launch(Dispatchers.IO) {
+            likePlaceRepository.getCount().collect {
+                _countFavorite["Места"] = it
+            }
         }
     }
 
@@ -60,7 +84,9 @@ class ChartViewModel @Inject constructor(
 
     fun getCountSearchHistory() {
         viewModelScope.launch(Dispatchers.IO) {
-            searchHistoryCount = searchHistoryRepository.getCount()
+            searchHistoryRepository.getCount().collect {
+                searchHistoryCount = it
+            }
         }
     }
 

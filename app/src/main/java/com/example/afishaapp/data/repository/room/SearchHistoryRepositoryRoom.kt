@@ -4,6 +4,7 @@ import androidx.paging.PagingSource
 import com.example.afishaapp.data.room.searchHistory.SearchHistoryDao
 import com.example.afishaapp.data.room.searchHistory.SearchHistoryEntity
 import com.example.afishaapp.domain.repository.room.SearchHistoryRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class SearchHistoryRepositoryRoom @Inject constructor(
@@ -14,7 +15,7 @@ class SearchHistoryRepositoryRoom @Inject constructor(
         dao.insert(item)
     }
 
-    override suspend fun getCount(): Int {
+    override fun getCount(): Flow<Int> {
         return dao.getCount()
     }
 

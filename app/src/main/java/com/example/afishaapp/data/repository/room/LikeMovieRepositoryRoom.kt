@@ -5,6 +5,7 @@ import com.example.afishaapp.data.module.movie.Movie
 import com.example.afishaapp.data.room.likeMovie.MovieDao
 import com.example.afishaapp.data.room.likeMovie.MovieEntity
 import com.example.afishaapp.domain.repository.room.LikeMovieRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class LikeMovieRepositoryRoom @Inject constructor(
@@ -34,7 +35,7 @@ class LikeMovieRepositoryRoom @Inject constructor(
         return dao.getMovieById(movieId)
     }
 
-    override suspend fun getCount(): Int {
+    override fun getCount(): Flow<Int> {
         return dao.getCount()
     }
 }

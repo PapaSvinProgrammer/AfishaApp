@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PlaceDao {
@@ -23,5 +24,5 @@ interface PlaceDao {
     suspend fun getPlaceById(placeId: Int): PlaceEntity?
 
     @Query("SELECT COUNT(*) FROM like_place")
-    suspend fun getCount(): Int
+    fun getCount(): Flow<Int>
 }

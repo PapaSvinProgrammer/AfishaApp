@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface EventDao {
@@ -23,7 +24,7 @@ interface EventDao {
     suspend fun getEventById(eventId: Int): EventEntity?
 
     @Query("SELECT COUNT(*) FROM like_event")
-    suspend fun getCount(): Int
+    fun getCount(): Flow<Int>
 
     @Query("SELECT category, COUNT(*) AS `count` FROM like_event GROUP BY category")
     suspend fun getCountCategory(): List<EventCategoryCount>
