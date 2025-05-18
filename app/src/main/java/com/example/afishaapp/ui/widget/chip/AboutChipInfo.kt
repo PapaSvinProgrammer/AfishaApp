@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,7 +19,6 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.afishaapp.ui.theme.DefaultPadding
-import com.example.afishaapp.ui.theme.LightGray
 
 @Composable
 fun AboutChipInfo(
@@ -33,7 +33,7 @@ fun AboutChipInfo(
         modifier = modifier
             .clip(RoundedCornerShape(10.dp))
             .fillMaxWidth()
-            .background(LightGray)
+            .background(MaterialTheme.colorScheme.surfaceContainer)
     ) {
         Column(
             modifier = Modifier

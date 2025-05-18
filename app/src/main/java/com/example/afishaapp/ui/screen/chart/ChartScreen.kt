@@ -35,7 +35,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -245,7 +244,10 @@ private fun HistorySearchContent(
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 OutlinedButton(
-                    border = BorderStroke(1.dp, Color.Red),
+                    border = BorderStroke(
+                        width = 1.dp,
+                        color = MaterialTheme.colorScheme.error
+                    ),
                     onClick = onClear,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -253,7 +255,7 @@ private fun HistorySearchContent(
                 ) {
                     Text(
                         text = stringResource(R.string.clear),
-                        color = Color.Red
+                        color = MaterialTheme.colorScheme.error
                     )
                 }
 
@@ -265,7 +267,7 @@ private fun HistorySearchContent(
                 ) {
                     Text(
                         text = stringResource(R.string.show),
-                        color = Color.Black
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
             }

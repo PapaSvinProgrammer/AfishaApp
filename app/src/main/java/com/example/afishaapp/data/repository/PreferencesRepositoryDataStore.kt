@@ -15,39 +15,19 @@ import javax.inject.Inject
 private const val NAME_STORE = "User_settings"
 private const val DEFAULT_RESPONSE = "None"
 
-private val NAME_FIELD = stringPreferencesKey("UserName")
-private val EMAIL_FIELD = stringPreferencesKey("Email")
 private val ENTRY_STATE_FIELD = booleanPreferencesKey("EntryState")
 private val CITY_FIELD = stringPreferencesKey("DefaultCity")
-private val AVATAR_FIELD = stringPreferencesKey("AvatarUrl")
 private val LOCATION_SLUG_FIELD = stringPreferencesKey("LocationSlug")
+private val THEME_FIELD = booleanPreferencesKey("theme_field")
 
 class PreferencesRepositoryDataStore @Inject constructor(
     private val context: Context
 ): PreferencesRepository {
     private val Context.datastore: DataStore<Preferences> by preferencesDataStore(name = NAME_STORE)
 
-    override suspend fun setName(text: String) {
-        context.datastore.edit { settings ->
-            settings[NAME_FIELD] = text
-        }
-    }
-
     override suspend fun setEntryState(state: Boolean) {
         context.datastore.edit { settings ->
             settings[ENTRY_STATE_FIELD] = state
-        }
-    }
-
-    override suspend fun setEmail(text: String) {
-        context.datastore.edit { settings ->
-            settings[EMAIL_FIELD] = text
-        }
-    }
-
-    override suspend fun setAvatarUrl(text: String) {
-        context.datastore.edit { settings ->
-            settings[AVATAR_FIELD] = text
         }
     }
 
@@ -63,27 +43,15 @@ class PreferencesRepositoryDataStore @Inject constructor(
         }
     }
 
-    override fun getName(): Flow<String> {
-        return context.datastore.data.map {
-            it[NAME_FIELD] ?: DEFAULT_RESPONSE
+    override suspend fun setDarkTheme(state: Boolean) {
+        context.datastore.edit { setting ->
+            setting[THEME_FIELD] = state
         }
     }
 
     override fun getEntryState(): Flow<Boolean> {
         return context.datastore.data.map {
             it[ENTRY_STATE_FIELD] ?: false
-        }
-    }
-
-    override fun getEmail(): Flow<String> {
-        return context.datastore.data.map {
-            it[EMAIL_FIELD] ?: DEFAULT_RESPONSE
-        }
-    }
-
-    override fun getAvatar(): Flow<String> {
-        return context.datastore.data.map {
-            it[AVATAR_FIELD] ?: DEFAULT_RESPONSE
         }
     }
 
@@ -96,6 +64,12 @@ class PreferencesRepositoryDataStore @Inject constructor(
     override fun getLocationSlug(): Flow<String> {
         return context.datastore.data.map {
             it[LOCATION_SLUG_FIELD] ?: DEFAULT_RESPONSE
+        }
+    }
+
+    override fun getDarkTheme(): Flow<Boolean> {
+        return context.datastore.data.map {
+            it[THEME_FIELD] ?: false
         }
     }
 }

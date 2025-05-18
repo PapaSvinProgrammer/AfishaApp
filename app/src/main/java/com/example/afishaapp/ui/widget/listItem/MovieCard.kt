@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
@@ -69,7 +70,7 @@ fun MovieCard(
             text = movie.title,
             fontSize = 15.sp,
             fontWeight = FontWeight.Medium,
-            color = Color.Black,
+            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(top = 10.dp),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
@@ -79,7 +80,7 @@ fun MovieCard(
             text = "${movie.year} год",
             fontSize = 14.sp,
             fontWeight = FontWeight.Normal,
-            color = Color.Gray
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }

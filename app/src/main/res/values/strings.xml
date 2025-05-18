@@ -133,6 +133,10 @@
     <string name="clear_history">Очистить историю</string>
     <string name="clear_history_description">Вы действительно хотите очистить историю?</string>
     <string name="ready">Готово</string>
+    <string name="theme">Оформление</string>
+    <string name="light">Светлая</string>
+    <string name="dark">Темная</string>
+    <string name="select_theme">Выбор темы</string>
 
     <string-array name="ticket_segmented_button">
         <item>"События"</item>

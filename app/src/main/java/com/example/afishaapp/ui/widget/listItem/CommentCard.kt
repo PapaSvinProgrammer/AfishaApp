@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,7 +25,6 @@ import coil3.compose.AsyncImage
 import com.example.afishaapp.app.utils.convertData.ConvertDate
 import com.example.afishaapp.app.utils.generateAccountImage
 import com.example.afishaapp.data.module.comment.Comment
-import com.example.afishaapp.ui.theme.LightGray
 
 @Composable
 fun CommentCard(
@@ -35,7 +35,7 @@ fun CommentCard(
             .width(300.dp)
             .height(175.dp)
             .clip(RoundedCornerShape(15.dp))
-            .background(LightGray)
+            .background(MaterialTheme.colorScheme.surfaceContainer)
             .padding(10.dp, 10.dp, 10.dp, 0.dp)
 
     ) {

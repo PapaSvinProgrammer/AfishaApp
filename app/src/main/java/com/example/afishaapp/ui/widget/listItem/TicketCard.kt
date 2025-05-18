@@ -13,7 +13,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,7 +24,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.clipPath
@@ -76,9 +77,10 @@ fun TicketCard(
     ) {
         ElevatedCard(
             onClick = { onClick.invoke(ticket) },
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(5.dp)
+            modifier = Modifier.fillMaxSize().padding(5.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
+            )
         ) {
             Column(
                 modifier = Modifier
@@ -117,7 +119,8 @@ private fun TopContent(ticket: TicketEntity) {
             fontWeight = FontWeight.Bold,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.weight(4f)
+            modifier = Modifier.weight(4f),
+            color = MaterialTheme.colorScheme.onSurface
         )
 
         Text(
@@ -125,7 +128,8 @@ private fun TopContent(ticket: TicketEntity) {
             fontSize = 17.sp,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.End,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
+            color = MaterialTheme.colorScheme.onSurface
         )
     }
 
@@ -139,20 +143,23 @@ private fun TopContent(ticket: TicketEntity) {
         Text(
             text = "12:40 - 13:50",
             fontWeight = FontWeight.Medium,
-            fontSize = 14.sp
+            fontSize = 14.sp,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
 
         Box(
             modifier = Modifier
                 .size(7.dp)
                 .clip(CircleShape)
-                .background(Color.LightGray)
+                .background(color = MaterialTheme.colorScheme.onSurfaceVariant)
         )
 
         Text(
             text = "23 февраля",
             fontWeight = FontWeight.Medium,
-            fontSize = 14.sp
+            fontSize = 14.sp,
+
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }
@@ -185,7 +192,7 @@ fun HatchHorizontalDivider() {
                 modifier = Modifier
                     .height(2.dp)
                     .width(10.dp)
-                    .background(Color.LightGray)
+                    .background(MaterialTheme.colorScheme.onSurfaceVariant)
             )
         }
     }

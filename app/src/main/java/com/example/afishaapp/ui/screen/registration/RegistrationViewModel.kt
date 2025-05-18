@@ -100,8 +100,6 @@ class RegistrationViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            setPreferences.setEmail(userInfo.email)
-            setPreferences.setUserName(userInfo.name)
             setPreferences.setEntryState(true)
 
             isRegistration = true

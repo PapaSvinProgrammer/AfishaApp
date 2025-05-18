@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,6 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.afishaapp.R
+import com.example.afishaapp.app.utils.subwayIcon
 import com.example.afishaapp.data.module.place.Place
 
 @Composable
@@ -49,12 +51,10 @@ private fun SpareContent() {
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
-        val icon = R.drawable.ic_error
-
         Icon(
-            painter = painterResource(icon),
+            painter = painterResource(R.drawable.ic_error),
             contentDescription = null,
-            tint = Color.Unspecified,
+            tint = MaterialTheme.colorScheme.error,
             modifier = Modifier.size(20.dp)
         )
 
@@ -72,7 +72,7 @@ private fun MainContent(location: String, subway: String) {
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
-        val icon = com.example.afishaapp.app.utils.subwayIcon[location] ?: R.drawable.ic_error
+        val icon = subwayIcon[location] ?: R.drawable.ic_error
 
         Icon(
             painter = painterResource(icon),

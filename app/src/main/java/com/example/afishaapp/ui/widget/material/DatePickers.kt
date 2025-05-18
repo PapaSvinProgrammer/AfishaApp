@@ -9,7 +9,9 @@ import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
@@ -19,6 +21,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
@@ -32,24 +35,29 @@ import java.util.Locale
 fun DatePickerFieldToModal(
     modifier: Modifier = Modifier,
     dateSelected: String = "DD/MM/YYYY",
+    color: Color = Color.Unspecified,
     onDateSelected: (Long?) -> Unit
 ) {
     var selectedDate by remember { mutableStateOf<Long?>(null) }
     var showModal by remember { mutableStateOf(false) }
 
     OutlinedTextField(
-        value = selectedDate?.let { ConvertDate.convertMillisToDate(it) } ?: "",
+        value = selectedDate?.let { ConvertDate.convertMillisToDate(it) } ?: dateSelected,
         onValueChange = { },
         readOnly = true,
-        label = { Text(dateSelected) },
-        placeholder = { Text("DD/MM/YYYY") },
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedBorderColor = color,
+            focusedTextColor = color
+        ),
         trailingIcon = {
             Icon(
                 Icons.Default.DateRange,
-                contentDescription = null
+                contentDescription = null,
+                tint = color
             )
         },
-        modifier = modifier.pointerInput(selectedDate) {
+        modifier = modifier
+            .pointerInput(selectedDate) {
                 awaitEachGesture {
                     awaitFirstDown(pass = PointerEventPass.Initial)
                     val upEvent = waitForUpOrCancellation(pass = PointerEventPass.Initial)

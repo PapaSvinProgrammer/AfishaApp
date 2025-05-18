@@ -80,7 +80,10 @@ fun PlaceScreen(
     }
 
     Box {
-        val color = if (!isCollapsed) Color.White else Color.Black
+        val color = if (!isCollapsed)
+            Color.White
+        else
+            MaterialTheme.colorScheme.onSurface
 
         CollapsedTopBar(
             isCollapsed = isCollapsed,

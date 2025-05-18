@@ -48,11 +48,12 @@ import com.example.afishaapp.ui.screen.movieList.MovieListScreen
 import com.example.afishaapp.ui.screen.movieList.MovieListViewModel
 import com.example.afishaapp.ui.screen.place.PlaceScreen
 import com.example.afishaapp.ui.screen.place.PlaceViewModel
-import com.example.afishaapp.ui.screen.profile.ProfileScreen
+import com.example.afishaapp.ui.screen.settings.ProfileScreen
 import com.example.afishaapp.ui.screen.registration.RegistrationScreen
 import com.example.afishaapp.ui.screen.registration.RegistrationViewModel
 import com.example.afishaapp.ui.screen.search.SearchScreen
 import com.example.afishaapp.ui.screen.search.SearchViewModel
+import com.example.afishaapp.ui.screen.settings.SettingsViewModel
 import com.example.afishaapp.ui.screen.start.StartScreen
 import com.example.afishaapp.ui.screen.start.StartViewModel
 import com.example.afishaapp.ui.screen.startSetting.StartSettingScreen
@@ -67,8 +68,6 @@ fun NavigationGraph(
     padding: PaddingValues,
     viewModelFactory: ViewModelFactory
 ) {
-    //MapRoute(lat = 59.926251, lon = 30.280609, placeId = 12271)
-
     NavHost(
         navController = navController,
         startDestination = HomeRoute,
@@ -156,13 +155,17 @@ fun NavigationGraph(
         composable<RegistrationRoute> {
             val viewModel: RegistrationViewModel = viewModel(factory = viewModelFactory)
             RegistrationScreen(
-                navController =  navController,
+                navController = navController,
                 viewModel = viewModel
             )
         }
 
         composable<ProfileRoute> {
-            ProfileScreen(navController)
+            val viewModel: SettingsViewModel = viewModel(factory = viewModelFactory)
+            ProfileScreen(
+                navController = navController,
+                viewModel = viewModel
+            )
         }
 
         composable<MovieListRoute> {

@@ -12,11 +12,11 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.afishaapp.ui.widget.shimmer.shimmerEffect
 import com.example.afishaapp.ui.widget.shimmer.text.ShimmerFillText
@@ -26,7 +26,7 @@ import com.example.afishaapp.ui.widget.shimmer.text.ShimmerText
 fun ShimmerCommentCard() {
     ElevatedCard(
         elevation = CardDefaults.cardElevation(6.dp),
-        colors = CardDefaults.cardColors(Color.White),
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surfaceContainer),
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()

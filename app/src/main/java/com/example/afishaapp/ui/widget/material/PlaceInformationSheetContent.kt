@@ -17,12 +17,12 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -137,12 +137,12 @@ fun PlaceInformationPagerContent(
             Icon(
                 painter = painterResource(R.drawable.ic_pin_into_circle),
                 contentDescription = null,
-                tint = Color.Black
+                tint = MaterialTheme.colorScheme.onSurface
             )
 
             Text(
                 text = "Показать на карте",
-                color = Color.Black,
+                color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.padding(start = 10.dp)
             )
         }

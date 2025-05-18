@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,13 +34,11 @@ fun ChipInfo(
     innerPadding: PaddingValues = PaddingValues(10.dp),
     icon: @Composable () -> Unit = {  }
 ) {
-    Box(
-        modifier = modifier
-    ) {
+    Box(modifier = modifier) {
         Row(
             modifier = Modifier
                 .clip(RoundedCornerShape(10.dp))
-                .background(LightGray)
+                .background(MaterialTheme.colorScheme.surfaceContainer)
                 .padding(innerPadding)
                 .wrapContentSize(),
             verticalAlignment = Alignment.CenterVertically
@@ -52,7 +51,7 @@ fun ChipInfo(
             ) {
                 Text(
                     text = title,
-                    color = Color.Black,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Medium,
                     fontSize = titleSize,
                     maxLines = 1,
@@ -62,7 +61,7 @@ fun ChipInfo(
 
                 Text(
                     text = subtitle,
-                    color = Color.Gray,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontWeight = FontWeight.Medium,
                     fontSize = subtitleSize,
                     maxLines = 1,

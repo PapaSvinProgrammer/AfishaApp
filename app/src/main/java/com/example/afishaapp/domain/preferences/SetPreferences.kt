@@ -6,20 +6,8 @@ import javax.inject.Inject
 class SetPreferences @Inject constructor(
     private val preferencesRepository: PreferencesRepository
 ) {
-    suspend fun setEmail(email: String) {
-        if (email.isEmpty()) {
-            return
-        }
-
-        preferencesRepository.setEmail(email)
-    }
-
-    suspend fun setUserName(name: String) {
-        if (name.isEmpty()) {
-            return
-        }
-
-        preferencesRepository.setName(name)
+    suspend fun setDarkTheme(state: Boolean) {
+        preferencesRepository.setDarkTheme(state)
     }
 
     suspend fun setEntryState(state: Boolean) {
@@ -33,14 +21,6 @@ class SetPreferences @Inject constructor(
 
         setLocationSlug(slug)
         preferencesRepository.setDefaultCity(city)
-    }
-
-    suspend fun setAvatarUrl(url: String) {
-        if (url.isEmpty()) {
-            return
-        }
-
-        preferencesRepository.setAvatarUrl(url)
     }
 
     private suspend fun setLocationSlug(locationSlug: String) {

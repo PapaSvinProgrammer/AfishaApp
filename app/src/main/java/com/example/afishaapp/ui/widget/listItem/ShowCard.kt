@@ -7,28 +7,23 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.afishaapp.R
 import com.example.afishaapp.app.utils.convertData.ConvertDate
 import com.example.afishaapp.app.utils.convertData.ConvertInfo
 import com.example.afishaapp.data.module.movieShow.PriceTime
 import com.example.afishaapp.data.module.movieShow.Show
+import com.example.afishaapp.ui.widget.row.SubwayRow
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -51,7 +46,10 @@ fun ShowCard(
         )
 
         if (show.place.subway.isNotEmpty()) {
-            SubwayRow(show.place.subway)
+            SubwayRow(
+                location = show.place.location,
+                subway = show.place.subway
+            )
         }
 
         FlowRow(
@@ -86,7 +84,7 @@ private fun TimeAndPriceCard(
             Text(
                 text = ConvertDate.convertShowTime(priceTime.time.toLong()),
                 fontSize = 15.sp,
-                color = Color.White,
+                color = MaterialTheme.colorScheme.onPrimary,
                 fontWeight = FontWeight.Medium,
                 modifier = Modifier
                     .padding(20.dp, 5.dp)
@@ -97,28 +95,6 @@ private fun TimeAndPriceCard(
         Text(
             text = priceTime.price,
             fontSize = 13.sp
-        )
-    }
-}
-
-@Composable
-private fun SubwayRow(text: String) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            painter = painterResource(R.drawable.ic_metro_msk),
-            contentDescription = null,
-            tint = Color.Unspecified,
-            modifier = Modifier
-                .padding(end = 5.dp)
-                .size(20.dp)
-        )
-
-        Text(
-            text = text,
-            fontSize = 13.sp,
-            color = Color.Gray
         )
     }
 }

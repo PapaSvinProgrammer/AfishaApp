@@ -20,6 +20,7 @@ import com.example.afishaapp.ui.screen.movieList.MovieListViewModel
 import com.example.afishaapp.ui.screen.place.PlaceViewModel
 import com.example.afishaapp.ui.screen.registration.RegistrationViewModel
 import com.example.afishaapp.ui.screen.search.SearchViewModel
+import com.example.afishaapp.ui.screen.settings.SettingsViewModel
 import com.example.afishaapp.ui.screen.start.StartViewModel
 import com.example.afishaapp.ui.screen.startSetting.StartSettingViewModel
 import com.example.afishaapp.ui.screen.ticket.TicketViewModel
@@ -149,4 +150,9 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(ChartViewModel::class)
     fun bindChartViewModel(viewModel: ChartViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SettingsViewModel::class)
+    fun bindSettingsViewModel(viewModeL: SettingsViewModel): ViewModel
 }

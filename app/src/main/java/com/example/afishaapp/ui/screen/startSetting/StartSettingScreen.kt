@@ -1,5 +1,6 @@
 package com.example.afishaapp.ui.screen.startSetting
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -23,6 +24,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -32,6 +34,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -44,6 +47,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -190,8 +194,17 @@ private fun CountryStartPage(viewModel: StartSettingViewModel) {
                 readOnly = true,
                 onValueChange = { viewModel.updateSelectedCity(it) },
                 trailingIcon = {
-                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
-                }
+                    Icon(
+                        imageVector = Icons.Filled.ArrowDropDown,
+                        contentDescription = null,
+                        modifier = Modifier.rotate(if (isExpanded) 180f else 0f),
+                        tint = Color.Black
+                    )
+                },
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = Color.Black,
+                    focusedBorderColor = Color.Black
+                )
             )
 
             ExposedDropdownMenu(
@@ -221,7 +234,8 @@ private fun TitlePage(
     Text(
         text = title,
         fontSize = 20.sp,
-        fontWeight = FontWeight.Bold
+        fontWeight = FontWeight.Bold,
+        color = Color.Black
     )
 
     Spacer(modifier = Modifier.height(10.dp))
@@ -229,7 +243,8 @@ private fun TitlePage(
     Text(
         text = description,
         textAlign = TextAlign.Center,
-        fontSize = 15.sp
+        fontSize = 15.sp,
+        color = Color.Black
     )
 }
 
@@ -356,6 +371,7 @@ private fun DatePickerStartPage(viewModel: StartSettingViewModel) {
         Spacer(modifier = Modifier.height(30.dp))
 
         DatePickerFieldToModal(
+            color = Color.Black,
             dateSelected = viewModel.selectedDate,
             onDateSelected = { millis ->
                 val dateStr = millis?.let { ConvertDate.convertMillisToDate(it) } ?: ""
