@@ -11,6 +11,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.afishaapp.data.module.QueryParameters
 import com.example.afishaapp.data.module.place.Place
 import com.example.afishaapp.domain.http.GetPlace
+import com.example.afishaapp.domain.repository.PreferencesRepository
 import com.yandex.mapkit.geometry.Circle
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CircleMapObject
@@ -23,7 +24,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MapViewModel @Inject constructor(
-    private val getPlace: GetPlace
+    private val getPlace: GetPlace,
+    private val preferencesRepository: PreferencesRepository
 ): ViewModel() {
     var mapCollection: MapObjectCollection? = null
 
@@ -40,6 +42,16 @@ class MapViewModel @Inject constructor(
 
     var radius by mutableFloatStateOf(100f)
         private set
+    var isDark by mutableStateOf(false)
+        private set
+
+    fun getDarkMode() {
+        viewModelScope.launch(Dispatchers.IO) {
+            preferencesRepository.getDarkTheme().collect {
+                isDark = it
+            }
+        }
+    }
 
     fun getPlacesWithRadius(lat: Double, lon: Double, radius: Int) {
         val queryParameters = QueryParameters(

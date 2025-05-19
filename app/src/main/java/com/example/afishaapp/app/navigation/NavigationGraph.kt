@@ -70,7 +70,7 @@ fun NavigationGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = HomeRoute,
+        startDestination = ChartRoute,
         enterTransition = {
             slideIntoContainer(
                 towards = AnimatedContentTransitionScope.SlideDirection.Start,

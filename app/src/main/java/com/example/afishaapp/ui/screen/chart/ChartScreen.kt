@@ -55,6 +55,7 @@ import com.example.afishaapp.ui.theme.DefaultPadding
 import com.example.afishaapp.ui.widget.material.rememberMarker
 import com.example.afishaapp.ui.widget.text.TitleTopBar
 import com.patrykandpatrick.vico.compose.cartesian.CartesianChartHost
+import com.patrykandpatrick.vico.compose.cartesian.axis.rememberAxisLabelComponent
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberBottom
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberStart
 import com.patrykandpatrick.vico.compose.cartesian.cartesianLayerPadding
@@ -337,10 +338,18 @@ private fun RatiosChart(
                     )
                 )
             ),
-            startAxis = VerticalAxis.rememberStart(valueFormatter = startAxisValueFormatter),
+            startAxis = VerticalAxis.rememberStart(
+                valueFormatter = startAxisValueFormatter,
+                label = rememberAxisLabelComponent(
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            ),
             bottomAxis = HorizontalAxis.rememberBottom(
                 itemPlacer = remember { HorizontalAxis.ItemPlacer.segmented() },
-                valueFormatter = bottomAxisValueFormatter
+                valueFormatter = bottomAxisValueFormatter,
+                label = rememberAxisLabelComponent(
+                    color = MaterialTheme.colorScheme.onSurface
+                )
             ),
             marker = rememberMarker(markerValueFormatter),
             layerPadding = { cartesianLayerPadding(scalableStart = 8.dp, scalableEnd = 8.dp) },

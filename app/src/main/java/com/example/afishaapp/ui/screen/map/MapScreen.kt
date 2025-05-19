@@ -35,6 +35,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
@@ -115,10 +116,12 @@ fun MapScreen(
     }
 
     LifecycleEventEffect(Lifecycle.Event.ON_START) {
+        viewModel.getDarkMode()
         viewModel.getPlaceInfo(placeId)
 
         mapView.onStart()
         MapKitFactory.getInstance().onStart()
+        mapView.mapWindow.map.isNightModeEnabled = viewModel.isDark
 
         viewModel.mapCollection = mapView.mapWindow.map.mapObjects
         moveToStartLocation(mainPoint)
@@ -276,8 +279,8 @@ private fun BackElevatedButton(onClick: () -> Unit) {
             contentPadding = PaddingValues(0.dp),
             modifier = Modifier.size(48.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color.White,
-                contentColor = Color.Black
+                containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                contentColor = MaterialTheme.colorScheme.onSurface
             )
         ) {
             Icon(
