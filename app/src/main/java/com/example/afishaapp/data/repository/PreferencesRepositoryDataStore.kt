@@ -69,7 +69,7 @@ class PreferencesRepositoryDataStore @Inject constructor(
 
     override fun getDarkTheme(): Flow<Boolean> {
         return context.datastore.data.map {
-            it[THEME_FIELD] ?: false
+            it[THEME_FIELD] ?: true
         }
     }
 }

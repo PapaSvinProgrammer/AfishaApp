@@ -22,6 +22,7 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
@@ -30,7 +31,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
@@ -50,7 +50,6 @@ import com.example.afishaapp.data.module.place.Place
 import com.example.afishaapp.ui.screen.bottomSheet.filter.EventFilterBottomSheet
 import com.example.afishaapp.ui.screen.bottomSheet.filter.MovieFilterBottomSheet
 import com.example.afishaapp.ui.theme.DefaultPadding
-import com.example.afishaapp.ui.theme.RedDark
 import com.example.afishaapp.ui.widget.listItem.EventCard
 import com.example.afishaapp.ui.widget.listItem.MovieCard
 import com.example.afishaapp.ui.widget.listItem.PlaceCard
@@ -298,7 +297,7 @@ private fun EmptyListContent() {
                 painter = painterResource(R.drawable.ic_broken_heart),
                 contentDescription = null,
                 modifier = Modifier.size(200.dp),
-                tint = RedDark
+                tint = MaterialTheme.colorScheme.error
             )
 
             Text(

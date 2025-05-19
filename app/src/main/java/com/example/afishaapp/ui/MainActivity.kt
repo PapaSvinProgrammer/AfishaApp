@@ -13,6 +13,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import com.example.afishaapp.app.App
+import com.example.afishaapp.app.navigation.HomeRoute
+import com.example.afishaapp.app.navigation.StartRoute
 import com.example.afishaapp.di.viewModel.ViewModelFactory
 import com.example.afishaapp.ui.screen.main.MainScreen
 import com.example.afishaapp.ui.theme.AfishaAppTheme
@@ -27,7 +29,9 @@ class MainActivity: ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (applicationContext as App).appComponent.inject(this)
+
         viewModel.getTheme()
+        viewModel.getEntryState()
 
         setContent {
             AfishaAppTheme(darkTheme = viewModel.isDarkTheme) {
@@ -41,8 +45,11 @@ class MainActivity: ComponentActivity() {
                     onDispose { }
                 }
 
+                val startRoute = if (viewModel.isEntry) HomeRoute else StartRoute
+
                 MainScreen(
-                    viewModelFactory = viewModelFactory
+                    viewModelFactory = viewModelFactory,
+                    startRoute = startRoute
                 )
             }
         }

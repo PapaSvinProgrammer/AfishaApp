@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.afishaapp.app.navigation.BottomNavigationBar
 import com.example.afishaapp.app.navigation.FavoriteRoute
 import com.example.afishaapp.app.navigation.HomeRoute
+import com.example.afishaapp.app.navigation.NavRoute
 import com.example.afishaapp.app.navigation.NavigationGraph
 import com.example.afishaapp.app.navigation.SearchRoute
 import com.example.afishaapp.app.navigation.TicketsRoute
@@ -21,7 +22,8 @@ var bottomBarVisibilityState = mutableStateOf(false)
 @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
 @Composable
 fun MainScreen(
-    viewModelFactory: ViewModelFactory
+    viewModelFactory: ViewModelFactory,
+    startRoute: NavRoute
 ) {
     val navController = rememberNavController()
     val backStackEntry by navController.currentBackStackEntryAsState()
@@ -39,7 +41,8 @@ fun MainScreen(
         NavigationGraph(
             navController = navController,
             padding = innerPadding,
-            viewModelFactory = viewModelFactory
+            viewModelFactory = viewModelFactory,
+            startRoute = startRoute
         )
     }
 }

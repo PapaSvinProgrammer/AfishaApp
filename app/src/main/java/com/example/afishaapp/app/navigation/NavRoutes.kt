@@ -2,100 +2,102 @@ package com.example.afishaapp.app.navigation
 
 import kotlinx.serialization.Serializable
 
-@Serializable
-object StartRoute
+sealed class NavRoute
 
 @Serializable
-object EntryRoute
+data object StartRoute: NavRoute()
 
 @Serializable
-object RegistrationRoute
+data object EntryRoute: NavRoute()
 
 @Serializable
-object HomeRoute
+data object RegistrationRoute: NavRoute()
 
 @Serializable
-object TicketsRoute
+data object HomeRoute: NavRoute()
 
 @Serializable
-object FavoriteRoute
+data object TicketsRoute: NavRoute()
 
 @Serializable
-object SearchRoute
+data object FavoriteRoute: NavRoute()
 
 @Serializable
-object ProfileRoute
+data object SearchRoute: NavRoute()
+
+@Serializable
+data object ProfileRoute: NavRoute()
 
 @Serializable
 data class MovieListRoute(
     val title: String,
     val location: String
-)
+): NavRoute()
 
 @Serializable
 data class EventListRoute(
     val title: String,
     val categorySlug: String,
     val location: String
-)
+): NavRoute()
 
 @Serializable
-data class EventRoute(val eventId: Int)
+data class EventRoute(val eventId: Int): NavRoute()
 
 @Serializable
 data class CommentListEventRoute(
     val id: Int,
     val name: String
-)
+): NavRoute()
 
 @Serializable
 data class CommentListPlaceRoute(
     val id: Int,
     val name: String
-)
+): NavRoute()
 
 @Serializable
 data class MovieRoute(
     val id: Int
-)
+): NavRoute()
 
 @Serializable
 data class AboutEventRoute(
     val id: Int
-)
+): NavRoute()
 
 @Serializable
 data class AboutMovieRoute(
     val id: Int
-)
+): NavRoute()
 
 @Serializable
-object AboutAppRoute
+data object AboutAppRoute: NavRoute()
 
 @Serializable
 data class MapRoute(
     val placeId: Int,
     val lat: Double,
     val lon: Double
-)
+): NavRoute()
 
 @Serializable
 data class PlaceRoute(
     val placeId: Int
-)
+): NavRoute()
 
 @Serializable
 data class FormPaymentRoute(
     val eventId: Int
-)
+): NavRoute()
 
 @Serializable
 data class DetailTicketRoute(
     val eventId: Int
-)
+): NavRoute()
 
 @Serializable
-object StartSettingRoute
+data object StartSettingRoute: NavRoute()
 
 @Serializable
-object ChartRoute
+data object ChartRoute: NavRoute()

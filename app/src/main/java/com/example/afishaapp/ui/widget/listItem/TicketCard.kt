@@ -79,7 +79,7 @@ fun TicketCard(
             onClick = { onClick.invoke(ticket) },
             modifier = Modifier.fillMaxSize().padding(5.dp),
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
+                containerColor = MaterialTheme.colorScheme.surfaceContainer
             )
         ) {
             Column(

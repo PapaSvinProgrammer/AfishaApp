@@ -2,13 +2,13 @@ package com.example.afishaapp.ui.screen.start
 
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -20,11 +20,13 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -39,6 +41,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.afishaapp.R
 import com.example.afishaapp.app.navigation.EntryRoute
 import com.example.afishaapp.app.navigation.HomeRoute
@@ -59,6 +64,7 @@ fun StartScreen(
 ) {
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.anim_start))
 
     if (viewModel.authSuccess) {
         navController.navigate(HomeRoute)
@@ -73,10 +79,13 @@ fun StartScreen(
             modifier = Modifier.fillMaxSize()
         ) {
             Column {
-                Image(
-                    painter = painterResource(R.drawable.start_poster),
-                    contentDescription = null,
-                    modifier = Modifier.fillMaxWidth().height(400.dp)
+                Spacer(modifier = Modifier.height(30.dp))
+
+                LottieAnimation(
+                    composition = composition,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(400.dp)
                 )
 
                 Text(
@@ -99,13 +108,12 @@ fun StartScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(40.dp, 30.dp, 40.dp, 10.dp),
-                    colors = ButtonDefaults.buttonColors(Color.Black),
-                    shape = RoundedCornerShape(10.dp)
-                ) {
-                    Text(
-                        text = stringResource(R.string.entry_text),
-                        color = Color.White
+                    shape = RoundedCornerShape(10.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.onSurface
                     )
+                ) {
+                    Text(text = stringResource(R.string.entry_text))
                 }
 
                 Button(
@@ -113,13 +121,12 @@ fun StartScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(40.dp, 0.dp, 40.dp, 10.dp),
-                    colors = ButtonDefaults.buttonColors(Color.Black),
-                    shape = RoundedCornerShape(10.dp)
-                ) {
-                    Text(
-                        text = stringResource(R.string.registration_text),
-                        color = Color.White
+                    shape = RoundedCornerShape(10.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.onSurface
                     )
+                ) {
+                    Text(text = stringResource(R.string.registration_text))
                 }
 
                 Row(
@@ -128,13 +135,13 @@ fun StartScreen(
                 ) {
                     HorizontalDivider(
                         thickness = 1.dp,
-                        color = Color.Gray,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.weight(1f)
                     )
 
                     Text(
                         text = "Войти с помощью",
-                        color = Color.Gray,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.weight(2f),
                         textAlign = TextAlign.Center,
                         fontSize = 14.sp,
@@ -143,14 +150,14 @@ fun StartScreen(
 
                     HorizontalDivider(
                         thickness = 1.dp,
-                        color = Color.Gray,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.weight(1f)
                     )
                 }
 
                 SupportRegistrationRow(
                     padding = innerPadding,
-                    onSuccess = { token ->
+                    onSuccess = { _ ->
                         viewModel.updateAuthStatus(true)
                     },
                     onFail = {
@@ -217,8 +224,7 @@ private fun SupportRegistrationRow(
             },
             modifier = Modifier
                 .clip(shape = RoundedCornerShape(8.dp))
-                .background(Color.White)
-
+                .background(MaterialTheme.colorScheme.background)
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_google),
@@ -232,8 +238,7 @@ private fun SupportRegistrationRow(
             onClick = { launcher.launch(YandexAuthLoginOptions()) },
             modifier = Modifier
                 .clip(shape = RoundedCornerShape(8.dp))
-                .background(Color.White)
-
+                .background(MaterialTheme.colorScheme.background)
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_yandex),

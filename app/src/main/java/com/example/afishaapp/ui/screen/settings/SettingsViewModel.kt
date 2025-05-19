@@ -31,12 +31,18 @@ class SettingsViewModel @Inject constructor(
         changeThemeState = state
     }
 
-    fun changeTheme(theme: AppTheme) {
+    fun setTheme(theme: AppTheme) {
         viewModelScope.launch(Dispatchers.IO) {
             when (theme) {
                 AppTheme.LIGHT -> setPreferences.setDarkTheme(false)
                 AppTheme.DARK -> setPreferences.setDarkTheme(true)
             }
+        }
+    }
+
+    fun setEntryState(state: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            preferencesRepository.setEntryState(state)
         }
     }
 

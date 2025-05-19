@@ -4,22 +4,22 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -46,7 +46,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
-import coil3.compose.AsyncImage
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
@@ -57,6 +56,7 @@ import com.example.afishaapp.app.navigation.PlaceRoute
 import com.example.afishaapp.data.room.ticket.TicketEntity
 import com.example.afishaapp.domain.module.SettingsType
 import com.example.afishaapp.ui.screen.bottomSheet.TicketSettingsBottomSheet
+import com.example.afishaapp.ui.theme.DefaultPadding
 import com.example.afishaapp.ui.widget.listItem.HatchHorizontalDivider
 import com.example.afishaapp.ui.widget.row.SubwayRow
 import com.example.afishaapp.ui.widget.text.SubtitleTopBar
@@ -155,7 +155,10 @@ fun DetailTicketScreen(
                 ElevatedCard(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(5.dp)
+                        .padding(5.dp),
+                    colors = CardDefaults.elevatedCardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceContainer
+                    )
                 ) {
                     Column {
                         Column(
@@ -174,8 +177,8 @@ fun DetailTicketScreen(
                                 .padding(
                                     top = 25.dp,
                                     bottom = 10.dp,
-                                    start = 15.dp,
-                                    end = 15.dp
+                                    start = DefaultPadding,
+                                    end = DefaultPadding
                                 )
                         ) {
                             BottomContent()
@@ -199,7 +202,7 @@ private fun TopContent(ticket: TicketEntity) {
     Column {
         HeadTicket(ticket)
 
-        Spacer(modifier = Modifier.height(15.dp))
+        Spacer(modifier = Modifier.height(30.dp))
 
         Text(
             text = ticket.name,
@@ -209,21 +212,25 @@ private fun TopContent(ticket: TicketEntity) {
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        Text(
-            text = ticket.address,
-            fontWeight = FontWeight.Normal,
-            fontSize = 14.sp
-        )
+        if (ticket.address.isNotEmpty()) {
+            Text(
+                text = ticket.address,
+                fontWeight = FontWeight.Normal,
+                fontSize = 14.sp
+            )
 
-        Spacer(modifier = Modifier.height(5.dp))
+            Spacer(modifier = Modifier.height(5.dp))
+        }
 
-        Text(
-            text = ticket.phone,
-            fontWeight = FontWeight.Normal,
-            fontSize = 14.sp
-        )
+        if (ticket.phone.isNotEmpty()) {
+            Text(
+                text = ticket.phone,
+                fontWeight = FontWeight.Normal,
+                fontSize = 14.sp
+            )
 
-        Spacer(modifier = Modifier.height(5.dp))
+            Spacer(modifier = Modifier.height(5.dp))
+        }
 
         SubwayRow(
             location = ticket.location,
@@ -234,71 +241,60 @@ private fun TopContent(ticket: TicketEntity) {
 
 @Composable
 private fun HeadTicket(ticket: TicketEntity) {
-    Row(
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        AsyncImage(
-            model = ticket.image,
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .size(190.dp)
-                .clip(RoundedCornerShape(10.dp))
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Text(
+            text = stringResource(R.string.age_restriction),
+            fontWeight = FontWeight.Medium,
+            fontSize = 15.sp
         )
 
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 10.dp)
-        ) {
-            Text(
-                text = ticket.age,
-                fontWeight = FontWeight.Medium,
-                fontSize = 15.sp
-            )
+        Text(
+            text = ticket.age,
+            fontWeight = FontWeight.Normal,
+            fontSize = 14.sp
+        )
 
-            Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
-            Text(
-                text = stringResource(R.string.time),
-                fontWeight = FontWeight.Medium,
-                fontSize = 15.sp
-            )
+        Text(
+            text = stringResource(R.string.time),
+            fontWeight = FontWeight.Medium,
+            fontSize = 15.sp
+        )
 
-            Text(
-                text = "15:00-16:20",
-                fontWeight = FontWeight.Normal,
-                fontSize = 14.sp
-            )
+        Text(
+            text = "15:00-16:20",
+            fontWeight = FontWeight.Normal,
+            fontSize = 14.sp
+        )
 
-            Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
-            Text(
-                text = stringResource(R.string.duration),
-                fontWeight = FontWeight.Medium,
-                fontSize = 15.sp
-            )
+        Text(
+            text = stringResource(R.string.duration),
+            fontWeight = FontWeight.Medium,
+            fontSize = 15.sp
+        )
 
-            Text(
-                text = "2 час. 30 мин.",
-                fontWeight = FontWeight.Normal,
-                fontSize = 14.sp
-            )
+        Text(
+            text = "2 час. 30 мин.",
+            fontWeight = FontWeight.Normal,
+            fontSize = 14.sp
+        )
 
-            Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
-            Text(
-                text = stringResource(R.string.cost),
-                fontWeight = FontWeight.Medium,
-                fontSize = 15.sp
-            )
+        Text(
+            text = stringResource(R.string.cost),
+            fontWeight = FontWeight.Medium,
+            fontSize = 15.sp
+        )
 
-            Text(
-                text = ticket.price,
-                fontWeight = FontWeight.Normal,
-                fontSize = 14.sp
-            )
-        }
+        Text(
+            text = ticket.price,
+            fontWeight = FontWeight.Normal,
+            fontSize = 14.sp
+        )
     }
 }
 

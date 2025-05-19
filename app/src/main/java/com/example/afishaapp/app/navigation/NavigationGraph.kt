@@ -66,11 +66,12 @@ import com.example.afishaapp.ui.screen.ticket.TicketViewModel
 fun NavigationGraph(
     navController: NavHostController,
     padding: PaddingValues,
-    viewModelFactory: ViewModelFactory
+    viewModelFactory: ViewModelFactory,
+    startRoute: NavRoute
 ) {
     NavHost(
         navController = navController,
-        startDestination = ChartRoute,
+        startDestination = startRoute,
         enterTransition = {
             slideIntoContainer(
                 towards = AnimatedContentTransitionScope.SlideDirection.Start,

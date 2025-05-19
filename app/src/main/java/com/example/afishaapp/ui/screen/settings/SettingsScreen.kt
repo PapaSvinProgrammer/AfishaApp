@@ -105,6 +105,8 @@ fun ProfileScreen(
     if (viewModel.exitState) {
         ExitDialog(
             onConfirmClick = {
+                viewModel.setEntryState(false)
+                viewModel.updateExitState(false)
                 navController.navigate(StartRoute) {
                     popUpTo(navController.graph.id)
                 }
@@ -118,7 +120,7 @@ fun ProfileScreen(
     if (viewModel.changeThemeState) {
         ChangeThemeDialog(
             isDark = viewModel.isDark,
-            onChange = { viewModel.changeTheme(it) },
+            onChange = { viewModel.setTheme(it) },
             onDismiss = { viewModel.updateChangeThemeState(false) }
         )
     }
