@@ -30,7 +30,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.afishaapp.R
-import com.example.afishaapp.app.navigation.HomeRoute
+import com.example.afishaapp.app.navigation.StartSettingRoute
 import com.example.afishaapp.ui.widget.text.TitleTopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -40,7 +40,7 @@ fun RegistrationScreen(
     viewModel: RegistrationViewModel
 ) {
     if (viewModel.isRegistration) {
-        navController.navigate(HomeRoute) {
+        navController.navigate(StartSettingRoute) {
             popUpTo(navController.graph.id)
         }
     }

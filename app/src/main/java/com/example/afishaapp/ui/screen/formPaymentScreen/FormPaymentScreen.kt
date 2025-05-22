@@ -1,5 +1,6 @@
 package com.example.afishaapp.ui.screen.formPaymentScreen
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -192,7 +193,8 @@ private fun PaymentsMethods() {
     Card (
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = DefaultPadding),
+            .padding(horizontal = DefaultPadding)
+            .animateContentSize(),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainer
         )

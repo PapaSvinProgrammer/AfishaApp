@@ -120,7 +120,10 @@ fun ProfileScreen(
     if (viewModel.changeThemeState) {
         ChangeThemeDialog(
             isDark = viewModel.isDark,
-            onChange = { viewModel.setTheme(it) },
+            onChange = {
+                viewModel.setTheme(it)
+                viewModel.updateChangeThemeState(false)
+            },
             onDismiss = { viewModel.updateChangeThemeState(false) }
         )
     }

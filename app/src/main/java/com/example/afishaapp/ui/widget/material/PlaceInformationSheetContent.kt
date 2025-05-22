@@ -63,10 +63,12 @@ fun PlaceInformationSheetContent(
             state = pagerState,
             modifier = Modifier.fillMaxWidth()
         ) { page ->
-            PlaceInformationPagerContent(
-                place = list[page],
-                moveToPoint = { moveToPoint.invoke(it) }
-            )
+            if (list.isNotEmpty()) {
+                PlaceInformationPagerContent(
+                    place = list[page],
+                    moveToPoint = { moveToPoint.invoke(it) }
+                )
+            }
         }
 
         ControlButtonsRow(

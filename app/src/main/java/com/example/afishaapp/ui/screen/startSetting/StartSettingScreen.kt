@@ -150,7 +150,8 @@ private fun BottomNavigationRow(
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Default.ArrowForward,
-                contentDescription = null
+                contentDescription = null,
+                tint = Color.Black
             )
         }
     }
