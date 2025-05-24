@@ -1,3 +1,12 @@
+### Список технологий
+Kotlin, Jetpack Compose, Single Activity, Navigation API, Clean Architecture, MVVM, Dagger, Retrofit, Yandex auth SDK, VKID auth SDK, Google auth SDK, ROOM, Pagination, Firebase, Yandex MapKit, Yandex StaticApi
+
+### Спсиок используемых API
+* [Yandex MapKit SDK](https://yandex.ru/maps-api/products/mapkit) - яндекс карты
+* [Yandex StaticApi](https://yandex.ru/maps-api/products/static-api) - api для генерации фото с карт в определенной точке
+* [KudaguAPI](https://docs.kudago.com/api/) - база данных событий, кинопоказов и прочего
+
+
 ### Фотографии
 <p>
   <img src="https://sun9-29.userapi.com/impg/UhlAXGDc7ZSLY7pIfCWQoU3-n8MRGnaKpFBQ-w/5vGBlylJNLk.jpg?size=486x1080&quality=95&sign=ab7ef80a7c18129f6cc5b500f8e94bcf&type=album" width=200>
